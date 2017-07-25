@@ -25,7 +25,7 @@ public class NaverApiBO {
 	//state: 애플리케이션이 생성한 상태 토큰
 	private final static String CLIENT_ID = "9xywjQhEim1nZVIa1xZc";
 	private final static String CLIENT_SECRET = "K5uiklulf0";
-	private final static String REDIRECT_URI = "http://127.0.0.1:8080/login/callback";
+	private final static String REDIRECT_URI = "http://220.230.116.163/login/callback";
 	// 프로필 조회 API URL
 	private final static String PROFILE_API_URL = "https://openapi.naver.com/v1/nid/me";
 	// 블로그 글쓰기 API URL 	
