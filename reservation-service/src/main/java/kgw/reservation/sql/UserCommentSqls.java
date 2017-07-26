@@ -12,9 +12,9 @@ public class UserCommentSqls {
 			+ "												r_i.reservation_date"
 			+"												from reservation_user_comment r_u_c"
 			+ "												inner join users u on user_id = u.id"
-			+ "												inner join reservation_info r_i on u.id = r_i.user_id"
-			+"												where r_u_c.product_id =:productId "
-			+"												order by r_u_c.id desc"
+			+ "												inner join reservation_info r_i on r_u_c.user_id  =  r_i.id and r_u_c.product_id = r_i.product_id"
+			+"												where r_u_c.product_id =:productId"
+			+ "												order by r_u_c.id desc"
 			+"												limit :offset, :size";
 	
 	public final static String SELECT_STATS_BY_PRODUCT_ID = "select "

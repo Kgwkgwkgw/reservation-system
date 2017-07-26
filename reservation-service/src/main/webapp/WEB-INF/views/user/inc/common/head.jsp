@@ -16,4 +16,5 @@
     <script src="/resources/js/reserve.js"></script>
     <script src="/resources/js/product.js"></script>
     <script src="/resources/js/detail.js"></script>
+    <script src="/resources/js/myreservation.js"></script>
 </head>

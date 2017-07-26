@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import kgw.reservation.dao.ProductDao;
 import kgw.reservation.domain.ReservationInfo;
 import kgw.reservation.domain.User;
 import kgw.reservation.dto.ProductInfo;
 import kgw.reservation.service.ProductService;
 import kgw.reservation.service.ReservationInfoService;
+import kgw.reservation.sql.ReservationInfoSqls;
 
 @Controller
 @RequestMapping("/products")
@@ -63,13 +63,14 @@ public class ProductController {
 		
 		reservationInfo.setProductId(id);
 		reservationInfo.setUserId(loginUser.getId());
+		reservationInfo.setReservationType(ReservationInfoSqls.ASKING);
 		//임시		
 		reservationInfo.setReservationDate(new Date());
 		log.info("postInfo : {}",reservationInfo);
 		
 		reservationInfoService.create(reservationInfo);
 		
-		return "redirect:/users/"+loginUser.getId();
+		return "redirect:/users";
 	}
 	
 	@GetMapping

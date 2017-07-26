@@ -719,6 +719,7 @@ button {
     cursor: pointer;
     font-size: 17px;
     color: #fff;
+    line-height: 47px;
     box-sizing: border-box
 }
 
@@ -3303,6 +3304,16 @@ button {
 	height: 36px;
 	border: 1px solid #ccc;
 	background-color: #f4f4f4;
+}
+.booking_cancel .link {
+  display: block;
+	width: 100%;
+	height: 36px;
+  margin: 20px 0 10px;
+	border: 1px solid #ccc;
+	background-color: #f4f4f4;
+  text-align: center;
+  line-height: 36px;
 }
 
 
