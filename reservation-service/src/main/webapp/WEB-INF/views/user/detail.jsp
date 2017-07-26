@@ -392,7 +392,7 @@
             var infowindow = new naver.maps.InfoWindow({
                 content: '<h4> [네이버 개발자센터]</h4><a href="https://developers.naver.com" target="_blank"><img src="https://developers.naver.com/inc/devcenter/images/nd_img.png"></a>'
             }); */
-            var mapImgPath = "https://openapi.naver.com/v1/map/staticmap.bin?clientId=irajNWsv4a8wTf8BP5mq&w=640&h=300&baselayer=default&url=http://localhost:8080/&level=11";
+            var mapImgPath = "https://openapi.naver.com/v1/map/staticmap.bin?clientId=9xywjQhEim1nZVIa1xZc&w=640&h=300&baselayer=default&url=http://220.230.116.163/&level=11";
             var center = "&center=" + (response.result.items[0].point.x) + "," + (response.result.items[0].point.y);
             var markers = "&markers=" + (response.result.items[0].point.x) + "," + (response.result.items[0].point.y);
             mapImgPath = mapImgPath + center + markers;
