@@ -289,8 +289,8 @@
                     <div class="detail_location _content _way ${product.content == null ? '' : 'hide'}">
                         <div class="box_store_info">
                             <a href="#" class="store_location _store_location" title="지도웹으로 연결" target="_blnak">
-                                <!-- <img class="store_map img_thumb" alt="map" src="https://simg.pstatic.net/static.map/image?version=1.1&amp;crs=EPSG:4326&amp;baselayer=bl_vc_bg&amp;exception=xml&amp;scale=2&amp;caller=mw_smart_booking&amp;overlayers=ol_vc_an&amp;center=127.0011948,37.5717079&amp;markers=type,default2,127.0011948,37.5717079&amp;level=11&amp;w=340&amp;h=150"> -->
-                                <div id="map" style="width:100%;height:165px;"></div>
+                                <img class="store_map img_thumb" alt="map" src="">
+                                <!-- <div id="map" style="width:100%;height:165px;"></div> -->
                                 <span class="img_border"></span>
                                 <span class="btn_map"><i class="spr_book2 ico_mapview"></i></span>
                             </a>
@@ -360,13 +360,13 @@
           })
       // 네이버 지도 API
       <c:if test="${product.placeLot ne null || product.placeStreet ne null }">
-        var map = new naver.maps.Map('map');
+        /* var map = new naver.maps.Map('map'); */
         var myaddress = "${product.placeStreet != null ? product.placeStreet : product.placeLot }";// 도로명 주소나 지번 주소만 가능 (건물명 불가!!!!)
         naver.maps.Service.geocode({address: myaddress}, function(status, response) {
             if (status !== naver.maps.Service.Status.OK) {
                 return alert(myaddress + '의 검색 결과가 없거나 기타 네트워크 에러');
             }
-            var result = response.result;
+            /* var result = response.result;
             var arr_location_link = document.getElementsByClassName("_store_location");
             for(var i=0; arr_location_link.length; i++)
                 arr_location_link[i].setAttribute("href", "http://map.naver.com/?menu=location&lng="+result.items[0].point.x+"&lat="+result.items[0].point.y);
@@ -391,7 +391,13 @@
             // 마크 클릭시 인포윈도우 오픈
             var infowindow = new naver.maps.InfoWindow({
                 content: '<h4> [네이버 개발자센터]</h4><a href="https://developers.naver.com" target="_blank"><img src="https://developers.naver.com/inc/devcenter/images/nd_img.png"></a>'
-            });
+            }); */
+            var mapImgPath = "https://openapi.naver.com/v1/map/staticmap.bin?clientId=irajNWsv4a8wTf8BP5mq&w=640&h=300&baselayer=default&url=http://localhost:8080/&level=11";
+            var center = "&center=" + (response.result.items[0].point.x) + "," + (response.result.items[0].point.y);
+            var markers = "&markers=" + (response.result.items[0].point.x) + "," + (response.result.items[0].point.y);
+            mapImgPath = mapImgPath + center + markers;
+            $(".store_location").attr("href", "http://map.naver.com/?query=" + myaddress);
+            $(".store_location > img").attr("src", mapImgPath);
         });
         //네이버 지도 API
       </c:if>
