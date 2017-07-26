@@ -107,7 +107,8 @@
 (function (product, Rolling, $) {
 	 	    "use strict";
 	 	    $(function() {
-	 	    		new Rolling(".visual_img", ".item", { "prevBtn" :".btn_pre_e", "nextBtn" : ".btn_nxt_e"});
+	 	    		new Rolling(".visual_img", ".item", 
+	 	    				{ "prevBtn" :".btn_pre_e", "nextBtn" : ".btn_nxt_e", "isTouch" : true} );
 	 	        product.init();
 	 	       //무한 스크롤링
 	 	       if (!$("body").height() < $(window).height()) {

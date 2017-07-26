@@ -50,6 +50,8 @@
 				var diff = this.startX - this.endX;
 				if(diff>0) { this.sliding(); }
 				if(diff<= 0) { this.slidingBack(); }
+				this.resetInterval();
+				setTimeout(this.autoSliding.bind(this),2000);
 			}
 			// 사용자가 입력한 옵션 + 디폴트 옵션 추가
 			Rolling.prototype.setOption = function(userOption) {
