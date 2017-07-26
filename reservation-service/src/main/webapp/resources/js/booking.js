@@ -71,7 +71,7 @@
     		plusBtn : "._plus",
     		btnModifier : "disabled",
     		amount : "._amount",
-        amountModifier :"disabled",
+    		amountModifier :"disabled",
     		priceSection : "._priceSection",
     		priceSectionModifier : "on_color",
         price : "._price"
