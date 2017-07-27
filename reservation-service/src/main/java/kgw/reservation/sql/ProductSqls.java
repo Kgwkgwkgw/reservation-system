@@ -53,6 +53,7 @@ public class ProductSqls {
 			+ "												d_i.display_start,"
 			+ "												d_i.display_end,"
 			+ "												d_i.observation_time,"
+			+ "												f.id as fileId,"
 			+ "												f.save_file_name"
 			+ "												from product p"
 			+ "												left outer join display_info d_i on p.id = d_i.product_id"
