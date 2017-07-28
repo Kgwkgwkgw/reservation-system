@@ -31,7 +31,7 @@
                             		<c:choose>
                             			<c:when test="${ empty product.fileList }">
 										<ul class="visual_img">
-		                            	    		<li class="item" style="width: 414px;"> <img alt="" class="img_thumb" src="${initParam.STATIC_IMG_URL}/no_img.png"> <span class="img_bg"></span>
+		                            	    		<li class="item" style="width: 414px;"> <img alt="" class="img_thumb" src="/imgresources/no_img.png"> <span class="img_bg"></span>
 	                            	    			   <c:if test="${status.first}">
 			                                        <div class="visual_txt">
 			                                            <div class="visual_txt_inn">
@@ -46,7 +46,7 @@
 									<c:when test="${ !empty product.fileList }">
 										<ul class="visual_img">
 		                            	    <c:forEach var="item" items= "${product.fileList}" varStatus="status">
-		                            	    		<li class="item" style="width: 414px;"> <img alt="" class="img_thumb" src="${initParam.UPLOAD_IMG_URL}/${item.id }"> <span class="img_bg"></span>
+		                            	    		<li class="item" style="width: 414px;"> <img alt="" class="img_thumb" src="/imgresources${item.saveFileName }"> <span class="img_bg"></span>
 	                            	    			   <c:if test="${status.first}">
 			                                        <div class="visual_txt">
 			                                            <div class="visual_txt_inn">
@@ -179,7 +179,7 @@
 						                                    	   <div class="thumb_area">
 	                                            					    <a href="#" class="thumb _commentThumb" title="이미지 크게 보기" style="width:90px;height:90px;">
 		                                            					    <c:forEach var="commentImage" items="${userComment.commentImageList }" varStatus="status">
-		                                            					    		<img style="width:100%; height:100%;" class="_img img_vertical_top <c:if test="${!status.first }">hide</c:if>" src="${initParam.UPLOAD_IMG_URL}/${commentImage.id }" alt="리뷰이미지">
+		                                            					    		<img style="width:100%; height:100%;" class="_img img_vertical_top <c:if test="${!status.first }">hide</c:if>" src="/imgresources${commentImage.saveFileName }" alt="리뷰이미지">
 	                                            					    		</c:forEach>
                                             					    		</a>
 	                                            					    	<span class="img_count">${fn:length(userComment.commentImageList) }</span>
@@ -276,10 +276,10 @@
 	                                        </ul>
 	                                    </li>
                                       <li class="detail_info_lst">
-                                          <img class="img_thumb lazyImg" data-src="/files/12" alt="업로드 이미지">
+                                          <img class="img_thumb lazyImg" data-src="/imgresources/2017/07/18/52b2239e-9871-4edf-a91f-3169d6757770" alt="업로드 이미지">
                                       </li>
                                       <li class="detail_info_lst">
-                                          <img class="img_thumb lazyImg" data-src="/files/13" alt="업로드 이미지">
+                                          <img class="img_thumb lazyImg" data-src="/imgresources/2017/07/18/52b2239e-9871-4edf-a91f-3169d6757770" alt="업로드 이미지">
                                       </li>
 	                                </ul>
 	                            </div>

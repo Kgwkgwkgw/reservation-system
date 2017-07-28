@@ -86,10 +86,10 @@
 <li class="item" data-id="{{id}}">
     <a href="/products/{{id}}" class="item_book">
         <div class="item_preview">
-			{{#if fileId}}
-				<img alt="{{name}}" class="img_thumb" src="${initParam.UPLOAD_IMG_URL}/{{fileId}}">                                    
+			{{#if saveFileName}}
+				<img alt="{{name}}" class="img_thumb" src="/imgresources{{saveFileName}}">                                    
 			{{else}}
-				<img alt="{{name}}" class="img_thumb" src="${initParam.STATIC_IMG_URL}/no_img.png">	
+				<img alt="{{name}}" class="img_thumb" src="/imgresources/no_img.png">	
 			{{/if}}
 			<span class="img_border"></span>
 		</div>

@@ -3,7 +3,7 @@ package kgw.reservation.sql;
 public class FileSqls {
 	public final static String SELECT_JOIN_PRODUCT_IMAGE_BY_PRODUCT_ID = "select "
 			+ "															f.id, f.file_name, "
-			+ "															f.save_file_name, "
+			+ "															f.save_file_name as saveFileName, "
 			+ "															f.file_length, "
 			+ "															f.content_type, "
 			+ "															f.delete_flag, "

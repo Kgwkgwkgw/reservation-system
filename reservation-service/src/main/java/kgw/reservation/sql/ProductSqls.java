@@ -2,7 +2,7 @@ package kgw.reservation.sql;
 public class ProductSqls {
 	private final static String onSale = "1";
 	private final static String mainImage = "1";
-	public final static String SELECT_ALL_LIMIT ="select p.id, p.name, p.description, p.sales_end, f.id as fileId, f.save_file_name, d_i.place_name"
+	public final static String SELECT_ALL_LIMIT ="select p.id, p.name, p.description, p.sales_end, f.id as fileId, f.save_file_name as saveFileName, d_i.place_name"
 			+ "									 from product p"
 			+ "									 left outer join display_info d_i  on p.id = d_i.product_id"
 			+ "									 left outer join product_image p_i on p.id = p_i.product_id"
@@ -15,7 +15,7 @@ public class ProductSqls {
 			+ "								from product p"
 			+ "							   where p.sales_flag ="+onSale;
 	
-	public final static String SELECT_BY_CATEGORY_LIMIT = "select p.id, p.name, p.description, p.sales_end, f.id as fileId,  f.save_file_name, d_i.place_name"
+	public final static String SELECT_BY_CATEGORY_LIMIT = "select p.id, p.name, p.description, p.sales_end, f.id as fileId, f.save_file_name as saveFileName, d_i.place_name"
 			+ "												from product p"
 			+ "												left outer join display_info d_i  on p.id = d_i.product_id"
 			+ "												left outer join product_image p_i on p.id = p_i.product_id"
