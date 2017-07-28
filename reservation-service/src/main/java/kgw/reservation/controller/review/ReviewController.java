@@ -32,8 +32,6 @@ import kgw.reservation.service.UserCommentService;
 public class ReviewController {
 	@Value("${USER_DIR}")
 	private String DIRNAME;
-	@Value("${naverest.imagefile.maxsize}")
-	private Long imagefileMaxSize;
 	
 	private UserCommentService userCommentService;
 	private FileService fileService;

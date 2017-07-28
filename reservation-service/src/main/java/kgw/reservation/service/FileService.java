@@ -23,7 +23,7 @@ import kgw.reservation.domain.FileDomain;
 @Service
 public class FileService {
 	private FileDao fileDao;
-	@Value("${kgw.imageupload.path}")
+	@Value("${naverest.imagePath}")
 	private String baseDir; // 이미지파일 다운로드할 기본 경로
 	
 	private final Logger log = LoggerFactory.getLogger(FileService.class);
