@@ -54,7 +54,7 @@ public class ProductSqls {
 			+ "												d_i.display_end,"
 			+ "												d_i.observation_time,"
 			+ "												f.id as fileId,"
-			+ "												f.save_file_name"
+			+ "												f.save_file_name as saveFileName"
 			+ "												from product p"
 			+ "												left outer join display_info d_i on p.id = d_i.product_id"
 			+ "												left outer join product_image p_i on p.id = p_i.product_id and type ="+mainImage

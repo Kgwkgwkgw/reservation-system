@@ -45,5 +45,10 @@ public class ReservationInfoSqls {
 	public final static String DELETE_RESERVATION_BY_TYPE= "DELETE"
 			+ "											  FROM reservation_info"
 			+ "											  WHERE reservation_type = :type";
+	public final static String SELECT_COUNT_RESERVATION_BY_USER_ID_AND_PRODUCT_ID = "SELECT"
+			+ "																	   COUNT(*)"
+			+ "																	   FROM reservation_info"
+			+ "																 	   WHERE product_id = :productId"
+			+ "																       AND user_id = :userId";
 	
 }

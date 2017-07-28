@@ -25,6 +25,7 @@ import kgw.reservation.domain.ReservationUserComment;
 import kgw.reservation.domain.User;
 import kgw.reservation.exception.MismatchJpegPngFormatException;
 import kgw.reservation.service.FileService;
+import kgw.reservation.service.ReservationInfoService;
 import kgw.reservation.service.UserCommentService;
 
 @Controller
@@ -35,17 +36,24 @@ public class ReviewController {
 	
 	private UserCommentService userCommentService;
 	private FileService fileService;
+	private ReservationInfoService reservationInfoService;
 	private final Logger log = LoggerFactory.getLogger(ReviewController.class);
 
 	@Autowired
-	public ReviewController(UserCommentService userCommentService, FileService fileService) {
+	public ReviewController(UserCommentService userCommentService, FileService fileService,
+			ReservationInfoService reservationInfoService) {
 		this.userCommentService = userCommentService;
 		this.fileService = fileService;
+		this.reservationInfoService = reservationInfoService;
 	}
 
 	@GetMapping("/form")
-	public String form(@RequestParam Integer productId) {
-
+	public String form(@RequestParam Integer productId, HttpSession session) {
+		User user = (User) session.getAttribute("loginInfo");
+		Integer count = reservationInfoService.findCountByUserIdAndProductId(productId, user.getId());
+		if(count==0) {
+			return "error";
+		}
 		return DIRNAME + "/reviewWrite";
 	}
 	//@RequestParam UserComment userComment, @RequestParam List<Integer> fileIdList,

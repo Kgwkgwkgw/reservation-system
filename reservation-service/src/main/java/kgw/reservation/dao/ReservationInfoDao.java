@@ -95,5 +95,12 @@ public class ReservationInfoDao {
 		params.put("id", id);
 		return jdbc.update(ReservationInfoSqls.UPDATE_TYPE_BY_ID, params);
 	}
+	public Integer selectCountByUserIdAndProductId(Integer productId, Integer userId) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("productId", productId);
+		params.put("userId", userId);
+		return jdbc.queryForObject(ReservationInfoSqls.SELECT_COUNT_RESERVATION_BY_USER_ID_AND_PRODUCT_ID, 
+				params, Integer.class);
+	}
 	
 }

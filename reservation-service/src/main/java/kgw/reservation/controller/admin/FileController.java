@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import kgw.reservation.domain.FileDomain;
 import kgw.reservation.service.FileService;
 
 @Controller
@@ -98,9 +99,7 @@ public class FileController {
             @PathVariable(name="id") Integer id,
             HttpServletResponse response
     ){
-        // id를 이용하여 파일의 정보를 읽어온다.
-        // 이 부분은 원래 db에서 읽어오는 것인데 db부분은 생략했다.
-    		kgw.reservation.domain.FileDomain fileDomain = fileService.find(id);
+    		FileDomain fileDomain = fileService.find(id);
         String originalFilename = fileDomain.getFileName();
         String contentType = fileDomain.getContentType();
         int fileSize = fileDomain.getFileLength();

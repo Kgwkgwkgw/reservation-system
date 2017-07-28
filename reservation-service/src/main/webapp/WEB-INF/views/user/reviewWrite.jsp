@@ -46,7 +46,7 @@
 					<!-- 리뷰 입력 -->
 					<div class="review_contents write">
 						<!-- [D] review_write_info 클릭 시 자신을 숨기고 review_textarea 에 focus를 보낸다. -->
-						<a href="#" class="review_write_info">
+						<label class="review_write_info" for="comment" id="commentLabel">
 							<span class="middot">
 								실 사용자의 리뷰는 상품명의 더 나은 서비스 제공과 다른 사용자들의 선택에 큰 도움이 됩니다.
 							</span><br>
@@ -54,8 +54,8 @@
 								소중한 리뷰에 대한 감사로 네이버페이 포인트 500원을 적립해드립니다.
 							</span>
 							<span class="left_space">(단, 리뷰 포인트는 ID 당 1일 최대 5건까지 지급됩니다.)</span>
-						</a>
-						<textarea cols="30" rows="10" name="comment" class="review_textarea"></textarea>
+						</label>
+						<textarea cols="30" rows="10" name="comment" class="review_textarea" id="comment"></textarea>
 					</div>
 					<!-- //리뷰 입력 -->
 
@@ -78,8 +78,8 @@
 							<div class="item_preview_thumbs">
 								<ul class="lst_thumb">
 									<!--handlebars template insert-->
-									
-									
+
+
 								</ul>
 							</div>
 						</div>
@@ -106,27 +106,26 @@
 			<span class="copyright">© NAVER Corp.</span>
 		</div>
 	</footer>
-	<script>
-
-	(function(ReviewWrite, Rating){
-		"use strict";
-		var reviewWrite = new ReviewWrite();
-		var rating = new Rating(reviewWrite.scoreWrap, reviewWrite);
-	})(window.reservation.ReviewWrite, window.reservation.Rating)
-	
-	</script>
-
-</body>
-
-	<script id="commentWrite-thumbnail-template" type="text/x-handlebars-template">
-		<li class="item">
-			<a href="#" class="anchor" data-thumb-id ="{{id}}">
+    <script id="commentWrite-thumbnail-template" type="text/x-handlebars-template">
+		<li class="item _thumb" data-id ="{{id}}">
+			<a href="#" class="anchor">
 				<span class="spr_book ico_del">삭제</span>
-			</a>					
+			</a>
 			<img src="/imgresources{{saveFileName}}" width="130" alt="" class="item_thumb">
 			<span class="img_border"></span>
 			<input type="hidden" name="fileIdList" value="{{id}}">
 		</li>
 	</script>
+	<script>
+
+	(function(Review, Rating){
+		"use strict";
+		var review = new Review();
+		var rating = new Rating(review.scoreWrap, review);
+	})(window.reservation.Review, window.reservation.Rating)
+
+	</script>
+
+</body>
 
 </html>

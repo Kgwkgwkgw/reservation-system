@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
-import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -38,14 +37,7 @@ public class RestResponseEntityExceptionHandler  extends ResponseEntityException
   			  new RestError(HttpStatus.BAD_REQUEST, "파일 용량이 초과하였습니다.",null);
         	return new ResponseEntity<Object>(restError, new HttpHeaders(), restError.getStatus());
     }
-    private HttpStatus getStatus(HttpServletRequest request) {
-        Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
-        if (statusCode == null) {
-            return HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-        return HttpStatus.valueOf(statusCode);
-    }
-   
+	
     @ExceptionHandler(MismatchJpegPngFormatException.class)
     @ResponseBody
     ResponseEntity<?> mismatchJpegPngControllerException(HttpServletRequest request, Throwable ex) {

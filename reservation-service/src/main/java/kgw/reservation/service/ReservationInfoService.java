@@ -85,5 +85,9 @@ public class ReservationInfoService {
 	public Integer modifyTypeById(Integer id, Integer type) {
 		return reservationInfoDao.updateTypeById(id, type);
 	}
+	@Transactional(readOnly=true)
+	public Integer findCountByUserIdAndProductId(Integer productId, Integer userId) {
+		return reservationInfoDao.selectCountByUserIdAndProductId(productId, userId);
+	}
 	
 }
