@@ -76,7 +76,7 @@ public class FileController {
                     ex.printStackTrace();
                 }
                 //File
-                kgw.reservation.domain.File fileDomain = new kgw.reservation.domain.File();
+                kgw.reservation.domain.FileDomain fileDomain = new kgw.reservation.domain.FileDomain();
                 fileDomain.setContentType(contentType);
                 fileDomain.setCreateDate(new Date());
                 fileDomain.setDeleteFlag(0);
@@ -100,7 +100,7 @@ public class FileController {
     ){
         // id를 이용하여 파일의 정보를 읽어온다.
         // 이 부분은 원래 db에서 읽어오는 것인데 db부분은 생략했다.
-    		kgw.reservation.domain.File fileDomain = fileService.find(id);
+    		kgw.reservation.domain.FileDomain fileDomain = fileService.find(id);
         String originalFilename = fileDomain.getFileName();
         String contentType = fileDomain.getContentType();
         int fileSize = fileDomain.getFileLength();

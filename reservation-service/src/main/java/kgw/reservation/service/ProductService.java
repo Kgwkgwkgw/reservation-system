@@ -4,6 +4,8 @@ package kgw.reservation.service;
 import java.util.Collection;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +27,7 @@ public class ProductService {
 	private UserCommentService userCommentService;
 	private FileDao fileDao;
 	private ProductPriceDao productPriceDao;
-	
+
 	@Autowired
 	public ProductService(ProductDao productDao, UserCommentService userCommentService, FileDao fileDao,
 							ProductPriceDao productPriceDao) {

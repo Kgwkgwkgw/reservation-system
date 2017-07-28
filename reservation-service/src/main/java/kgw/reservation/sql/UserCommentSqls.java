@@ -22,4 +22,6 @@ public class UserCommentSqls {
 			+ "												avg(score) as averageScore"
 			+ "												from reservation_user_comment"
 			+ "												where product_id =:productId";
+		
+	
 }

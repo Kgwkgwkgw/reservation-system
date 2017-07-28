@@ -8,6 +8,7 @@
 <jsp:include page="inc/common/head.jsp">
 			<jsp:param value="네이버 예약" name="title"/>
 </jsp:include>
+
 <body>
     <div id="container">
         <jsp:include page="inc/common/header.jsp">
@@ -339,6 +340,8 @@
    		</button>
     </div>
 </body>
+<script src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=9xywjQhEim1nZVIa1xZc&submodules=geocoder" ></script>
+
 <script>
   $(document).on("ready", function(){
     (function(){

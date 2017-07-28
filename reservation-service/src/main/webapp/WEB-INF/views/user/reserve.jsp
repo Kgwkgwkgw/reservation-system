@@ -267,7 +267,7 @@
                   </div>
                   <div class="box_bk_btn">
                       <!-- [D] 약관 전체 동의가 되면 disable 제거 -->
-                      <div class="bk_btn_wrap disable _bookingBtn"> <button type="submit" class="bk_btn"> <i class="spr_book ico_naver_s"></i>  <span>예약하기</span> </button> </div>
+                      <div class="bk_btn_wrap disable _bookingBtn"> <button type="submit" class="bk_btn"> <i class="spr_book ico_naver_s" style="margin-top:12px"></i>  <span>예약하기</span> </button> </div>
                   </div>
                 </form>
             </div>

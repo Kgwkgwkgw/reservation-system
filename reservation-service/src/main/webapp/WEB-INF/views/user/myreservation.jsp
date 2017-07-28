@@ -280,11 +280,9 @@
                             </em>
                           </li>
                       </ul>
-                      {{#unless commentId}}
-                        <div class="booking_cancel">
-                            <a href="/reviews/form?productId={{productId}}" class="link"><span>예매자 리뷰 남기기</span></a>
-                        </div>
-                      {{/unless}}
+                      <div class="booking_cancel">
+                          <a href="/reviews/form?productId={{productId}}" class="link"><span>예매자 리뷰 남기기</span></a>
+                      </div>
                   </div>
               </div>
               <div class="right"></div>

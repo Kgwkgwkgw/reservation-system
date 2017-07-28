@@ -1,5 +1,6 @@
 package kgw.reservation.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,11 @@ public class ReservationInfoService {
 	}
 	@Transactional(readOnly=false)
 	public ReservationInfo create(ReservationInfo reservationInfo) {
+		Date date = new Date();
+		
+		reservationInfo.setCreateDate(date);
+		reservationInfo.setModifyDate(date);
+
 		reservationInfo.setId(reservationInfoDao.insert(reservationInfo));
 		return reservationInfo;
 	}

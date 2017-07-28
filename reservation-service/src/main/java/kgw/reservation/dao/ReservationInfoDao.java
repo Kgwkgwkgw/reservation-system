@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.sql.DataSource;
@@ -30,6 +31,7 @@ public class ReservationInfoDao {
 	private NamedParameterJdbcTemplate jdbc;
 	private RowMapper<ReservationInfo> rowMapper = BeanPropertyRowMapper.newInstance(ReservationInfo.class);
 	//private RowMapper<MyReservation> myReservationRowMapper = BeanPropertyRowMapper.newInstance(MyReservation.class);
+	
 	private DateFormat df = new SimpleDateFormat("yyyy.M.d.(E)");
 	private RowMapper<MyReservation> myReservationRowMapper = (rs, i) -> {
 			MyReservation myReservation = new MyReservation();
@@ -42,7 +44,6 @@ public class ReservationInfoDao {
 			myReservation.setReservationType(rs.getInt("reservationType"));
 			myReservation.setReservationDate(df.format(rs.getDate("reservationDate")));
 			myReservation.setName(rs.getString("name"));
-			myReservation.setCommentId(rs.getInt("commentId"));
 			return myReservation;
 	};
 	private final Logger log = LoggerFactory.getLogger(ReservationInfoDao.class);
@@ -82,18 +83,6 @@ public class ReservationInfoDao {
 			return null;
 		}
 	}
-	
-//	public Integer countByUserId(Integer userId) {
-//		Map<String, Object> params = Collections.singletonMap("userId", userId);
-//		return jdbc.queryForObject(ReservationInfoSqls.COUNT_ALL_RESERVATION_BY_USER_ID, params, Integer.class);
-//	}
-//	
-//	public Integer countByUserIdAndType(Integer userId, Integer type) {
-//		Map<String, Object> params = new HashMap<>();
-//		params.put("userId", userId);
-//		params.put("type", type);
-//		return jdbc.queryForObject(ReservationInfoSqls.COUNT_RESERVATION_BY_USER_ID_AND_TYPE, params, Integer.class);
-//	}
 	
 	public Integer deleteByType(Integer type) {
 		Map<String, Object> params = Collections.singletonMap("type", type);

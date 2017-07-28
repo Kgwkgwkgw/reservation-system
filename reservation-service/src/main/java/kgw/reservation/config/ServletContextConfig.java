@@ -1,5 +1,6 @@
 package kgw.reservation.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,10 @@ import kgw.reservation.oauth.naver.NaverApiBO;
 @EnableWebMvc
 @ComponentScan(basePackages = {"kgw.reservation.controller"})
 public class ServletContextConfig extends WebMvcConfigurerAdapter {
+		@Value("${naverest.imagefile.maxsize}")
+		private Long imagefileMaxSize;
+		@Value("${naverest.imagepath}")
+		private String imageuploadPath;
 		@Bean
 	    public ViewResolver viewResolver() {
 	         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
@@ -30,11 +35,13 @@ public class ServletContextConfig extends WebMvcConfigurerAdapter {
 		@Override
 		   public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		       registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");  //   webapp/resources 경로를 의미
+			   registry.addResourceHandler("/imgresources/**").addResourceLocations(imageuploadPath);
+			   								
 		}
 	    @Bean
 	    public MultipartResolver multipartResolver() {
 	        org.springframework.web.multipart.commons.CommonsMultipartResolver multipartResolver = new org.springframework.web.multipart.commons.CommonsMultipartResolver();
-	        multipartResolver.setMaxUploadSize(10485760); // 1024 * 1024 * 10
+	        multipartResolver.setMaxUploadSize(imagefileMaxSize); // 1024 * 1024  = 1MB;
 	        return multipartResolver;
 	    }
 	    @Bean

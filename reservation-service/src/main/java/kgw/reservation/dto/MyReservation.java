@@ -10,7 +10,6 @@ public class MyReservation {
 	private Integer reservationType;
 	private String reservationDate;
 	private String name;
-	private Integer commentId;
 
 	public Integer getId() {
 		return id;
@@ -83,14 +82,5 @@ public class MyReservation {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public Integer getCommentId() {
-		return commentId;
-	}
-
-	public void setCommentId(Integer commentId) {
-		this.commentId = commentId;
-	}
-	
 
 }
