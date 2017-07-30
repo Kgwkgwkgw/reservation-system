@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.sql.DataSource;
@@ -30,7 +29,6 @@ import kgw.reservation.sql.ReservationInfoSqls;
 public class ReservationInfoDao {
 	private NamedParameterJdbcTemplate jdbc;
 	private RowMapper<ReservationInfo> rowMapper = BeanPropertyRowMapper.newInstance(ReservationInfo.class);
-	//private RowMapper<MyReservation> myReservationRowMapper = BeanPropertyRowMapper.newInstance(MyReservation.class);
 	
 	private DateFormat df = new SimpleDateFormat("yyyy.M.d.(E)");
 	private RowMapper<MyReservation> myReservationRowMapper = (rs, i) -> {
@@ -101,6 +99,15 @@ public class ReservationInfoDao {
 		params.put("userId", userId);
 		return jdbc.queryForObject(ReservationInfoSqls.SELECT_COUNT_RESERVATION_BY_USER_ID_AND_PRODUCT_ID, 
 				params, Integer.class);
+	}
+	public ReservationInfo selectById(Integer id) {
+		Map<String, Object> params = Collections.singletonMap("id", id);
+		try {
+			return jdbc.queryForObject(ReservationInfoSqls.SELECT_RESERVATION_INFO_BY_ID, params, rowMapper);
+		} catch(DataAccessException e) {
+			log.error("ReservationInfoDao::selectById",e);
+			return null;
+		}
 	}
 	
 }
