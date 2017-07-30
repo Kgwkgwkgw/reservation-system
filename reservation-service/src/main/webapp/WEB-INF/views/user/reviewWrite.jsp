@@ -17,7 +17,7 @@
 					<h2><span class="title">클림트 인사이드</span></h2>
 				</div>
 				<!-- 리뷰 별점 -->
-				<form action="/reviews/form" method="POST" class="_enrollForm">
+				<form action="/reviews/form" method="post" class="_enrollForm">
 					<input type="hidden" name="productId" value="${param.productId}" >
 					<div class="write_act">
 						<p class="title_star">별점과 이용경험을 남겨주세요.</p>
@@ -66,17 +66,17 @@
 								<i class="fn fn-image1" aria-hidden="true"></i>
 								<span class="text_add_photo">사진 추가</span>
 							</label>
-							<input type="file" class="hidden_input" id="reviewImageFileOpenInput" accept="image/*" multiple >
+							<input type="file" class="hidden_input" id="reviewImageFileInput" accept="image/*" multiple >
 							<div class="guide_review">
-								<span>0</span>/400
+								<span class="_numOfText">0</span>/400
 								<span>(최소5자이상)</span>
 							</div>
 						</div>
 
 						<!-- 리뷰 포토 -->
-						<div class="review_photos review_photos_write">
+						<div class="review_photos review_photos_write _uploadWrapper">
 							<div class="item_preview_thumbs">
-								<ul class="lst_thumb">
+								<ul class="lst_thumb _thumbnailUploadList">
 									<!--handlebars template insert-->
 
 
@@ -118,11 +118,11 @@
 	</script>
 	<script>
 
-	(function(Review, Rating){
+	(function(ReviewWrite, Rating){
 		"use strict";
-		var review = new Review();
-		var rating = new Rating(review.scoreWrap, review);
-	})(window.reservation.Review, window.reservation.Rating)
+		var reviewWrite = new ReviewWrite();
+		var rating = new Rating(reviewWrite.scoreWrap, reviewWrite);
+	})(window.reservation.ReviewWrite, window.reservation.Rating)
 
 	</script>
 

@@ -146,7 +146,7 @@
 
       function isValidEmail(strEmail, isShowMessage) {
         var valid = true;
-        
+
         if(!regEmail.test(strEmail)) {
           valid = false;
         }
@@ -171,7 +171,7 @@
           valid = false;
 
         } else if(!isValidTel($tel.val())) {
-          msg = "전화번호를 확인해주세요.";
+          msg = "전화번호를 확인해주세요.( ex) 010-1234-6433 )";
           valid = false;
 
         } else if(!$agreeCheckBox.prop("checked")) {

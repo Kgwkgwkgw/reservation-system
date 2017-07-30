@@ -1,26 +1,25 @@
 (function($, Handlebars){
 	"use strict";
 
-	function Review() {
+	function ReviewWrite() {
 		this.APIURL;
 		this.THUMB_MAX_COUNT;
 		this.MAX_COMMENT_LENGTH;
 		this.MIN_COMMENT_LENGTH;
 		this.$enrollForm;
-		this.$imageInput;
-		this.thumbnailCount;
-		this.$listThumbnail;
-		this.thumbItem;
-		this.$thumbnailDeleteBtn;
-		this.$outerTextArea;
-		this.$TextArea;
 		this.$commentLabel;
-		this.strComment;
+		this.$commentText;
+		this.$imageInput;
+		this.$thumbnailUploadWrapper;
+		this.$thumbnailUploadList;
+		this.thumbItem;
+		this.thumbnailUploadCount;
+		this.strEnteredComment;
 		this.$numOfText;
-		this.$enrollBtn;
 		this.scoreWrap;
 		this.$scoreWrap;
 		this.scoreRadioBtn;
+
 		this.regCheckNoWhitespace;
 
 		this.commentThumbnailTemplate;
@@ -29,25 +28,23 @@
 		this.addEventHandling();
 	}
 
-	Review.prototype = new eg.Component();
-	Review.prototype.constructor = Review;
-	Review.prototype.initVariable = function() {
+	ReviewWrite.prototype = new eg.Component();
+	ReviewWrite.prototype.constructor = ReviewWrite;
+	ReviewWrite.prototype.initVariable = function() {
 		this.APIURL = "/reviews/images";
 		this.THUMB_MAX_COUNT = 5;
 		this.MAX_COMMENT_LENGTH = 400;
 		this.MIN_COMMENT_LENGTH = 5;
 		this.$enrollForm = $("._enrollForm");
-		this.$imageInput = $("#reviewImageFileOpenInput");
-		this.thumbnailCount = 0;
-		this.$listThumbnail = $(".lst_thumb");
-		this.thumbItem = "._thumb";
-		this.$thumbnailDeleteBtn = $(".review_photos");
-		this.$outerTextArea = $(".review_contents");
-		this.$TextArea = $("#comment");
 		this.$commentLabel = $("#commentLabel");
-		this.strComment = "";
-		this.$numOfText = $(".guide_review").find("span").eq(0);
-		this.$enrollBtn = $(".box_bk_btn").find(".bk_btn");
+		this.$commentText = $("#comment");
+		this.$imageInput = $("#reviewImageFileInput");
+		this.$thumbnailUploadWrapper= $("._uploadWrapper");
+		this.$thumbnailUploadList = $("._thumbnailUploadList");
+		this.thumbItem = "._thumb";
+		this.thumbnailUploadCount = 0;
+		this.strEnteredComment = "";
+		this.$numOfText = $("._numOfText");
 		this.scoreWrap = "._rating";
 		this.$scoreWrap = $(this.scoreWrap);
 		this.scoreRadioBtn = "._radio";
@@ -55,7 +52,7 @@
 		this.commentThumbnailTemplate = Handlebars.compile($("#commentWrite-thumbnail-template").html());
 	}
 
-	Review.prototype.addEventHandling = function() {
+	ReviewWrite.prototype.addEventHandling = function() {
 		this.$scoreWrap.on("click", this.scoreRadioBtn, this.scoreClickHandling.bind(this));
 
 		this.$enrollForm.on("submit", this.submitCommentHandling.bind(this));
@@ -63,18 +60,18 @@
 			$(this).addClass("hide");
 		});
 
-		this.$TextArea.on("focusout", this.commentFocusOutHandling.bind(this));
-		this.$TextArea.on("keyup", this.keyUpHandling.bind(this));
+		this.$commentText.on("focusout", this.commentFocusOutHandling.bind(this));
+		this.$commentText.on("keyup", this.keyUpHandling.bind(this));
 
 		this.$imageInput.on("change", this.imageInputChangeHandling.bind(this));
-		this.$thumbnailDeleteBtn.on("click", '.anchor', this.thumbnailDeleteHandling.bind(this));
+		this.$thumbnailUploadWrapper.on("click", '.anchor', this.thumbnailDeleteHandling.bind(this));
 	}
 
-	Review.prototype.scoreClickHandling = function(e) {
+	ReviewWrite.prototype.scoreClickHandling = function(e) {
 	  this.trigger("change", $(e.currentTarget).val());
 	}
 
-	Review.prototype.reqCreateImageFiles = function(formData){
+	ReviewWrite.prototype.reqCreateImageFiles = function(formData){
 		$.ajax({
 			url : this.APIURL,
 			data : formData,
@@ -86,54 +83,54 @@
 		  .always(this.createImageFilesAlwaysHandling.bind(this));
 	}
 
-	Review.prototype.createImageFilesDoneHandling = function(data, textStatus, xhr) {
-		this.thumbnailCount++;
+	ReviewWrite.prototype.createImageFilesDoneHandling = function(data, textStatus, xhr) {
+		this.thumbnailUploadCount++;
 		var strCommentThumbnailTemplate = "";
 		for(var i=0; i<data.length; i++){
 			strCommentThumbnailTemplate += this.commentThumbnailTemplate(data[i]);
 		}
-		this.$listThumbnail.append(strCommentThumbnailTemplate);
+		this.$thumbnailUploadList.append(strCommentThumbnailTemplate);
 	}
 
-	Review.prototype.ajaxFailHandling = function(jqXHR){
+	ReviewWrite.prototype.ajaxFailHandling = function(jqXHR){
 		alert(jqXHR.responseJSON.message);
 	}
 
-	Review.prototype.createImageFilesAlwaysHandling = function() {
+	ReviewWrite.prototype.createImageFilesAlwaysHandling = function() {
 		this.$imageInput.val("");
 	}
 
-	Review.prototype.submitCommentHandling = function(e){
+	ReviewWrite.prototype.submitCommentHandling = function(e){
 		if(!this.checkCommentValidation()){
 				e.preventDefault();
 		}
 	}
 
-	Review.prototype.checkCommentValidation = function(){
-		this.strComment = this.$TextArea.val();
-		if(this.isBlank(this.strComment)){
+	ReviewWrite.prototype.checkCommentValidation = function(){
+		this.strEnteredComment = this.$commentText.val();
+		if(this.isBlank(this.strEnteredComment)){
 			alert("공백만 입력하면 안돼요");
 			return false;
 		}
-		else if(this.strComment.length<=this.MIN_COMMENT_LENGTH){
+		else if(this.strEnteredComment.length<=this.MIN_COMMENT_LENGTH){
 			alert("최소 "+this.MIN_COMMENT_LENGTH+"자 이상 리뷰남겨주세요");
 			return false;
 		}
 		return true;
 	}
 
-	Review.prototype.commentFocusOutHandling = function(e) {
-		this.strComment = $(e.currentTarget).val();
-		if(this.isBlank(this.strComment)){
+	ReviewWrite.prototype.commentFocusOutHandling = function(e) {
+		this.strEnteredComment = $(e.currentTarget).val();
+		if(this.isBlank(this.strEnteredComment)){
 			this.$commentLabel.removeClass("hide");
 		}
 	}
 
-	Review.prototype.isBlank = function(str) {
+	ReviewWrite.prototype.isBlank = function(str) {
 		return !this.regCheckNoWhitespace.test(str);
 	}
 
-	Review.prototype.thumbnailDeleteHandling = function(e) {
+	ReviewWrite.prototype.thumbnailDeleteHandling = function(e) {
 		e.preventDefault();
 		var $thumbDeleteBtn = $(e.currentTarget);
 		var $thumbItem = $thumbDeleteBtn.closest(this.thumbItem);
@@ -142,7 +139,7 @@
 		this.reqDeleteImageFile($thumbItem, fileId);
 	}
 
-	Review.prototype.reqDeleteImageFile = function($thumbItem, fileId){
+	ReviewWrite.prototype.reqDeleteImageFile = function($thumbItem, fileId){
 		$.ajax({
 			url : this.APIURL+"/"+fileId,
 			type : "DELETE"
@@ -151,8 +148,8 @@
 		}).fail(this.ajaxFailHandling.bind(this));
 	}
 
-	Review.prototype.imageInputChangeHandling = function(e){
-		var currentCount = this.thumbnailCount + this.$imageInput[0].files.length;
+	ReviewWrite.prototype.imageInputChangeHandling = function(e){
+		var currentCount = this.thumbnailUploadCount + this.$imageInput[0].files.length;
 
 		if(currentCount>this.THUMB_MAX_COUNT) {
 			alert("이미지 등록은 최대"+this.THUMB_MAX_COUNT+"개 입니다.");
@@ -167,17 +164,17 @@
 		}
 	}
 
-	Review.prototype.keyUpHandling = function() {
-		this.strComment = this.$TextArea.val();
-		if(this.strComment.length > this.MAX_COMMENT_LENGTH){
+	ReviewWrite.prototype.keyUpHandling = function() {
+		this.strEnteredComment = this.$commentText.val();
+		if(this.strEnteredComment.length > this.MAX_COMMENT_LENGTH){
 			alert(this.MAX_COMMENT_LENGTH+"자 초과");
-			this.strComment = this.strComment.substring(0, this.MAX_COMMENT_LENGTH);
-			this.$TextArea.val(this.strComment);
+			this.strEnteredComment = this.strEnteredComment.substring(0, this.MAX_COMMENT_LENGTH);
+			this.$commentText.val(this.strEnteredComment);
 		}
-		this.$numOfText.text(this.strComment.length);
+		this.$numOfText.text(this.strEnteredComment.length);
 	}
 	window.reservation = window.reservation || {};
-	window.reservation.Review = Review;
+	window.reservation.ReviewWrite = ReviewWrite;
 
 
 })(jQuery, Handlebars);

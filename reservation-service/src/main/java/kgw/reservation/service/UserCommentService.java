@@ -97,14 +97,15 @@ public class UserCommentService {
 		userComment.setCreateDate(date);
 		userComment.setModifyDate(date);
 		Integer commentId = userCommentDao.create(userComment);
-
-		ReservationUserCommentImage reservationUserCommentImage = new ReservationUserCommentImage();
-		reservationUserCommentImage.setReservationUserCommentId(commentId);
 		if (fileIdList != null) {
+			List<ReservationUserCommentImage> reservationUserCommentImageList = new ArrayList<>();
 			for (Integer fileId : fileIdList) {
+				ReservationUserCommentImage reservationUserCommentImage = new ReservationUserCommentImage();
+				reservationUserCommentImage.setReservationUserCommentId(commentId);
 				reservationUserCommentImage.setFileId(fileId);
-				userCommentImageDao.Insert(reservationUserCommentImage);
+				reservationUserCommentImageList.add(reservationUserCommentImage);
 			}
+			userCommentImageDao.insertBatch(reservationUserCommentImageList);
 			fileDao.update(fileIdList);
 		}
 		return commentId;

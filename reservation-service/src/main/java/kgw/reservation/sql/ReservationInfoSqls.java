@@ -50,5 +50,9 @@ public class ReservationInfoSqls {
 			+ "																	   FROM reservation_info"
 			+ "																 	   WHERE product_id = :productId"
 			+ "																       AND user_id = :userId";
-	
+	public final static String SELECT_RESERVATION_INFO_BY_ID = "SELECT"
+			+ "												   product_id,"
+			+ "												   user_id"
+			+ "												   FROM reservation_info"
+			+ "												   WHERE id = :id";
 }

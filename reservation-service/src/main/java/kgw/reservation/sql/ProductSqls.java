@@ -11,7 +11,7 @@ public class ProductSqls {
 			+ " 									 where p.sales_flag ="+onSale
 			+ "									 order by sales_end asc limit :offset, :size";
 	
-	public final static String COUNT_ALL = "select count(id) "
+	public final static String COUNT_ALL = "select count(*) "
 			+ "								from product p"
 			+ "							   where p.sales_flag ="+onSale;
 	
@@ -25,7 +25,7 @@ public class ProductSqls {
 			+ "												order by sales_end asc limit :offset, :size";
 
 	
-	public final static String COUNT_BY_CATEGORY = "select count(id) "
+	public final static String COUNT_BY_CATEGORY = "select count(*) "
 			+ "									   from product p"
 			+ "									   where p.sales_flag ="+onSale+" and p.category_id = :categoryId";
 	
@@ -45,7 +45,8 @@ public class ProductSqls {
 			+ "										  from product p"  
 			+ "										  left outer join product_detail p_d on p.id = p_d.product_id"  
 			+ "    									  left outer join display_info d_i on p.id = d_i.product_id"
-			+ "										  where p.id = :id";
+			+ "										  where p.id = :id"
+			+ "										  order by p.id";
 	
 	public final static String SELECT_PRODUCT_RESERVATION = "select "
 			+ "												p.name,"
@@ -59,5 +60,6 @@ public class ProductSqls {
 			+ "												left outer join display_info d_i on p.id = d_i.product_id"
 			+ "												left outer join product_image p_i on p.id = p_i.product_id and type ="+mainImage
 			+ "												left outer join file f on p_i.file_id = f.id"
-			+ "												where p.id = :id";
+			+ "												where p.id = :id"
+			+ "												order by p.id";
 	}
