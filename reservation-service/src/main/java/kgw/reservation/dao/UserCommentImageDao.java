@@ -1,34 +1,33 @@
 package kgw.reservation.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import kgw.reservation.domain.ReservationUserCommentImage;
+import kgw.reservation.sql.UserCommentImageSqls;
 
 @Repository
 public class UserCommentImageDao {
 	private NamedParameterJdbcTemplate jdbc;
-	private SimpleJdbcInsert insertAction;
-	
-	private RowMapper<ReservationUserCommentImage> rowMapper = BeanPropertyRowMapper.newInstance(ReservationUserCommentImage.class);
 
 	@Autowired
 	public UserCommentImageDao(DataSource dataSource) {
 		this.jdbc = new NamedParameterJdbcTemplate(dataSource);
-		this.insertAction = new SimpleJdbcInsert(dataSource).withTableName("RESERVATION_USER_COMMENT_IMAGE")
-				.usingGeneratedKeyColumns("id");
 	}
-	public Integer Insert(ReservationUserCommentImage image) {
-		SqlParameterSource params = new BeanPropertySqlParameterSource(image);
-		return insertAction.executeAndReturnKey(params).intValue();
+	public void insertBatch(List<ReservationUserCommentImage> reservationUserCommentImageList) {
+		List<SqlParameterSource> parameters = new ArrayList<SqlParameterSource>();
+		for (ReservationUserCommentImage reservationUserCommentImage : reservationUserCommentImageList) {
+			parameters.add(new BeanPropertySqlParameterSource(reservationUserCommentImage));
+		}
+		this.jdbc.batchUpdate(UserCommentImageSqls.INSERT_BY_COMMENT_AND_FILE_ID_BATCH, parameters.toArray(new SqlParameterSource[0]));
 	}
 	
 	

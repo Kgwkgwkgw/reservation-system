@@ -18,7 +18,7 @@ public class UserCommentSqls {
 			+"												limit :offset, :size";
 	
 	public final static String SELECT_STATS_BY_PRODUCT_ID = "select "
-			+ "												count(product_id) as count, "
+			+ "												count(*) as count, "
 			+ "												avg(score) as averageScore"
 			+ "												from reservation_user_comment"
 			+ "												where product_id =:productId";

@@ -3,55 +3,65 @@
   	window.reservation = window.reservation || {};
 	window.reservation.Myreservation = (function(){
 		var APIURL = "/users/reservation";
-		var CANCELURL = "/cancellation";
+		var CANCEL_URL = "/cancellation";
 
-		var $all;
-		var $schdule;
-		var $completion;
-		var $cancellationAndRefund;
-		var $listCards;
-		var $emptyBox;
-		var $btnFilter;
+		var $myReservationList;
+		var reservationItem;
+		var $emptyList;
+
+		var $btnFilters;
 		var $btnAll;
 		var $btnSchedule;
 		var $btnCompletion;
 		var $btnCancellationAndRefund;
+		var $btnFilterStatus;
+
+		var $allCount;
+		var $schduleCount;
+		var $completionCount;
+		var $cancellationAndRefundCount;
+
 		var btnRemoveCancellation;
-		var $btnfilterStatus;
 		var btnReservationCancel;
-		var reservationItem;
+
 		var $cancellationLayerPopup;
 		var popupCancel;
 		var popupConfirm;
 		var popupClose;
+
+		var objType;
 
 		var reservationAskingListTemplate;
 		var reservationConfirmListTemplate;
 		var reservationCompletionListTemplate;
 		var reservationCancellationAndRefundTemplate;
 		var cancellationPopupTemplate;
-		var objType;
 
 		function initVariable(objReservationType) {
-			$all = $("._all");
-			$schdule = $("._schedule");
-			$completion = $("._completion");
-			$cancellationAndRefund = $("._cancellationAndRefund");
-			$listCards = $(".list_cards");
-			$emptyBox = $("._emptyBox");
-			$btnFilter = $("._btnFilter");
+			$myReservationList = $("._myReservationList");
+			reservationItem = "._reservationItem";
+			$emptyList = $("._emptyList");
+
+			$btnFilters = $("._btnFilter");
 			$btnAll = $("._btnAll");
 			$btnSchedule = $("._btnSchedule");
 			$btnCompletion = $("._btnCompletion");
 			$btnCancellationAndRefund = $("._btnCancellationAndRefund");
+			$btnFilterStatus = $btnAll;
+
+			$allCount = $("._all");
+			$schduleCount = $("._schedule");
+			$completionCount = $("._completion");
+			$cancellationAndRefundCount = $("._cancellationAndRefund");
+
 			btnRemoveCancellation = "._btnRemoveCancellation";
+			btnReservationCancel = "._btnReservationCancel";
+
 			$cancellationLayerPopup = $("._cancellationLayerPopup");
-			$btnfilterStatus = $all;
 			popupCancel = "._cancel";
 			popupConfirm = "._confirm";
-			popupClose = "._close"
-			btnReservationCancel = "._btnReservationCancel";
-			reservationItem = "._reservationItem";
+			popupClose = "._close";
+
 			objType = objReservationType;
 
 
@@ -62,117 +72,10 @@
 			cancellationPopupTemplate = Handlebars.compile($("#cancellationPopup-template").html());
 	  	}
 
-		function reqRemoveCancellation() {
-			$.ajax({
-			  method : "delete",
-			  url : APIURL+"/"+objType.CANCELLATION
-			}).done(refreshCallback)
-		}
-
-		function reqCancelReservation(id) {
-			$.ajax({
-			  method : "put",
-			  url : APIURL+CANCELURL+"/"+id
-			}).done(refreshCallback)
-		}
-
-		function refreshCallback() {
-			$btnfilterStatus.trigger("click");
-		}
-
-		function reqReservationList(type) {
-			type = type || "";
-			$.ajax({
-			  url  : APIURL,
-			  data : {
-			    "type" : type
-			  }
-			}).done(makeReservationList);
-		}
-
-		function makeReservationList(res) {
-			var arrAsking = [];
-			var arrConfirm = [];
-			var arrCompletion = [];
-			var arrCancelledAndRefund = [];
-
-			if(res.length !==0) {
-				for(var i =0; i<res.length; i++) {
-					var type = res[i].reservationType;
-					if(type===objType.ASKING )
-						arrAsking.push(res[i]);
-					else if(type===objType.CONFIRM)
-						arrConfirm.push(res[i]);
-					else if(type===objType.COMPLETION)
-						arrCompletion.push(res[i]);
-					else if(type===objType.REFUND || type === objType.CANCELLATION)
-						arrCancelledAndRefund.push(res[i]);
-				}
-
-				var temp= "";
-				if(arrAsking.length > 0)
-					temp += reservationAskingListTemplate({"reservationLists":arrAsking});
-				if(arrConfirm.length > 0)
-					temp += reservationConfirmListTemplate({"reservationLists":arrConfirm});
-				if(arrCompletion.length > 0 )
-				  	temp += reservationCompletionListTemplate({"reservationLists":arrCompletion})
-				if(arrCancelledAndRefund.length > 0)
-				  	temp += reservationCancellationAndRefundTemplate({"reservationLists":arrCancelledAndRefund})
-				if(temp !=="")
-				  	renderReservationList(temp);
-				else
-				  	$emptyBox.removeClass("hide");
-			}
-
-		}
-
-		function renderReservationList(strElem) {
-			$listCards.append(strElem);
-			$emptyBox.addClass("hide");
-		}
-
-		function reqReservationCount() {
-			$.ajax({
-			  url : APIURL+"/count"
-			}).done(function(res) {
-			    $all.text(res.total);
-			    $schdule.text(res.schedule);
-			    $completion.text(res.completion);
-			    $cancellationAndRefund.text(res.cancellationAndRefund);
-			});
-		}
-
-		function toggleFilterBtn(e) {
-			e.preventDefault();
-			$listCards.empty();
-			$btnFilter.removeClass("on");
-			$(this).addClass("on");
-			$btnfilterStatus = $(this);
-		}
-
-		function showCancellationPopup(e) {
-			var $item = $(this).parents(reservationItem);
-			var strElem = cancellationPopupTemplate(
-							  {
-								"id" : $item.data("id"),
-								"name": $item.data("name"),
-								"reservationDate" : $item.data("reservationDate")
-							  }
-					  	  );
-
-			$cancellationLayerPopup.html(strElem);
-			$cancellationLayerPopup.removeClass("hide");
-		}
-
-		function hideCancellationPopup(e) {
-			e.preventDefault();
-			$cancellationLayerPopup.addClass("hide");
-		}
-
 		function addEventHandling() {
 
 		    $btnAll.on("click", function(e) {
-					toggleFilterBtn.call(this, e);
+	          toggleFilterBtn.call(this, e);
 		      reqReservationList();
 		      reqReservationCount();
 		    });
@@ -197,12 +100,118 @@
 		      reqReservationCount();
 		    });
 
-		    $listCards.on("click", btnReservationCancel, showCancellationPopup);
-		    $listCards.on("click", btnRemoveCancellation, reqRemoveCancellation);
+		    $myReservationList.on("click", btnReservationCancel, showCancellationPopup);
+		    $myReservationList.on("click", btnRemoveCancellation, reqRemoveCancellation);
 			$cancellationLayerPopup.on("click", popupCancel, hideCancellationPopup);
 			$cancellationLayerPopup.on("click", popupClose, hideCancellationPopup);
 			$cancellationLayerPopup.on("click", popupConfirm, cancelReservationHandling);
 	  	}
+
+		function reqReservationList(type) {
+			type = type || "";
+			$.ajax({
+			  url  : APIURL,
+			  data : {
+			    "type" : type
+			  }
+			}).done(makeReservationList);
+		}
+
+		function makeReservationList(res) {
+			var arrAsking = [];
+			var arrConfirm = [];
+			var arrCompletion = [];
+			var arrCancelledAndRefund = [];
+			var srtElem = "";
+			if(res.length !==0) {
+				for(var i =0; i<res.length; i++) {
+					var type = res[i].reservationType;
+					if(type===objType.ASKING )
+						arrAsking.push(res[i]);
+					else if(type===objType.CONFIRM)
+						arrConfirm.push(res[i]);
+					else if(type===objType.COMPLETION)
+						arrCompletion.push(res[i]);
+					else if(type===objType.REFUND || type === objType.CANCELLATION)
+						arrCancelledAndRefund.push(res[i]);
+				}
+				if(arrAsking.length > 0)
+					srtElem += reservationAskingListTemplate({"reservationLists":arrAsking});
+				if(arrConfirm.length > 0)
+					srtElem += reservationConfirmListTemplate({"reservationLists":arrConfirm});
+				if(arrCompletion.length > 0 )
+				  	srtElem += reservationCompletionListTemplate({"reservationLists":arrCompletion})
+				if(arrCancelledAndRefund.length > 0)
+				  	srtElem += reservationCancellationAndRefundTemplate({"reservationLists":arrCancelledAndRefund})
+			}
+			renderReservationList(srtElem);
+		}
+
+		function renderReservationList(strElem) {
+			$myReservationList.empty();
+			if(strElem !== "") {
+				$myReservationList.append(strElem);
+				$emptyList.addClass("hide");
+			}
+			else {
+				$emptyList.removeClass("hide");
+			}
+		}
+
+		function reqReservationCount() {
+			$.ajax({
+			  url : APIURL+"/count"
+			}).done(function(res) {
+			    $allCount.text(res.total);
+			    $schduleCount.text(res.schedule);
+			    $completionCount.text(res.completion);
+			    $cancellationAndRefundCount.text(res.cancellationAndRefund);
+			});
+		}
+
+		function toggleFilterBtn(e) {
+			e.preventDefault();
+			$btnFilters.removeClass("on");
+			$(this).addClass("on");
+			$btnFilterStatus = $(this);
+		}
+
+		function reqRemoveCancellation() {
+			$.ajax({
+			  method : "delete",
+			  url : APIURL+"/"+objType.CANCELLATION
+			}).done(refreshCallback)
+		}
+
+		function reqCancelReservation(id) {
+			$.ajax({
+			  method : "put",
+			  url : APIURL+CANCEL_URL+"/"+id
+			}).done(refreshCallback)
+		}
+
+		function refreshCallback() {
+			$btnFilterStatus.trigger("click");
+		}
+
+		function showCancellationPopup(e) {
+			var $item = $(this).parents(reservationItem);
+			var strElem = cancellationPopupTemplate(
+							  {
+								"id" : $item.data("id"),
+								"name": $item.data("name"),
+								"reservationDate" : $item.data("reservationDate")
+							  }
+					  	  );
+
+			$cancellationLayerPopup.html(strElem);
+			$cancellationLayerPopup.removeClass("hide");
+		}
+
+		function hideCancellationPopup(e) {
+			e.preventDefault();
+			$cancellationLayerPopup.addClass("hide");
+		}
 
 		function cancelReservationHandling(e) {
 			hideCancellationPopup(e);

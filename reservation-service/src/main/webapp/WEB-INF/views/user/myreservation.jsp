@@ -37,14 +37,14 @@
 
                 <!-- 내 예약 리스트 -->
                 <div class="wrap_mylist">
-                    <ul class="list_cards" ng-if="bookedLists.length > 0">
-                   
+                    <ul class="list_cards _myReservationList" ng-if="bookedLists.length > 0">
+
                     </ul>
                 </div>
                 <!--// 내 예약 리스트 -->
 
                 <!-- 예약 리스트 없음 -->
-                <div class="err _emptyBox"> <i class="spr_book ico_info_nolist"></i>
+                <div class="err _emptyList"> <i class="spr_book ico_info_nolist"></i>
                     <h1 class="tit">예약 리스트가 없습니다</h1>
                 </div>
                 <!--// 예약 리스트 없음 -->

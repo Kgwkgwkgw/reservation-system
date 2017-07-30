@@ -74,9 +74,8 @@
     }
     // 처음에 레이지 로딩이미지 계산 및
     // 스크롤 하면서 내리니까 레이지이미지 엘레멘트 중에서 첫번째부터 로딩 시킴
-    // 1366 -> 아이패드 프로 세로크기
     function lazyLoadingHandler() {
-        if (lazyImgScrollTop < $(window).scrollTop()+ 1366 ) {
+        if (lazyImgScrollTop < $(window).scrollTop()+ $(window).height()+50 ) {
             $lazyImg.attr("src" , $lazyImg.data('src'))
                     .removeClass(lazyImgClassName.slice(1))
                     .on("load",calcLazyImgPosition);
