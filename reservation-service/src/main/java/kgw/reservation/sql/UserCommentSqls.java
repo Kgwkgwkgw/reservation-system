@@ -5,6 +5,7 @@ public class UserCommentSqls {
 			+ "												r_u_c.id, "
 			+ "												r_u_c.score, "
 			+ "												r_u_c.comment, "
+			+ "												p.name, "
 			+ "												r_u_c.modify_date, "
 			+ "												r_u_c.create_date, "
 			+ "												r_u_c.user_id, "
@@ -13,6 +14,7 @@ public class UserCommentSqls {
 			+"												from reservation_user_comment r_u_c"
 			+ "												inner join users u on user_id = u.id"
 			+ "												inner join reservation_info r_i on r_u_c.user_id  =  r_i.id and r_u_c.product_id = r_i.product_id"
+			+ "												inner join product p on r_u_c.product_id = p.id "
 			+"												where r_u_c.product_id =:productId"
 			+ "												order by r_u_c.id desc"
 			+"												limit :offset, :size";

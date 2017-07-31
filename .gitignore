@@ -16,6 +16,8 @@ local.properties
 application.properties
 # ImageFile
 temp/
+# log file
+log/
 # Eclipse Core
 .project
 

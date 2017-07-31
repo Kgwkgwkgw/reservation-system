@@ -68,7 +68,7 @@
 							</label>
 							<input type="file" class="hidden_input" id="reviewImageFileOpenInput" accept="image/*" multiple >
 							<div class="guide_review">
-								<span>0</span>/400
+								<span class="_numOfText">0</span>/400
 								<span>(최소5자이상)</span>
 							</div>
 						</div>
@@ -89,7 +89,7 @@
 
 					<!-- 리뷰 등록 -->
 					<div class="box_bk_btn">
-						<button class="bk_btn" type="submit"><span class="btn_txt">리뷰 등록</span></button>
+						<button class="bk_btn _enrollBtn" type="submit"><span class="btn_txt">리뷰 등록</span></button>
 					</div>
 					<!-- //리뷰 등록 -->
 				</form>

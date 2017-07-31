@@ -23,6 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 import kgw.reservation.domain.FileDomain;
 import kgw.reservation.domain.ReservationUserComment;
 import kgw.reservation.domain.User;
+import kgw.reservation.dto.Criteria;
+import kgw.reservation.dto.UserCommentWrapper;
 import kgw.reservation.exception.MismatchJpegPngFormatException;
 import kgw.reservation.service.FileService;
 import kgw.reservation.service.ReservationInfoService;
@@ -33,7 +35,7 @@ import kgw.reservation.service.UserCommentService;
 public class ReviewController {
 	@Value("${USER_DIR}")
 	private String DIRNAME;
-	
+
 	private UserCommentService userCommentService;
 	private FileService fileService;
 	private ReservationInfoService reservationInfoService;
@@ -51,56 +53,69 @@ public class ReviewController {
 	public String form(@RequestParam Integer productId, HttpSession session) {
 		User user = (User) session.getAttribute("loginInfo");
 		Integer count = reservationInfoService.findCountByUserIdAndProductId(productId, user.getId());
-		if(count==0) {
+		if (count == 0) {
 			return "error";
 		}
 		return DIRNAME + "/reviewWrite";
 	}
-	//@RequestParam UserComment userComment, @RequestParam List<Integer> fileIdList,
+
+	// @RequestParam UserComment userComment, @RequestParam List<Integer>
+	// fileIdList,
 	@PostMapping("/form")
-	public String makeReivew(@ModelAttribute @Valid ReservationUserComment reservationUserComment, @RequestParam (required=false) List<Integer> fileIdList, HttpSession session) {
+	public String makeReivew(@ModelAttribute @Valid ReservationUserComment reservationUserComment,
+			@RequestParam(required = false) List<Integer> fileIdList, HttpSession session) {
 		log.info("========userComment info ========");
 		log.info(reservationUserComment.getComment());
 		log.info(reservationUserComment.getProductId());
-		log.info(""+reservationUserComment.getId());
-	
+		log.info("" + reservationUserComment.getId());
+
 		User user = (User) session.getAttribute("loginInfo");
 		Integer userId = user.getId();
 
 		reservationUserComment.setUserId(userId);
-		
+
 		Integer commentId = userCommentService.createReservationUserComment(reservationUserComment, fileIdList);
-		if(commentId==null){
+		if (commentId == null) {
 			log.info("===== comment 등록 실패 =====");
 			return "/error";
-		}else{
+		} else {
 			log.info("===== comment 등록 성공 =====");
 		}
 		return "redirect:/users";
 	}
 
-	@DeleteMapping("/images/{fileId}")
+	@DeleteMapping("/api/images/{fileId}")
 	@ResponseBody
-	public Integer removeUserCommentImage(@PathVariable Integer fileId ){
-		log.info("fileId ====:"+fileId);
+	public Integer removeUserCommentImage(@PathVariable Integer fileId) {
+		log.info("fileId ====:" + fileId);
 		return userCommentService.removeUserCommentImagefile(fileId);
 	}
-	
-	
-//	MultipartFile[]
-	@PostMapping("/images")
-	@ResponseBody										//MultipartHttpServletRequest
+
+	@PostMapping("/api/images")
+	@ResponseBody // MultipartHttpServletRequest
 	public List<FileDomain> createUserCommentImages(MultipartFile[] images, HttpSession session) {
-		log.info("{}",images);
+		log.info("{}", images);
 		User user = (User) session.getAttribute("loginInfo");
 		Integer userId = user.getId();
-		for(int i=0; i<images.length; i++){
-			MultipartFile mpf  = images[i];
-			if(!mpf.getContentType().equals("image/jpeg")&&!mpf.getContentType().equals("image/png")){
+		for (int i = 0; i < images.length; i++) {
+			MultipartFile mpf = images[i];
+			if (!mpf.getContentType().equals("image/jpeg") && !mpf.getContentType().equals("image/png")) {
 				log.info("==========data is not right format ===========");
 				throw new MismatchJpegPngFormatException("이미지가 jpeg/png 형식이 아닙니다.");
-			}		
+			}
 		}
 		return fileService.createFileList(userId, images);
+	}
+	
+	@GetMapping
+	public String reviewView(@RequestParam Integer productId) {
+		return DIRNAME+ "/review";
+	}
+
+	@GetMapping("/api")
+	@ResponseBody
+	public UserCommentWrapper getList(@RequestParam Integer productId, @ModelAttribute Criteria criteria) {
+		log.info("{}", criteria);
+		return userCommentService.getCommentListByProductId(productId, criteria.getOffset(), criteria.getSize());
 	}
 }

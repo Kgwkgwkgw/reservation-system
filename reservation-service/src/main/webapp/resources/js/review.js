@@ -1,8 +1,16 @@
 (function($, Handlebars){
 	"use strict";
 
-	function Review() {
+	function Review(productId, userOption) {
 		this.APIURL;
+		this.IMAGE_URL;
+
+		this.productId;
+		this.option;
+		this.criteria;
+		this.isGet;
+		this.$statSection;
+		 
 		this.THUMB_MAX_COUNT;
 		this.MAX_COMMENT_LENGTH;
 		this.MIN_COMMENT_LENGTH;
@@ -12,27 +20,38 @@
 		this.$listThumbnail;
 		this.thumbItem;
 		this.$thumbnailDeleteBtn;
-		this.$outerTextArea;
 		this.$TextArea;
 		this.$commentLabel;
 		this.strComment;
 		this.$numOfText;
-		this.$enrollBtn;
 		this.scoreWrap;
 		this.$scoreWrap;
 		this.scoreRadioBtn;
 		this.regCheckNoWhitespace;
 
+		this.commentImageflicking;
+		this.reviewTemplate;
 		this.commentThumbnailTemplate;
 
-		this.initVariable();
+		this.initVariable(productId, userOption);
 		this.addEventHandling();
 	}
 
 	Review.prototype = new eg.Component();
 	Review.prototype.constructor = Review;
-	Review.prototype.initVariable = function() {
-		this.APIURL = "/reviews/images";
+	Review.prototype.initVariable = function(productId, userOption) {
+		this.APIURL = "/reviews/api";
+		this.IMAGE_URL = "images";
+
+		this.productId = productId;
+		this.criteria = {
+                    		offset : 0,
+                   			size : 10
+						};
+		this.option = userOption ? this.setOption(userOption) : this.getDefaultOption();
+		this.isGet = false;
+		this.$statSection = $(".short_review_area");
+
 		this.THUMB_MAX_COUNT = 5;
 		this.MAX_COMMENT_LENGTH = 400;
 		this.MIN_COMMENT_LENGTH = 5;
@@ -42,17 +61,20 @@
 		this.$listThumbnail = $(".lst_thumb");
 		this.thumbItem = "._thumb";
 		this.$thumbnailDeleteBtn = $(".review_photos");
-		this.$outerTextArea = $(".review_contents");
 		this.$TextArea = $("#comment");
 		this.$commentLabel = $("#commentLabel");
 		this.strComment = "";
-		this.$numOfText = $(".guide_review").find("span").eq(0);
-		this.$enrollBtn = $(".box_bk_btn").find(".bk_btn");
+		this.$numOfText = $("._numOfText");
 		this.scoreWrap = "._rating";
 		this.$scoreWrap = $(this.scoreWrap);
 		this.scoreRadioBtn = "._radio";
 		this.regCheckNoWhitespace = /.*\S+.*/;
+
+		this.reviewTemplate =  Handlebars.compile($("#review-template").html());
 		this.commentThumbnailTemplate = Handlebars.compile($("#commentWrite-thumbnail-template").html());
+		Handlebars.registerHelper("roundUpToFirstPoint", function (score) {
+			return score.toFixed(1);
+		});
 	}
 
 	Review.prototype.addEventHandling = function() {
@@ -68,6 +90,33 @@
 
 		this.$imageInput.on("change", this.imageInputChangeHandling.bind(this));
 		this.$thumbnailDeleteBtn.on("click", '.anchor', this.thumbnailDeleteHandling.bind(this));
+		if(this.option.enableScrollRequest) {
+			var objThis = this;
+			$(window).on("scroll", function (event) {
+				if (objThis.isGet) {
+					return false;
+				}
+				if ($(window).scrollTop() >= $(document).height() - $(window).height() - 50) {
+					objThis.isGet = true;
+					objThis.criteria.offset += 10;
+					objThis.getCommentList(objThis.criteria);
+				}
+			});
+		}
+	}
+
+	Review.prototype.setOption = function(userOption) {
+			$.each(this.getDefaultOption, function(index, value) {
+				if(!userOption.hasOwnProperty(index))
+					userOption[index]=value;
+			});
+			return userOption;
+	}
+
+	Review.prototype.getDefaultOption = function() {
+		return {
+				enableScrollRequest : false
+		};
 	}
 
 	Review.prototype.scoreClickHandling = function(e) {
@@ -76,7 +125,7 @@
 
 	Review.prototype.reqCreateImageFiles = function(formData){
 		$.ajax({
-			url : this.APIURL,
+			url : this.APIURL + this.IMAGE_URL,
 			data : formData,
 			type : "POST",
 			contentType : false,
@@ -144,7 +193,7 @@
 
 	Review.prototype.reqDeleteImageFile = function($thumbItem, fileId){
 		$.ajax({
-			url : this.APIURL+"/"+fileId,
+			url : this.APIURL+this.IMAGE_URL+"/"+fileId,
 			type : "DELETE"
 		}).done(function(res){
 			$thumbItem.remove();
@@ -176,6 +225,35 @@
 		}
 		this.$numOfText.text(this.strComment.length);
 	}
+
+	Review.prototype.getCommentList = function () {
+		var objThis = this;
+		$.ajax({
+			url: this.APIURL + "?productId=" + this.productId,
+			data: this.criteria
+		}).done(function (res) {
+			objThis.makeReviewElement(res);
+			var commentStat = res.commentStats;
+			var roundAverageScore = commentStat.averageScore.toFixed(1);
+			var starBar = (roundAverageScore * 20) + "%";
+			objThis.$statSection.find(".text_value > span").text(roundAverageScore);
+			objThis.$statSection.find("em.graph_value").css("width", starBar);
+			objThis.$statSection.find("em.green").text(commentStat.count + "건");
+		});
+	}
+
+	Review.prototype.makeReviewElement = function (res) {
+		var html = "";
+		var data = res.userCommentCollection;
+		for (var i = 0; i < data.length; i++) {
+			html += this.reviewTemplate(data[i]);
+		}
+		$(".list_short_review").append(html);
+		this.isGet = false;
+	}
+
+	
+
 	window.reservation = window.reservation || {};
 	window.reservation.Review = Review;
 

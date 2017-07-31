@@ -7,12 +7,18 @@ public class UserComment {
 	private Integer id;
 	private Integer userId;
 	private String username;
+	private String productName;
 	private Double score;
 	private String comment;
 	private Date createDate;
 	private Date modifyDate;
 	
-	
+	public String getProductName() {
+		return productName;
+	}
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
 	private String reservationDate;
 	private List<FileImage> commentImageList;
 	
@@ -72,10 +78,10 @@ public class UserComment {
 	}
 	@Override
 	public String toString() {
-		return "UserComment [id=" + id + ", userId=" + userId + ", username=" + username + ", score=" + score
-				+ ", comment=" + comment + ", createDate=" + createDate + ", modifyDate=" + modifyDate
-				+ ", reservationDate=" + reservationDate + ", commentImageList=" + commentImageList + "]";
+		return "UserComment [id=" + id + ", userId=" + userId + ", username=" + username + ", productName="
+				+ productName + ", score=" + score + ", comment=" + comment + ", createDate=" + createDate
+				+ ", modifyDate=" + modifyDate + ", reservationDate=" + reservationDate + ", commentImageList="
+				+ commentImageList + "]";
 	}
-	
 	
 }

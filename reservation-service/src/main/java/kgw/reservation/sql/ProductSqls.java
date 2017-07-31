@@ -30,6 +30,7 @@ public class ProductSqls {
 			+ "									   where p.sales_flag ="+onSale+" and p.category_id = :categoryId";
 	
 	public final static String SELECT_PRODUCTDETAIL = "select "
+			+ "										  p.id, "
 			+ "										  p.name, "
 			+ "										  p.description, "
 			+ "										  p.event, "
