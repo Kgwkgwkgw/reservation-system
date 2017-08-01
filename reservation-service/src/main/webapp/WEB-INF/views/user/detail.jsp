@@ -236,7 +236,7 @@
 	                        <p class="guide"> <i class="spr_book2 ico_bell"></i> <span>네이버 예약을 통해 실제 방문한 이용자가 남긴 평가입니다.</span> </p>
 	                    </div>
                       <c:if test="${product.userCommentWrapper.commentStats.count > 3 }">
-	                       <a class="btn_review_more" href="#"> <span>예매자 한줄평 더보기</span> <i class="fn fn-forward1"></i> </a>
+	                       <a class="btn_review_more" href="/reviews?productId=${product.id}"> <span>예매자 한줄평 더보기</span> <i class="fn fn-forward1"></i> </a>
                       </c:if>
 	                </div>
                 </c:if>

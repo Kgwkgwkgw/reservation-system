@@ -18,5 +18,6 @@
     <script src="/resources/js/detail.js"></script>
     <script src="/resources/js/util.js"></script>
     <script src="/resources/js/reviewWrite.js"></script>
+    <script src="/resources/js/review.js"></script>
     <script src="/resources/js/myreservation.js"></script>
 </head>

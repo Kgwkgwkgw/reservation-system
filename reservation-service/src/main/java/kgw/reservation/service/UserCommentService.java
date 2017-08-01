@@ -46,7 +46,7 @@ public class UserCommentService {
 		List<UserComment> userCommentList = findCommentListWithImage(productId, offset, size);
 		CommentStats commentStats = findCommentStatsByProductId(productId);
 
-		userCommentWrapper.setUserCommentCollection(userCommentList);
+		userCommentWrapper.setUserCommentList(userCommentList);
 		userCommentWrapper.setCommentStats(commentStats);
 
 		return userCommentWrapper;
