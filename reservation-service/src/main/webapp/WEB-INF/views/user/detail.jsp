@@ -146,7 +146,7 @@
 	                </div>
                 </c:if>
                 <div class="section_btn"> <a href="${reservationUrl }" class="bk_btn _btn_reservation"> <i class="fn fn-nbooking-calender2"></i> <span>예매하기</span> </a> </div>
-                <c:if test="${ !empty product.userCommentWrapper.userCommentCollection }">
+                <c:if test="${ !empty product.userCommentWrapper.userCommentList }">
 	                <div class="section_review_list">
 	                    <div class="review_box">
 	                        <h3 class="title_h3">예매자 한줄평</h3>
@@ -158,7 +158,7 @@
 		                                <span class="join_count"><em class="green">${product.userCommentWrapper.commentStats.count}건</em> 등록</span>
 		                            </div>
 		                            <ul class="list_short_review _reviewArea">
-		                            	   <c:forEach var="userComment" items= "${product.userCommentWrapper.userCommentCollection}" varStatus="status">
+		                            	   <c:forEach var="userComment" items= "${product.userCommentWrapper.userCommentList}" varStatus="status">
 		                            	   		<c:choose>
 			                            	   		<c:when test="${ empty userComment.commentImageList }">
 											   		<li class="list_item">
