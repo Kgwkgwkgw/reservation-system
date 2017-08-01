@@ -62,51 +62,41 @@
 		</button>
     </div>
     <script id="review-template" type="text/x-handlebars-template">
-            <li class="list_item">
-                <div>
-                    <div class="review_area">
-                        <div class="thumb_area">
-                            {{#if commentImageList}}
-                                <a href="#" class="thumb _commentThumb" title="이미지 크게 보기">
-                                    {{#each commentImageList}}
-                                        {{#if @first}}
-                                            <img width="90" height="90" class="_img img_vertical_top" src="/imgresources/{{saveFileName}}" alt="리뷰이미지">
-                                        {{else}}
-                                            <img width="90" height="90" class="_img img_vertical_top hide" src="/imgresources/{{saveFileName}}" alt="리뷰이미지">
-                                        {{/if}}
-                                    {{/each}}
-                                </a>
-                                <span class="img_count">{{commentImageList.length}}</span>
-                            {{/if}}
-                        </div>
-                        <h4 class="resoc_name">{{name}}</h4>
-                        <p class="review">{{comment}}</p>
+        <li class="list_item">
+            <div>
+                <div class="review_area {{#unless commnetImageList}}no_img{{/unless}}">
+                    <div class="thumb_area">
+                        {{#if commentImageList}}
+                            <a href="#" class="thumb _commentThumb" title="이미지 크게 보기">
+                                {{#each commentImageList}}
+                                    {{#if @first}}
+                                        <img width="90" height="90" class="_img img_vertical_top" src="/imgresources/{{saveFileName}}" alt="리뷰이미지">
+                                    {{else}}
+                                        <img width="90" height="90" class="_img img_vertical_top hide" src="/imgresources/{{saveFileName}}" alt="리뷰이미지">
+                                    {{/if}}
+                                {{/each}}
+                            </a>
+                            <span class="img_count">{{commentImageList.length}}</span>
+                        {{/if}}
                     </div>
-                    <div class="info_area">
-                        <div class="review_info">
-                            <span class="grade">{{roundUpToFirstPoint score}}</span>
-                            <span class="name">{{username}}</span>
-                            <span class="date">{{reservationDate}} 방문</span>
-                        </div>
+                    <h4 class="resoc_name">{{productName}}</h4>
+                    <p class="review">{{comment}}</p>
+                </div>
+                <div class="info_area">
+                    <div class="review_info">
+                        <span class="grade">{{roundUpToFirstPoint score}}</span>
+                        <span class="name">{{username}}</span>
+                        <span class="date">{{reservationDate}} 방문</span>
                     </div>
                 </div>
-            </li>
-        </script>
-    <script id="commentWrite-thumbnail-template" type="text/x-handlebars-template">
-            <li class="item _thumb" data-id ="{{id}}">
-                <a href="#" class="anchor">
-                    <span class="spr_book ico_del">삭제</span>
-                </a>
-                <img src="/imgresources{{saveFileName}}" width="130" alt="" class="item_thumb">
-                <span class="img_border"></span>
-                <input type="hidden" name="fileIdList" value="{{id}}">
-            </li>
-    	</script>
+            </div>
+        </li>
+    </script>
     <script>
         (function(Review){
     		"use strict";
             var productId = ${param.productId};
-    		var review = new Review(productId);
+    		var review = new Review(productId, { size: 10, isGetMore: true });
     	})(window.reservation.Review)
     </script>
 

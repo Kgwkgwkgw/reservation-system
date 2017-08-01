@@ -1,4 +1,4 @@
-(function ($, Rolling, eg) {
+(function ($, Rolling) {
     "use strict";
     window.reservation = window.reservation || {};
     window.reservation.detail = (function() {
@@ -11,14 +11,7 @@
     var toggleModifierClass;
     // 상세정보/오시는길 탭
     var $infoTabArea;
-    // 코멘트 영역
-    var $reviewArea;
-    // 코멘트 이미지 플리킹(egjs)
-    var commentImageflicking;
-    // 코멘트 이미지 뷰어부분
-    var $photoviwer;
-    var $photo;
-    var photoId;
+  
     var rolling;
     var $lazyImg;
     var lazyImgClassName;
@@ -34,14 +27,6 @@
       toggleModifierClass = "close3";
       // 상세정보/오시는길 탭
       $infoTabArea = $("._info_tab_area");
-      // 코멘트 영역
-      $reviewArea = $("._reviewArea");
-      // 코멘트 이미지 플리킹(egjs)
-      commentImageflicking;
-      // 코멘트 이미지 뷰어부분
-      $photoviwer = $("#photoviwer");
-      $photo = $("#photo");
-      photoId = "#photo";
       lazyImgClassName = ".lazyImg";
 
       calcLazyImgPosition(); // 레이지로딩 이미지 jquery select,  높이 값 찾음
@@ -55,8 +40,6 @@
     function eventListen() {
       $infoTabArea.on("click", "._tab", infoTabClickListener);
       $detailContentWrapper.on("click", "._hinge", hingeClickListener);
-      $reviewArea.on("click", "._commentThumb", commentThumbClickListener);
-      $photoviwer.on("click", "._close", photoviewCloseListener);
       $(window).on("scroll", lazyLoadingHandler);
 
       //스크롤될 때 헤더에 투명도 추가/제거
@@ -105,28 +88,7 @@
       $infoTabArea.find("._content").addClass("hide");
       $infoTabArea.find($(this).data("content")).removeClass("hide");
     }
-
-    function commentThumbClickListener(e) {
-      e.preventDefault();
-      $photo.empty()
-                 .append($(this).find("._img")
-                 .clone()
-                 .removeClass("hide"));
-      $photoviwer.removeClass("hide");
-      //스크롤 막기
-      $("body").css("overflow","hidden");
-      commentImageflicking = new eg.Flicking(photoId, {
-            circular: true,
-            defaultIndex: 0,
-            duration: 300
-        });
-    }
-    function photoviewCloseListener(e) {
-        $photoviwer.addClass("hide");
-        $("body").css("overflow","auto");
-        commentImageflicking.destroy();
-    }
-
+    
     function init() {
       initVariable();
       eventListen();
@@ -139,4 +101,4 @@
 
   })();
 
-})(jQuery, window.reservation.Rolling, eg);
+})(jQuery, window.reservation.Rolling);

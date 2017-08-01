@@ -1,11 +1,11 @@
 (function ($ , Handlebars) {
 	"use strict";
-
-    function Review(productId, size) {
+    function Review(productId, objOption) {
         this.APIURL;
-        this.NUM_OF_STAR;
-
+		this.NUM_OF_STAR;
+		
         this.productId;
+		this.option;
 
         this.$scorePercentage;
         this.$score;
@@ -21,7 +21,7 @@
 
         this.reviewTemplate;
 
-        this.initVariable(productId, size);
+        this.initVariable(productId, objOption);
         this.addEventHandler();
         this.getCommentList();
     }
@@ -29,21 +29,28 @@
 	Review.prototype = new eg.Component();
 	Review.prototype.constructor = Review;
 
-    Review.prototype.initVariable = function(productId, size) {
+	var defaultOption = {
+		size: 10,
+		isGetMore: false
+	};
+
+    Review.prototype.initVariable = function(productId, objOption) {
         this.APIURL = "/reviews";
         this.NUM_OF_STAR = 5;
 
-        this.productId = productId;
+		this.productId = productId;
+		this.option = objOption ? this.setOption(objOption) : defaultOption;
         this.$scorePercentage = $("._scorePercentage");
         this.$score = $("._score");
         this.$count = $("._count");
 
-        var size = size || 10;
+        var size = this.option.size || 10;
         this.criteria = {
             offset : 0,
             size : size
-        };
-
+		};
+		
+		
         this.isRequesting = false;
         this.$photoviwer = $("#photoviwer");
         this.$reviewList = $("._reviewList");
@@ -55,7 +62,16 @@
         Handlebars.registerHelper("roundUpToFirstPoint", function (score) {
             return score.toFixed(1);
         });
-    }
+	}
+	
+	Review.prototype.setOption = function (objOption) {
+		$.each(defaultOption, function (index, value) {
+			if (!objOption.hasOwnProperty(index))
+				objOption[index] = value;
+		});
+		return objOption;
+	}
+
     Review.prototype.getCommentList = function() {
         $.ajax({
             url: this.APIURL + "/api?productId=" + this.productId,
@@ -86,8 +102,9 @@
         this.$count.text(commentStatsObj.count);
     }
     Review.prototype.addEventHandler = function() {
-        var objThis = this;
-        $(window).on("scroll", this.scrollEventHandling.bind(this));
+		if(this.option.isGetMore) {
+			$(window).on("scroll", this.scrollEventHandling.bind(this));
+		}
         this.$reviewList.on("click", "._commentThumb", this.commentThumbClickListener.bind(this));
 
         this.$photoviwer.on("click", "._close", this.photoviewCloseListener.bind(this));
