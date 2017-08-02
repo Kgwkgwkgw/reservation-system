@@ -1,26 +1,6 @@
-(function ($ , Handlebars) {
+(function ($, Handlebars) {
 	"use strict";
     function Review(productId, objOption) {
-        this.APIURL;
-		this.NUM_OF_STAR;
-		
-        this.productId;
-		this.option;
-
-        this.$scorePercentage;
-        this.$score;
-        this.$count;
-        this.criteria;
-        this.isRequesting;
-        this.$reviewList;
-
-        this.$photoviwer;
-        this.$photoviwerInner;
-        this.photoviwerInner;
-        this.commentImageflicking;
-
-        this.reviewTemplate;
-
         this.initVariable(productId, objOption);
         this.addEventHandler();
         this.getCommentList();
@@ -30,8 +10,8 @@
 	Review.prototype.constructor = Review;
 
 	var defaultOption = {
-		size: 10,
-		isGetMore: false
+		size : 10,
+		isGetMoreCommentListWithScroll : false
 	};
 
     Review.prototype.initVariable = function(productId, objOption) {
@@ -44,26 +24,24 @@
         this.$score = $("._score");
         this.$count = $("._count");
 
-        var size = this.option.size || 10;
         this.criteria = {
             offset : 0,
-            size : size
+            size : this.option.size
 		};
-		
-		
+
         this.isRequesting = false;
         this.$photoviwer = $("#photoviwer");
         this.$reviewList = $("._reviewList");
         this.photoviwerInner = "#photoviwerInner";
         this.$photoviwerInner = $(this.photoviwerInner);
-        this.commentImageflicking;
+        this.commentImageFlicking;
 
         this.reviewTemplate =  Handlebars.compile($("#review-template").html());
         Handlebars.registerHelper("roundUpToFirstPoint", function (score) {
             return score.toFixed(1);
         });
 	}
-	
+
 	Review.prototype.setOption = function (objOption) {
 		$.each(defaultOption, function (index, value) {
 			if (!objOption.hasOwnProperty(index))
@@ -73,6 +51,7 @@
 	}
 
     Review.prototype.getCommentList = function() {
+		this.isRequesting = true;
         $.ajax({
             url: this.APIURL + "/api?productId=" + this.productId,
             data: this.criteria
@@ -91,7 +70,7 @@
         for(var i = 0; i<userCommentObjList.length; i++) {
             html += this.reviewTemplate(userCommentObjList[i]);
         }
-        $(".list_short_review").append(html);
+        this.$reviewList.append(html);
     }
     Review.prototype.setCommentStats = function(commentStatsObj) {
         var roundAverageScore = commentStatsObj.averageScore.toFixed(1);
@@ -102,7 +81,7 @@
         this.$count.text(commentStatsObj.count);
     }
     Review.prototype.addEventHandler = function() {
-		if(this.option.isGetMore) {
+		if(this.option.isGetMoreCommentListWithScroll) {
 			$(window).on("scroll", this.scrollEventHandling.bind(this));
 		}
         this.$reviewList.on("click", "._commentThumb", this.commentThumbClickListener.bind(this));
@@ -115,7 +94,6 @@
             return false;
         }
         if($(window).scrollTop()  >= $(document).height() - $(window).height() - 50) {
-            this.isRequesting = true;
             this.getCommentList();
         }
     }
@@ -123,22 +101,22 @@
     Review.prototype.commentThumbClickListener = function(e) {
         e.preventDefault();
         this.$photoviwerInner.empty()
-            .append($(e.currentTarget).find("._img")
-                .clone()
-                .removeClass("hide"));
+            				 .append($(e.currentTarget).find("._img")
+                			 .clone()
+                			 .removeClass("hide"));
         this.$photoviwer.removeClass("hide");
-        //스크롤 막기
+
         $("body").css("overflow", "hidden");
-        this.commentImageflicking = new eg.Flicking(this.photoviwerInner, {
+        this.commentImageFlicking = new eg.Flicking(this.photoviwerInner, {
             circular: true,
             defaultIndex: 0,
             duration: 300
         });
     }
-    Review.prototype.photoviewCloseListener = function() {
+    Review.prototype.photoviewCloseListener = function(e) {
         this.$photoviwer.addClass("hide");
         $("body").css("overflow", "auto");
-        this.commentImageflicking.destroy();
+        this.commentImageFlicking.destroy();
     }
     window.reservation = window.reservation || {};
 	window.reservation.Review = Review;

@@ -49,7 +49,6 @@ public class UserController {
 	@ResponseBody
 	public List<MyReservation> getAllReservationList(@RequestParam(required=false) Integer type, HttpSession session) {
 		User user = (User)session.getAttribute("loginInfo");
-		System.out.println(user);
 		if(type==null) {
 			return reservationInfoService.findAllReservationByUserId(user.getId());
 		}

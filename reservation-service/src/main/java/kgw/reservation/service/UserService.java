@@ -29,6 +29,7 @@ public class UserService {
 	private User create(NaverLoginProfile naverLoginProfile) {
 		User user = new User(naverLoginProfile);
 		user.setId(userDao.insert(user));
+		System.out.println(user);
 		return user;
 	}
 }

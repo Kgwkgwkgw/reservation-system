@@ -118,11 +118,10 @@
 	</script>
 	<script>
 
-	(function(ReviewWrite, Rating){
+	(function(ReviewWrite){
 		"use strict";
 		var reviewWrite = new ReviewWrite();
-		var rating = new Rating(reviewWrite.scoreWrap, reviewWrite);
-	})(window.reservation.ReviewWrite, window.reservation.Rating)
+	})(window.reservation.ReviewWrite)
 
 	</script>
 

@@ -96,7 +96,9 @@
         (function(Review){
     		"use strict";
             var productId = ${param.productId};
-    		var review = new Review(productId, { size: 10, isGetMore: true });
+    		var review = new Review(productId, {  size : 10,
+                                                  isGetMoreCommentListWithScroll : true
+                                                });
     	})(window.reservation.Review)
     </script>
 

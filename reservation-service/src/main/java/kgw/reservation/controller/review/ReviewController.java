@@ -112,7 +112,7 @@ public class ReviewController {
  	@GetMapping("/api")
  	@ResponseBody
  	public UserCommentWrapper getList(@RequestParam Integer productId, @ModelAttribute Criteria criteria) {
- 		log.info("{}", criteria);
+ 	log.debug("{}", criteria);
  	return userCommentService.getCommentListByProductId(productId, criteria.getOffset(), criteria.getSize());
 	}
 }
