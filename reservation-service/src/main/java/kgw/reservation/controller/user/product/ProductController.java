@@ -1,9 +1,6 @@
 package kgw.reservation.controller.user.product;
 
-import java.util.Date;
 import java.util.List;
-
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +18,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import kgw.reservation.domain.ReservationInfo;
 import kgw.reservation.domain.User;
 import kgw.reservation.dto.ProductInfo;
+import kgw.reservation.security.LogginedUser;
+import kgw.reservation.security.ReservationForm;
 import kgw.reservation.service.ProductService;
 import kgw.reservation.service.ReservationInfoService;
-import kgw.reservation.sql.ReservationInfoSqls;
 
 @Controller
 @RequestMapping("/products")
@@ -58,14 +56,11 @@ public class ProductController {
 	}
 	
 	@PostMapping("/reservation/{id}")
-	public String reserve(@PathVariable Integer id, Model model, ReservationInfo reservationInfo, HttpSession session) {
-		User loginUser = (User)session.getAttribute("loginInfo");
-		
-		reservationInfo.setProductId(id);
-		reservationInfo.setUserId(loginUser.getId());
-		reservationInfo.setReservationType(ReservationInfoSqls.ASKING);
-		//임시		
-		reservationInfo.setReservationDate(new Date());
+	public String reserve(@PathVariable(value="id") Integer productId, Model model, @ReservationForm ReservationInfo reservationInfo, 
+			@LogginedUser User user) {
+		reservationInfo.setProductId(productId);
+		reservationInfo.setUserId(user.getId());
+				
 		log.info("postInfo : {}",reservationInfo);
 		
 		reservationInfoService.create(reservationInfo);

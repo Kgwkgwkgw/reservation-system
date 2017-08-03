@@ -1,37 +1,14 @@
-(function($, Handlebars){
+define("reviewWrite", ["Handlebars", "rating"], function(Handlebars, Rating) {
 	"use strict";
 
 	function ReviewWrite() {
-		this.APIURL;
-		this.THUMB_MAX_COUNT;
-		this.MAX_COMMENT_LENGTH;
-		this.MIN_COMMENT_LENGTH;
-		this.$enrollForm;
-		this.$commentLabel;
-		this.$commentText;
-		this.$imageInput;
-		this.$thumbnailUploadWrapper;
-		this.$thumbnailUploadList;
-		this.thumbItem;
-		this.thumbnailUploadCount;
-		this.strEnteredComment;
-		this.$numOfText;
-		this.scoreWrap;
-		this.$scoreWrap;
-		this.scoreRadioBtn;
-
-		this.regCheckNoWhitespace;
-
-		this.commentThumbnailTemplate;
-
 		this.initVariable();
 		this.addEventHandling();
 	}
 
-	ReviewWrite.prototype = new eg.Component();
-	ReviewWrite.prototype.constructor = ReviewWrite;
 	ReviewWrite.prototype.initVariable = function() {
-		this.APIURL = "/reviews/images";
+		this.APIURL = "/reviews/api";
+		this.IMG_URL = "/images";
 		this.THUMB_MAX_COUNT = 5;
 		this.MAX_COMMENT_LENGTH = 400;
 		this.MIN_COMMENT_LENGTH = 5;
@@ -43,18 +20,16 @@
 		this.$thumbnailUploadList = $("._thumbnailUploadList");
 		this.thumbItem = "._thumb";
 		this.thumbnailUploadCount = 0;
-		this.strEnteredComment = "";
 		this.$numOfText = $("._numOfText");
-		this.scoreWrap = "._rating";
-		this.$scoreWrap = $(this.scoreWrap);
-		this.scoreRadioBtn = "._radio";
+		this.$score = $("._score");
+
 		this.regCheckNoWhitespace = /.*\S+.*/;
 		this.commentThumbnailTemplate = Handlebars.compile($("#commentWrite-thumbnail-template").html());
+
+		this.rating = new Rating("._rating");
 	}
 
 	ReviewWrite.prototype.addEventHandling = function() {
-		this.$scoreWrap.on("click", this.scoreRadioBtn, this.scoreClickHandling.bind(this));
-
 		this.$enrollForm.on("submit", this.submitCommentHandling.bind(this));
 		this.$commentLabel.on("click", function(e){
 			$(this).addClass("hide");
@@ -64,16 +39,13 @@
 		this.$commentText.on("keyup", this.keyUpHandling.bind(this));
 
 		this.$imageInput.on("change", this.imageInputChangeHandling.bind(this));
-		this.$thumbnailUploadWrapper.on("click", '.anchor', this.thumbnailDeleteHandling.bind(this));
-	}
-
-	ReviewWrite.prototype.scoreClickHandling = function(e) {
-	  this.trigger("change", $(e.currentTarget).val());
+		this.$thumbnailUploadWrapper.on("click", ".anchor", this.thumbnailDeleteHandling.bind(this));
+		this.rating.on("change", this.ratingChangeCallback.bind(this))
 	}
 
 	ReviewWrite.prototype.reqCreateImageFiles = function(formData){
 		$.ajax({
-			url : this.APIURL,
+			url : this.APIURL + this.IMG_URL,
 			data : formData,
 			type : "POST",
 			contentType : false,
@@ -107,12 +79,12 @@
 	}
 
 	ReviewWrite.prototype.checkCommentValidation = function(){
-		this.strEnteredComment = this.$commentText.val();
-		if(this.isBlank(this.strEnteredComment)){
+		var strEnteredComment = this.$commentText.val();
+		if(this.isBlank(strEnteredComment)){
 			alert("공백만 입력하면 안돼요");
 			return false;
 		}
-		else if(this.strEnteredComment.length<=this.MIN_COMMENT_LENGTH){
+		if(strEnteredComment.length<=this.MIN_COMMENT_LENGTH){
 			alert("최소 "+this.MIN_COMMENT_LENGTH+"자 이상 리뷰남겨주세요");
 			return false;
 		}
@@ -120,8 +92,8 @@
 	}
 
 	ReviewWrite.prototype.commentFocusOutHandling = function(e) {
-		this.strEnteredComment = $(e.currentTarget).val();
-		if(this.isBlank(this.strEnteredComment)){
+		var strEnteredComment = $(e.currentTarget).val();
+		if(this.isBlank(strEnteredComment)){
 			this.$commentLabel.removeClass("hide");
 		}
 	}
@@ -141,7 +113,7 @@
 
 	ReviewWrite.prototype.reqDeleteImageFile = function($thumbItem, fileId){
 		$.ajax({
-			url : this.APIURL+"/"+fileId,
+			url : this.APIURL+this.IMG_URL+"/"+fileId,
 			type : "DELETE"
 		}).done(function(res){
 			$thumbItem.remove();
@@ -165,16 +137,19 @@
 	}
 
 	ReviewWrite.prototype.keyUpHandling = function() {
-		this.strEnteredComment = this.$commentText.val();
-		if(this.strEnteredComment.length > this.MAX_COMMENT_LENGTH){
+		var strEnteredComment = this.$commentText.val();
+		if(strEnteredComment.length > this.MAX_COMMENT_LENGTH){
 			alert(this.MAX_COMMENT_LENGTH+"자 초과");
-			this.strEnteredComment = this.strEnteredComment.substring(0, this.MAX_COMMENT_LENGTH);
-			this.$commentText.val(this.strEnteredComment);
+			strEnteredComment = strEnteredComment.substring(0, this.MAX_COMMENT_LENGTH);
+			this.$commentText.val(strEnteredComment);
 		}
-		this.$numOfText.text(this.strEnteredComment.length);
+		this.$numOfText.text(strEnteredComment.length);
 	}
-	window.reservation = window.reservation || {};
-	window.reservation.ReviewWrite = ReviewWrite;
 
+	ReviewWrite.prototype.ratingChangeCallback = function(res) {
+		this.$score.text(res.score);
+		this.$score.removeClass("gray_star");
+	}
 
-})(jQuery, Handlebars);
+	return ReviewWrite;
+});

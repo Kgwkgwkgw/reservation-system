@@ -236,7 +236,8 @@
                                         <div class="inline_control">
                                             <p class="inline_txt selected">
                                               <fmt:formatDate pattern = "yyyy.M.d.(E)" value = "${start }" /> ~ <fmt:formatDate pattern = "yyyy.M.d.(E)" value = "${end }" />,
-                                              총 <em class="_sum">0</em>매
+                                              총 <em class="_sum">0</em>매,
+                                              총 <em class="_sumPrice">0</em>원
                                               <span class="_countTemplateTarget"></span>
                                             </p>
                                         </div>
@@ -295,9 +296,9 @@
     {{/if}}
 </script>
 <script>
-  (function($, reserve){
-      "use strict";
-      reserve.init();
-  })(jQuery, window.reservation.reserve)
+    require(['reserve'], function(reserve) {
+        "use strict";
+        reserve.init();
+    });
 </script>
 </html>

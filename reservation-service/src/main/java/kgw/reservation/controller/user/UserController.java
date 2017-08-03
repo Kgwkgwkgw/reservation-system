@@ -2,8 +2,6 @@ package kgw.reservation.controller.user;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -19,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import kgw.reservation.domain.User;
 import kgw.reservation.dto.MyReservation;
 import kgw.reservation.dto.MyReservationCount;
+import kgw.reservation.security.LogginedUser;
 import kgw.reservation.service.ReservationInfoService;
 import kgw.reservation.sql.ReservationInfoSqls;
 
@@ -47,9 +46,7 @@ public class UserController {
 	
 	@GetMapping("/reservation")
 	@ResponseBody
-	public List<MyReservation> getAllReservationList(@RequestParam(required=false) Integer type, HttpSession session) {
-		User user = (User)session.getAttribute("loginInfo");
-		System.out.println(user);
+	public List<MyReservation> getAllReservationList(@RequestParam(required=false) Integer type, @LogginedUser User user) {
 		if(type==null) {
 			return reservationInfoService.findAllReservationByUserId(user.getId());
 		}
@@ -59,8 +56,7 @@ public class UserController {
 	
 	@GetMapping("/reservation/count")
 	@ResponseBody
-	public MyReservationCount getReservationCount(HttpSession session) {
-		User user = (User)session.getAttribute("loginInfo");
+	public MyReservationCount getReservationCount(@LogginedUser User user) {
 		return reservationInfoService.countAllReservationByUserId(user.getId());
 	}
 	

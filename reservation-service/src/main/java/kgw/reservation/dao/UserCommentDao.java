@@ -20,7 +20,6 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import kgw.reservation.domain.ReservationUserComment;
-import kgw.reservation.domain.User;
 import kgw.reservation.dto.CommentStats;
 import kgw.reservation.dto.UserComment;
 import kgw.reservation.sql.UserCommentSqls;
@@ -35,6 +34,7 @@ public class UserCommentDao {
 		UserComment userComment = new UserComment();
 		userComment.setId(rs.getInt("id"));
 		userComment.setComment(rs.getString("comment"));
+		userComment.setProductName(rs.getString("name"));
 		userComment.setCreateDate(rs.getDate("create_date"));
 		userComment.setModifyDate(rs.getDate("modify_date"));
 		userComment.setScore(rs.getDouble("score"));

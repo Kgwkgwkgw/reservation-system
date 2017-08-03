@@ -46,7 +46,7 @@ public class UserCommentService {
 		List<UserComment> userCommentList = findCommentListWithImage(productId, offset, size);
 		CommentStats commentStats = findCommentStatsByProductId(productId);
 
-		userCommentWrapper.setUserCommentCollection(userCommentList);
+		userCommentWrapper.setUserCommentList(userCommentList);
 		userCommentWrapper.setCommentStats(commentStats);
 
 		return userCommentWrapper;
@@ -55,6 +55,7 @@ public class UserCommentService {
 	// 코멘트리스트를 가져오는데, 이미지가 있다면 추가해서 가져온다.
 	public List<UserComment> findCommentListWithImage(Integer productId, Integer offset, Integer size) {
 		List<UserComment> userCommentList = userCommentDao.selectUserCommentByProductId(productId, offset, size);
+		log.debug("{}",userCommentList);
 		List<FileImage> commentFileList = null;
 		Set<Integer> userIds = null;
 

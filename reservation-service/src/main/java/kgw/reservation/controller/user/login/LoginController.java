@@ -8,7 +8,6 @@ import java.util.UUID;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +36,6 @@ public class LoginController {
 	
 	@GetMapping
 	public String login(HttpSession session) {
-		
 		//네이버아이디로 인증 URL을 생성하기 위하여 naverLoginBO클래스의 getAuthorizationUrl메소드 호출
 		String oauthState = generateRandomString();
 		session.setAttribute(SESSION_STATE, oauthState);

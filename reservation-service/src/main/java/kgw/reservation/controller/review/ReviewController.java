@@ -23,7 +23,10 @@ import org.springframework.web.multipart.MultipartFile;
 import kgw.reservation.domain.FileDomain;
 import kgw.reservation.domain.ReservationUserComment;
 import kgw.reservation.domain.User;
+import kgw.reservation.dto.Criteria;
+import kgw.reservation.dto.UserCommentWrapper;
 import kgw.reservation.exception.MismatchJpegPngFormatException;
+import kgw.reservation.security.LogginedUser;
 import kgw.reservation.service.FileService;
 import kgw.reservation.service.ReservationInfoService;
 import kgw.reservation.service.UserCommentService;
@@ -58,7 +61,8 @@ public class ReviewController {
 	}
 	//@RequestParam UserComment userComment, @RequestParam List<Integer> fileIdList,
 	@PostMapping("/form")
-	public String makeReivew(@ModelAttribute @Valid ReservationUserComment reservationUserComment, @RequestParam (required=false) List<Integer> fileIdList, HttpSession session) {
+	public String makeReivew(@ModelAttribute @Valid ReservationUserComment reservationUserComment,
+				@RequestParam (required=false) List<Integer> fileIdList, HttpSession session) {
 		log.info("========userComment info ========");
 		log.info(reservationUserComment.getComment());
 		log.info(reservationUserComment.getProductId());
@@ -79,20 +83,17 @@ public class ReviewController {
 		return "redirect:/users";
 	}
 
-	@DeleteMapping("/images/{fileId}")
+	@DeleteMapping("/api/images/{fileId}")
 	@ResponseBody
 	public Integer removeUserCommentImage(@PathVariable Integer fileId ){
 		log.info("fileId ====:"+fileId);
 		return userCommentService.removeUserCommentImagefile(fileId);
 	}
 	
-	
-//	MultipartFile[]
-	@PostMapping("/images")
-	@ResponseBody										//MultipartHttpServletRequest
-	public List<FileDomain> createUserCommentImages(MultipartFile[] images, HttpSession session) {
+	@PostMapping("/api/images")
+	@ResponseBody		
+	public List<FileDomain> createUserCommentImages(MultipartFile[] images, @LogginedUser User user) {
 		log.info("{}",images);
-		User user = (User) session.getAttribute("loginInfo");
 		Integer userId = user.getId();
 		for(int i=0; i<images.length; i++){
 			MultipartFile mpf  = images[i];
@@ -102,5 +103,16 @@ public class ReviewController {
 			}		
 		}
 		return fileService.createFileList(userId, images);
+	}
+	@GetMapping
+ 	public String reviewView(@RequestParam Integer productId) {
+ 		return DIRNAME+ "/review";
+ 	}
+	 
+ 	@GetMapping("/api")
+ 	@ResponseBody
+ 	public UserCommentWrapper getList(@RequestParam Integer productId, @ModelAttribute Criteria criteria) {
+ 	log.debug("{}", criteria);
+ 	return userCommentService.getCommentListByProductId(productId, criteria.getOffset(), criteria.getSize());
 	}
 }

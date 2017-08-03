@@ -1,5 +1,7 @@
 package kgw.reservation.service;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -39,7 +41,7 @@ public class FileService {
 	}
 
 	@Transactional(readOnly = false)
-	public List<FileDomain> createFileList( Integer userId,MultipartFile[] images) {
+	public List<FileDomain> createFileList(Integer userId, MultipartFile[] images) {
 		// 현재 날짜 string으로 반환
 		List<FileDomain> fileList = new ArrayList<FileDomain>();
 		
@@ -53,34 +55,31 @@ public class FileService {
 		}
 		
 		for (MultipartFile file : images) {
-			
-			String contentType = file.getContentType();
-			String name = file.getName();
-			String originalFilename = file.getOriginalFilename();
-			long size = file.getSize();
-
 			String uuid = UUID.randomUUID().toString();
 			String saveFileName = formattedDate + File.separator + uuid; // file save path
 																			
 			// 실제 파일을 저장함.
-			try (InputStream in = file.getInputStream(); FileOutputStream fos = new FileOutputStream(saveFileName)) {
-				int readCount = 0;
-				byte[] buffer = new byte[512];
-				while ((readCount = in.read(buffer)) != -1) {
-					fos.write(buffer, 0, readCount);
+			try (InputStream in = file.getInputStream(); 
+					BufferedInputStream bis = new BufferedInputStream(in, 1024);
+					FileOutputStream fos = new FileOutputStream(saveFileName);
+					BufferedOutputStream bos = new BufferedOutputStream(fos, 1024);) {
+				int read = 0;
+				while ((read = in.read()) != -1) {
+					bos.write(read);
 				}
+				bos.close();
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
 			// File
 			FileDomain fileDomain = new FileDomain();
-			fileDomain.setContentType(contentType);
+			fileDomain.setContentType(file.getContentType());
 			fileDomain.setCreateDate(new Date());
 			fileDomain.setDeleteFlag(1);
-			fileDomain.setFileLength((int) size);
-			fileDomain.setFileName(originalFilename);
+			fileDomain.setFileLength((int) file.getSize());
+			fileDomain.setFileName(file.getOriginalFilename());
 			fileDomain.setSaveFileName(File.separator + currentDate + File.separator + uuid);
-			// 해당부분은 로그인기능 구현후 추가 처리
+			
 			fileDomain.setUserId(userId);
 		
 			fileList.add(fileDao.insert(fileDomain));

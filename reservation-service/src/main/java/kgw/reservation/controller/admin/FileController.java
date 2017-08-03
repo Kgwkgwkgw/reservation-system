@@ -10,6 +10,8 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -29,6 +31,7 @@ import kgw.reservation.service.FileService;
 @RequestMapping("/files")
 public class FileController {
 	private static final String DIRNAME ="/admin/files";
+	private final Logger log = LoggerFactory.getLogger(FileController.class);
 	@Value("${kgw.imageupload.path}")
     private String baseDir; // 이미지파일 다운로드할 기본 경로 
 	private FileService fileService;
@@ -86,7 +89,7 @@ public class FileController {
                 fileDomain.setSaveFileName(File.separator+currentDate+File.separator+uuid);
                 // 해당부분은 로그인기능 구현후 추가 처리
                 fileDomain.setUserId(5);
-                
+                log.debug("{}",fileDomain);
                 fileService.create(fileDomain);
                 
             } // for
