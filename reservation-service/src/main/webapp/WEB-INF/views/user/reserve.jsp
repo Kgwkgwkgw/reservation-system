@@ -296,9 +296,9 @@
     {{/if}}
 </script>
 <script>
-  (function($, reserve){
-      "use strict";
-      reserve.init();
-  })(jQuery, window.reservation.reserve)
+    require(['reserve'], function(reserve) {
+        "use strict";
+        reserve.init();
+    });
 </script>
 </html>

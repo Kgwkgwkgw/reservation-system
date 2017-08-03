@@ -1,4 +1,4 @@
-(function($, Handlebars, Rating){
+define("reviewWrite", ["Handlebars", "rating"], function(Handlebars, Rating){
 	"use strict";
 
 	function ReviewWrite() {
@@ -6,8 +6,6 @@
 		this.addEventHandling();
 	}
 
-	ReviewWrite.prototype = new eg.Component();
-	ReviewWrite.prototype.constructor = ReviewWrite;
 	ReviewWrite.prototype.initVariable = function() {
 		this.APIURL = "/reviews/api";
 		this.IMG_URL = "/images";
@@ -41,7 +39,7 @@
 		this.$commentText.on("keyup", this.keyUpHandling.bind(this));
 
 		this.$imageInput.on("change", this.imageInputChangeHandling.bind(this));
-		this.$thumbnailUploadWrapper.on("click", '.anchor', this.thumbnailDeleteHandling.bind(this));
+		this.$thumbnailUploadWrapper.on("click", ".anchor", this.thumbnailDeleteHandling.bind(this));
 		this.rating.on("change", this.ratingChangeCallback.bind(this))
 	}
 
@@ -153,8 +151,6 @@
 		this.$score.removeClass("gray_star");
 	}
 
-	window.reservation = window.reservation || {};
-	window.reservation.ReviewWrite = ReviewWrite;
+	return ReviewWrite;
 
-
-})(jQuery, Handlebars, window.reservation.Rating);
+})

@@ -365,16 +365,16 @@
 </script>
 
 <script>
-  (function(Myreservation) {
-    "use strict";
-    var objReservationType = {
-       "ASKING" : ${asking},
-       "CONFIRM" : ${confirm},
-       "COMPLETION" : ${completion},
-       "CANCELLATION" : ${cancellation},
-       "REFUND" : ${refund}
-    }
-    Myreservation.init(objReservationType);
-  })(reservation.Myreservation)
+    require(['myreservation'], function(Myreservation) {
+        "use strict";
+        var objReservationType = {
+           "ASKING" : ${asking},
+           "CONFIRM" : ${confirm},
+           "COMPLETION" : ${completion},
+           "CANCELLATION" : ${cancellation},
+           "REFUND" : ${refund}
+        }
+        Myreservation.init(objReservationType);
+    });
 </script>
 </html>

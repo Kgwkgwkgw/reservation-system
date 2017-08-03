@@ -117,11 +117,10 @@
 		</li>
 	</script>
 	<script>
-
-	(function(ReviewWrite){
-		"use strict";
+    require(['reviewWrite'], function(ReviewWrite) {
+        "use strict";
 		var reviewWrite = new ReviewWrite();
-	})(window.reservation.ReviewWrite)
+    });
 
 	</script>
 

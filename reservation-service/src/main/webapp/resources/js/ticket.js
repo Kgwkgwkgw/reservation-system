@@ -1,7 +1,6 @@
-(function($, eg) {
+define("ticket", [], function() {
 		"use strict";
-		window.reservation = window.reservation || {};
-		window.reservation.Ticket = eg.Class.extend(eg.Component, {
+		return eg.Class.extend(eg.Component, {
 
 			construct : function(priceTypeArea) {
 				this.$priceTypeArea = $(priceTypeArea);
@@ -83,4 +82,4 @@
 
 		});
 
-})(jQuery, eg);
+});

@@ -93,13 +93,12 @@
         </li>
     </script>
     <script>
-        (function(Review){
-    		"use strict";
+        require(['review'], function(Review) {
+            "use strict";
             var productId = ${param.productId};
     		var review = new Review(productId, {  size : 10,
-                                                  isGetMoreCommentListWithScroll : true
-                                                });
-    	})(window.reservation.Review)
+                                                  isGetMoreCommentListWithScroll : true});
+        });
     </script>
 
 

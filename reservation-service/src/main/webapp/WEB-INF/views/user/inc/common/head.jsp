@@ -7,16 +7,7 @@
     <title>${param.title }</title>
     <link href="/resources/css/style.css" rel="stylesheet">
     <script src="/resources/js/node_modules/jquery/dist/jquery.js"></script>
-    <script src="/resources/js/node_modules/handlebars/dist/handlebars.js"></script>
     <script src="/resources/js/node_modules/egjs/dist/pkgd/eg.pkgd.min.js"></script>
-    <script src="/resources/js/rating.js"></script>
-    <script src="/resources/js/category.js"></script>
-    <script src="/resources/js/rolling.js"></script>
-    <script src="/resources/js/ticket.js"></script>
-    <script src="/resources/js/reserve.js"></script>
-    <script src="/resources/js/product.js"></script>
-    <script src="/resources/js/detail.js"></script>
-    <script src="/resources/js/reviewWrite.js"></script>
-    <script src="/resources/js/review.js"></script>
-    <script src="/resources/js/myreservation.js"></script>
+    <script src="/resources/js/node_modules/requirejs/require.js"></script>
+    <script src="/resources/js/dist/reservation.min.js"></script>
 </head>

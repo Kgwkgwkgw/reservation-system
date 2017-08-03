@@ -302,75 +302,80 @@
 <script src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=9xywjQhEim1nZVIa1xZc&submodules=geocoder" ></script>
 
 <script>
-  $(document).on("ready", function(){
-    (function(){
-      "use strict";
+    $(document).on("ready", function(){
+        (function(){
+          "use strict";
 
-      var SALESEND = "sales_end";
-      var SOLDOUT = "sold_out";
-      var arrAlert = {};
-      arrAlert[SALESEND] = "판매기간이 종료되었습니다. 다음에 이용 부탁드립니다.";
-      arrAlert[SOLDOUT] = "매진됐습니다. 다음에 이용 부탁드립니다.";
-      var ONSALE = 1;
-      var saleStatus = ONSALE;
-      <jsp:useBean id="now" class="java.util.Date"/>
-      ${product.salesEnd <= now ? "saleStatus = SALESEND" : ""}
-      ${product.salesFlag != 1 ? "saleStatus = SOLDOUT" : ""}
-      if(saleStatus === SALESEND || saleStatus === SOLDOUT )
-          $("._btn_reservation").click(function(e) {
-            alert(arrAlert[saleStatus]);
-          })
-      // 네이버 지도 API
-      <c:if test="${product.placeLot ne null || product.placeStreet ne null }">
-        /* var map = new naver.maps.Map('map'); */
-        var myaddress = "${product.placeStreet != null ? product.placeStreet : product.placeLot }";// 도로명 주소나 지번 주소만 가능 (건물명 불가!!!!)
-        naver.maps.Service.geocode({address: myaddress}, function(status, response) {
-            if (status !== naver.maps.Service.Status.OK) {
-                return alert(myaddress + '의 검색 결과가 없거나 기타 네트워크 에러');
-            }
-            /* var result = response.result;
-            var arr_location_link = document.getElementsByClassName("_store_location");
-            for(var i=0; arr_location_link.length; i++)
-                arr_location_link[i].setAttribute("href", "http://map.naver.com/?menu=location&lng="+result.items[0].point.x+"&lat="+result.items[0].point.y);
-            // 검색 결과 갯수: result.total
-            // 첫번째 결과 결과 주소: result.items[0].address
-            // 첫번째 검색 결과 좌표: result.items[0].point.y, result.items[0].point.x
-            var myaddr = new naver.maps.Point(result.items[0].point.x, result.items[0].point.y);
-            map.setCenter(myaddr); // 검색된 좌표로 지도 이동
-            // 마커 표시
-            var marker = new naver.maps.Marker({
-              position: myaddr,
-              map: map
+          var SALESEND = "sales_end";
+          var SOLDOUT = "sold_out";
+          var arrAlert = {};
+          arrAlert[SALESEND] = "판매기간이 종료되었습니다. 다음에 이용 부탁드립니다.";
+          arrAlert[SOLDOUT] = "매진됐습니다. 다음에 이용 부탁드립니다.";
+          var ONSALE = 1;
+          var saleStatus = ONSALE;
+          <jsp:useBean id="now" class="java.util.Date"/>
+          ${product.salesEnd <= now ? "saleStatus = SALESEND" : ""}
+          ${product.salesFlag != 1 ? "saleStatus = SOLDOUT" : ""}
+          if(saleStatus === SALESEND || saleStatus === SOLDOUT )
+              $("._btn_reservation").click(function(e) {
+                alert(arrAlert[saleStatus]);
+              })
+          // 네이버 지도 API
+          <c:if test="${product.placeLot ne null || product.placeStreet ne null }">
+            /* var map = new naver.maps.Map('map'); */
+            var myaddress = "${product.placeStreet != null ? product.placeStreet : product.placeLot }";// 도로명 주소나 지번 주소만 가능 (건물명 불가!!!!)
+            naver.maps.Service.geocode({address: myaddress}, function(status, response) {
+                if (status !== naver.maps.Service.Status.OK) {
+                    return alert(myaddress + '의 검색 결과가 없거나 기타 네트워크 에러');
+                }
+                /* var result = response.result;
+                var arr_location_link = document.getElementsByClassName("_store_location");
+                for(var i=0; arr_location_link.length; i++)
+                    arr_location_link[i].setAttribute("href", "http://map.naver.com/?menu=location&lng="+result.items[0].point.x+"&lat="+result.items[0].point.y);
+                // 검색 결과 갯수: result.total
+                // 첫번째 결과 결과 주소: result.items[0].address
+                // 첫번째 검색 결과 좌표: result.items[0].point.y, result.items[0].point.x
+                var myaddr = new naver.maps.Point(result.items[0].point.x, result.items[0].point.y);
+                map.setCenter(myaddr); // 검색된 좌표로 지도 이동
+                // 마커 표시
+                var marker = new naver.maps.Marker({
+                  position: myaddr,
+                  map: map
+                });
+                // 마커 클릭 이벤트 처리
+                naver.maps.Event.addListener(marker, "click", function(e) {
+                  if (infowindow.getMap()) {
+                      infowindow.close();
+                  } else {
+                      infowindow.open(map, marker);
+                  }
+                });
+                // 마크 클릭시 인포윈도우 오픈
+                var infowindow = new naver.maps.InfoWindow({
+                    content: '<h4> [네이버 개발자센터]</h4><a href="https://developers.naver.com" target="_blank"><img src="https://developers.naver.com/inc/devcenter/images/nd_img.png"></a>'
+                }); */
+                var mapImgPath = "https://openapi.naver.com/v1/map/staticmap.bin?clientId=9xywjQhEim1nZVIa1xZc&w=640&h=300&baselayer=default&url=http://220.230.116.163/&level=11";
+                var center = "&center=" + (response.result.items[0].point.x) + "," + (response.result.items[0].point.y);
+                var markers = "&markers=" + (response.result.items[0].point.x) + "," + (response.result.items[0].point.y);
+                mapImgPath = mapImgPath + center + markers;
+                $(".store_location").attr("href", "http://map.naver.com/?query=" + myaddress);
+                $(".store_location > img").attr("src", mapImgPath);
             });
-            // 마커 클릭 이벤트 처리
-            naver.maps.Event.addListener(marker, "click", function(e) {
-              if (infowindow.getMap()) {
-                  infowindow.close();
-              } else {
-                  infowindow.open(map, marker);
-              }
-            });
-            // 마크 클릭시 인포윈도우 오픈
-            var infowindow = new naver.maps.InfoWindow({
-                content: '<h4> [네이버 개발자센터]</h4><a href="https://developers.naver.com" target="_blank"><img src="https://developers.naver.com/inc/devcenter/images/nd_img.png"></a>'
-            }); */
-            var mapImgPath = "https://openapi.naver.com/v1/map/staticmap.bin?clientId=9xywjQhEim1nZVIa1xZc&w=640&h=300&baselayer=default&url=http://220.230.116.163/&level=11";
-            var center = "&center=" + (response.result.items[0].point.x) + "," + (response.result.items[0].point.y);
-            var markers = "&markers=" + (response.result.items[0].point.x) + "," + (response.result.items[0].point.y);
-            mapImgPath = mapImgPath + center + markers;
-            $(".store_location").attr("href", "http://map.naver.com/?query=" + myaddress);
-            $(".store_location > img").attr("src", mapImgPath);
-        });
-        //네이버 지도 API
-      </c:if>
-    })();
-  })
+            //네이버 지도 API
+          </c:if>
+        })();
+    });
 </script>
 <script>
-    (function (detail, Review) {
-      detail.init();
-      var review = new Review(${product.id}, { size : 3 })
-    })(window.reservation.detail, window.reservation.Review)
+    require(['detail', 'review'], function(detail, Review) {
+        "use strict";
+        detail.init();
+        new Review(${product.id}, {size : 3});
+    });
+    // (function (detail, Review) {
+    //   detail.init();
+    //   var review = new Review(${product.id}, { size : 3 })
+    // })(window.reservation.detail, window.reservation.Review)
 </script>
 
 </html>

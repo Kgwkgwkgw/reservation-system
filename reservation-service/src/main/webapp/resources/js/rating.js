@@ -1,7 +1,6 @@
-(function($, eg) {
+define("rating", [], function() {
 	"use strict";
-    window.reservation = window.reservation || {};
-    window.reservation.Rating = eg.Class.extend(eg.Component, {
+ 	return eg.Class.extend(eg.Component, {
 
         construct : function(wrapSelector) {
             this.initVariable(wrapSelector);
@@ -35,4 +34,4 @@
 
     });
 
-})(jQuery, eg)
+});

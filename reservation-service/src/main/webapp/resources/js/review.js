@@ -1,13 +1,10 @@
-(function ($, Handlebars) {
+define("review", ["Handlebars"], function(Handlebars) {
 	"use strict";
     function Review(productId, objOption) {
         this.initVariable(productId, objOption);
         this.addEventHandler();
         this.getCommentList();
     }
-
-	Review.prototype = new eg.Component();
-	Review.prototype.constructor = Review;
 
 	var defaultOption = {
 		size : 10,
@@ -118,7 +115,6 @@
         $("body").css("overflow", "auto");
         this.commentImageFlicking.destroy();
     }
-    window.reservation = window.reservation || {};
-	window.reservation.Review = Review;
+	return Review;
 
-})(jQuery, Handlebars);
+});
