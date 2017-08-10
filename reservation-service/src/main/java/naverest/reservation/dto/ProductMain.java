@@ -7,6 +7,19 @@ public class ProductMain {
 	private String saveFileName;
 	private String placeName;
 	
+	public ProductMain(){}
+	
+	public ProductMain(Integer id, String name, String description, Integer fileId, String saveFileName,
+			String placeName) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.fileId = fileId;
+		this.saveFileName = saveFileName;
+		this.placeName = placeName;
+	}
+
 	public Integer getId() {
 		return id;
 	}

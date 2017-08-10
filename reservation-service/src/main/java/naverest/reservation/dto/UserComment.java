@@ -13,9 +13,21 @@ public class UserComment {
 	private Date createDate;
 	private Date modifyDate;
 	
-	
 	private String reservationDate;
-	private List<FileImage> commentImageList;
+	private List<FileCommentImage> commentImageList;
+	public UserComment(){}
+	public UserComment(Integer id, Integer userId, String username, String productName,
+			Double score, String comment, String reservationDate ){
+		this.id = id;
+		this.userId = userId;
+		this.username = username;
+		this.productName = productName;
+		this.score = score;
+		this.comment = comment;
+		this.reservationDate = reservationDate;
+		this.createDate = new Date();
+		this.modifyDate = new Date();
+	}
 	
 	public Integer getId() {
 		return id;
@@ -71,10 +83,10 @@ public class UserComment {
 	public void setReservationDate(String reservationDate) {
 		this.reservationDate = reservationDate;
 	}
-	public List<FileImage> getCommentImageList() {
+	public List<FileCommentImage> getCommentImageList() {
 		return commentImageList;
 	}
-	public void setCommentImageList(List<FileImage> commentImage) {
+	public void setCommentImageList(List<FileCommentImage> commentImage) {
 		this.commentImageList = commentImage;
 	}
 	@Override

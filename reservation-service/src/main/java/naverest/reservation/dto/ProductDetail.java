@@ -1,7 +1,7 @@
 package naverest.reservation.dto;
 
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 // 상세페이지에서 사용할 dto 
 public class ProductDetail {
 	//product
@@ -21,13 +21,12 @@ public class ProductDetail {
 	//product_detail
 	private String content;
 	
-	private Collection<FileImage> fileList;
-	private UserCommentWrapper userCommentWrapper;
+	private List<FileProductImage> fileList;
 	
-	public Collection<FileImage> getFileList() {
+	public List<FileProductImage> getFileList() {
 		return fileList;
 	}
-	public void setFileList(Collection<FileImage> fileList) {
+	public void setFileList(List<FileProductImage> fileList) {
 		this.fileList = fileList;
 	}
 	public Integer getId() {
@@ -103,12 +102,6 @@ public class ProductDetail {
 	public void setPlaceName(String placeName) {
 		this.placeName = placeName;
 	}
-	public UserCommentWrapper getUserCommentWrapper() {
-		return userCommentWrapper;
-	}
-	public void setUserCommentWrapper(UserCommentWrapper userCommentWrapper) {
-		this.userCommentWrapper = userCommentWrapper;
-	}
 	
 	public Integer getSalesFlag() {
 		return salesFlag;
@@ -121,7 +114,7 @@ public class ProductDetail {
 		return "ProductDetail [id=" + id + ", name=" + name + ", description=" + description + ", event=" + event
 				+ ", salesFlag=" + salesFlag + ", sales_end=" + salesEnd + ", homepage=" + homepage + ", tel=" + tel
 				+ ", email=" + email + ", placeName=" + placeName + ", placeLot=" + placeLot + ", placeStreet="
-				+ placeStreet + ", content=" + content + ", fileList=" + fileList + ", userCommentWrapper="
-				+ userCommentWrapper + "]";
+				+ placeStreet + ", content=" + content + ", fileList=" + fileList 
+			    + "]";
 	}
 }

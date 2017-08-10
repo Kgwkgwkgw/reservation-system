@@ -51,7 +51,7 @@ public class FileController {
     	if(files != null && files.length > 0){
 
             //현재 날짜 string으로 반환
-    		    String currentDate =  new SimpleDateFormat("yyyy" + File.separator + "MM" + File.separator + "dd").format(new Date());
+    		String currentDate =  new SimpleDateFormat("yyyy" + File.separator + "MM" + File.separator + "dd").format(new Date());
             String formattedDate = baseDir + currentDate;
             File f = new File(formattedDate);
             if(!f.exists()){ // 파일이 존재하지 않는다면

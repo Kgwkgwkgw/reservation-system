@@ -1,6 +1,6 @@
 define("myreservation", ["Handlebars"], function(Handlebars) {
 	"use strict";
-	var APIURL = "/users/reservation";
+	var APIURL = "/api/myreservation";
 	var CANCEL_URL = "/cancellation";
 
 	var $myReservationList;
@@ -164,6 +164,7 @@ define("myreservation", ["Handlebars"], function(Handlebars) {
 		$.ajax({
 		  url : APIURL+"/count"
 		}).done(function(res) {
+			console.log("res:"+res);
 		    $allCount.text(res.total);
 		    $schduleCount.text(res.schedule);
 		    $completionCount.text(res.completion);

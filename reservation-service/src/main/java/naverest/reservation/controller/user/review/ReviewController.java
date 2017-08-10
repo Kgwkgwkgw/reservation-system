@@ -1,4 +1,4 @@
-package naverest.reservation.controller.review;
+package naverest.reservation.controller.user.review;
 
 import java.util.List;
 
@@ -10,43 +10,30 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
-import naverest.reservation.domain.FileDomain;
 import naverest.reservation.domain.ReservationUserComment;
 import naverest.reservation.domain.User;
-import naverest.reservation.dto.Criteria;
-import naverest.reservation.dto.UserCommentWrapper;
-import naverest.reservation.exception.MismatchJpegPngFormatException;
-import naverest.reservation.security.LogginedUser;
-import naverest.reservation.service.FileService;
 import naverest.reservation.service.ReservationInfoService;
 import naverest.reservation.service.UserCommentService;
 
 @Controller
 @RequestMapping("/reviews")
 public class ReviewController {
-	@Value("${USER_DIR}")
+	@Value("${naverest.userDir}")
 	private String DIRNAME;
-	
 	private UserCommentService userCommentService;
-	private FileService fileService;
 	private ReservationInfoService reservationInfoService;
 	private final Logger log = LoggerFactory.getLogger(ReviewController.class);
 
 	@Autowired
-	public ReviewController(UserCommentService userCommentService, FileService fileService,
+	public ReviewController(UserCommentService userCommentService, 
 			ReservationInfoService reservationInfoService) {
 		this.userCommentService = userCommentService;
-		this.fileService = fileService;
 		this.reservationInfoService = reservationInfoService;
 	}
 
@@ -59,13 +46,19 @@ public class ReviewController {
 		}
 		return DIRNAME + "/reviewWrite";
 	}
+	
+	@GetMapping
+ 	public String reviewView(@RequestParam Integer productId) {
+ 		return DIRNAME+ "/review";
+ 	}
+	
 	//@RequestParam UserComment userComment, @RequestParam List<Integer> fileIdList,
 	@PostMapping("/form")
 	public String makeReivew(@ModelAttribute @Valid ReservationUserComment reservationUserComment,
 				@RequestParam (required=false) List<Integer> fileIdList, HttpSession session) {
 		log.info("========userComment info ========");
 		log.info(reservationUserComment.getComment());
-		log.info(reservationUserComment.getProductId());
+		log.info(""+reservationUserComment.getProductId());
 		log.info(""+reservationUserComment.getId());
 	
 		User user = (User) session.getAttribute("loginInfo");
@@ -80,39 +73,6 @@ public class ReviewController {
 		}else{
 			log.info("===== comment 등록 성공 =====");
 		}
-		return "redirect:/users";
-	}
-
-	@DeleteMapping("/api/images/{fileId}")
-	@ResponseBody
-	public Integer removeUserCommentImage(@PathVariable Integer fileId ){
-		log.info("fileId ====:"+fileId);
-		return userCommentService.removeUserCommentImagefile(fileId);
-	}
-	
-	@PostMapping("/api/images")
-	@ResponseBody		
-	public List<FileDomain> createUserCommentImages(MultipartFile[] images, @LogginedUser User user) {
-		log.info("{}",images);
-		Integer userId = user.getId();
-		for(int i=0; i<images.length; i++){
-			MultipartFile mpf  = images[i];
-			if(!mpf.getContentType().equals("image/jpeg")&&!mpf.getContentType().equals("image/png")){
-				log.info("==========data is not right format ===========");
-				throw new MismatchJpegPngFormatException("이미지가 jpeg/png 형식이 아닙니다.");
-			}		
-		}
-		return fileService.createFileList(userId, images);
-	}
-	@GetMapping
- 	public String reviewView(@RequestParam Integer productId) {
- 		return DIRNAME+ "/review";
- 	}
-	 
- 	@GetMapping("/api")
- 	@ResponseBody
- 	public UserCommentWrapper getList(@RequestParam Integer productId, @ModelAttribute Criteria criteria) {
- 	log.debug("{}", criteria);
- 	return userCommentService.getCommentListByProductId(productId, criteria.getOffset(), criteria.getSize());
+		return "redirect:/myreservation";
 	}
 }

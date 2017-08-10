@@ -30,9 +30,9 @@ public class ProductRestController {
 			size = 10;
 		}
 		if(categoryId != null)
-			return productService.findByCategoryLimit(categoryId, offset, size);
+			return productService.findProductMainByCategoryLimit(categoryId, offset, size);
 		
-		return productService.findAllLimit(offset, size);
+		return productService.findAllProductMainLimit(offset, size);
 	}
 
 	@GetMapping("/count")

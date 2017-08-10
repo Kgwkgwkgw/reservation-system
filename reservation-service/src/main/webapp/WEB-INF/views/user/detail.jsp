@@ -28,64 +28,40 @@
                     <div class="group_visual">
                         <div>
                             <div class="container_visual" style="width: 414px;">
-                            		<c:choose>
-                            			<c:when test="${ empty product.fileList }">
-										<ul class="visual_img">
-		                            	    		<li class="item _item" style="width: 414px;"> <img alt="" class="img_thumb" src="/imgresources/no_img.png"> <span class="img_bg"></span>
-	                            	    			   <c:if test="${status.first}">
-			                                        <div class="visual_txt">
-			                                            <div class="visual_txt_inn">
-			                                                <h2 class="visual_txt_tit"> <span>${product.name }</span> </h2>
-			                                                <p class="visual_txt_dsc">${product.description }</p>
-			                                            </div>
-			                                        </div>
-		                                        </c:if>
-	                                    		</li>
-				     				    </ul>
-			     				    	</c:when>
-									<c:when test="${ !empty product.fileList }">
-										<ul class="visual_img">
-		                            	    <c:forEach var="item" items= "${product.fileList}" varStatus="status">
-		                            	    		<li class="item _item" style="width: 414px;"> <img alt="" class="img_thumb" src="/imgresources${item.saveFileName }"> <span class="img_bg"></span>
-	                            	    			   <c:if test="${status.first}">
-			                                        <div class="visual_txt">
-			                                            <div class="visual_txt_inn">
-			                                                <h2 class="visual_txt_tit"> <span>${product.name }</span> </h2>
-			                                                <p class="visual_txt_dsc">${product.description }</p>
-			                                            </div>
-			                                        </div>
-		                                        </c:if>
-	                                    		</li>
-				     				    </c:forEach>
-				     				    </ul>
-			     				    	</c:when>
-		     				    	</c:choose>
-                                <!-- <ul class="visual_img">
-                                    <li class="item" style="width: 414px;"> <img alt="" class="img_thumb" src="https://ssl.phinf.net/naverbooking/20170119_135/1484789767866RPO6o_JPEG/%B7%CE%B9%CC%BF%C0%C1%D9%B8%AE%BF%A7_1242.jpg?type=ff1242_1242"> <span class="img_bg"></span>
-                                        <div class="visual_txt">
-                                            <div class="visual_txt_inn">
-                                                <h2 class="visual_txt_tit"> <span>뮤지컬 로미오와 줄리엣</span> </h2>
-                                                <p class="visual_txt_dsc"></p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="item" style="width: 414px;"> <img alt="" class="img_thumb" src="https://ssl.phinf.net/naverbooking/20170119_135/1484789767866RPO6o_JPEG/%B7%CE%B9%CC%BF%C0%C1%D9%B8%AE%BF%A7_1242.jpg?type=ff1242_1242"> <span class="img_bg"></span>
-                                        <div class="visual_txt">
-                                            <div class="visual_txt_inn">
-                                                <h2 class="visual_txt_tit"> <span>뮤지컬 로미오와 줄리엣</span> </h2>
-                                                <p class="visual_txt_dsc"></p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="item" style="width: 414px;"> <img alt="" class="img_thumb" src="https://ssl.phinf.net/naverbooking/20170119_135/1484789767866RPO6o_JPEG/%B7%CE%B9%CC%BF%C0%C1%D9%B8%AE%BF%A7_1242.jpg?type=ff1242_1242"> <span class="img_bg"></span>
-                                        <div class="visual_txt">
-                                            <div class="visual_txt_inn">
-                                                <h2 class="visual_txt_tit"> <span>뮤지컬 로미오와 줄리엣</span> </h2>
-                                                <p class="visual_txt_dsc"></p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul> -->
+                        		<c:choose>
+                        			<c:when test="${ empty product.fileList }">
+									<ul class="visual_img">
+	                            	    		<li class="item _item" style="width: 414px;"> <img alt="" class="img_thumb" src="/imgresources/no_img.png"> <span class="img_bg"></span>
+                            	    			   <c:if test="${status.first}">
+		                                        <div class="visual_txt">
+		                                            <div class="visual_txt_inn">
+		                                                <h2 class="visual_txt_tit"> <span>${product.name }</span> </h2>
+		                                                <p class="visual_txt_dsc">${product.description }</p>
+		                                            </div>
+		                                        </div>
+	                                        </c:if>
+                                    		</li>
+			     				    </ul>
+		     				    	</c:when>
+								<c:when test="${ !empty product.fileList }">
+									<ul class="visual_img">
+	                            	    <c:forEach var="item" items= "${product.fileList}" varStatus="status">
+                            	    		<li class="item _item" style="width: 414px;"> 
+                                                <img alt="" class="img_thumb" src="/imgresources${item.saveFileName }"> 
+                                                <span class="img_bg"></span>
+                        	    			    <c:if test="${status.first}">
+		                                        <div class="visual_txt">
+		                                            <div class="visual_txt_inn">
+		                                                <h2 class="visual_txt_tit"> <span>${product.name }</span> </h2>
+		                                                <p class="visual_txt_dsc">${product.description }</p>
+		                                            </div>
+		                                        </div>
+                                               </c:if>
+                                		    </li>
+			     				    </c:forEach>
+			     				    </ul>
+		     				    	</c:when>
+	     				    	</c:choose>
                             </div>
                             <c:if test="${fn:length(product.fileList) gt 1}">
 	                            <div class="prev">
@@ -108,7 +84,7 @@
                     </div>
                     <div class="group_btn_goto">
 						<c:if test="${product.homepage ne null }">
-                        		<a class="btn_goto_home" title="홈페이지" href="http://${product.homepage }" target="siteUrl"> <i class="fn fn-home1"></i> </a>
+                        		<a class="btn_goto_home" title="홈페이지" href="${product.homepage }" target="siteUrl"> <i class="fn fn-home1"></i> </a>
                         </c:if>
                         <c:if test="${product.tel ne null }">
                         		<a class="btn_goto_tel" title="전화" href="tel:${product.tel }"> <i class="fn fn-call1"></i> </a>
@@ -146,28 +122,27 @@
 	                </div>
                 </c:if>
                 <div class="section_btn"> <a href="${reservationUrl }" class="bk_btn _btn_reservation"> <i class="fn fn-nbooking-calender2"></i> <span>예매하기</span> </a> </div>
-                <c:if test="${ !empty product.userCommentWrapper.userCommentList }">
-	                <div class="section_review_list">
-	                    <div class="review_box">
-	                        <h3 class="title_h3">예매자 한줄평</h3>
-		                        <div class="short_review_area">
-		                            <div class="grade_area">
-		                                <!-- [D] 별점 graph_value는 퍼센트 환산하여 width 값을 넣어줌 -->
-		                                <span class="graph_mask"> <em class="graph_value _scorePercentage" style="width: 0%;"></em> </span>
-		                                <strong class="text_value"> <span class="_score">0.0</span> <em class="total">5.0</em> </strong>
-		                                <span class="join_count"><em class="green"><span class="_count">0</span>건</em> 등록</span>
-		                            </div>
-		                            <ul class="list_short_review _reviewList">
-		                            	   <!-- review template HandleBar  -->
-		                            </ul>
-		                        </div>
-	                        <p class="guide"> <i class="spr_book2 ico_bell"></i> <span>네이버 예약을 통해 실제 방문한 이용자가 남긴 평가입니다.</span> </p>
-	                    </div>
-                      <c:if test="${product.userCommentWrapper.commentStats.count > 3 }">
-	                       <a class="btn_review_more" href="/reviews?productId=${product.id}"> <span>예매자 한줄평 더보기</span> <i class="fn fn-forward1"></i> </a>
-                      </c:if>
-	                </div>
-                </c:if>
+
+                <div class="section_review_list">
+                    <div class="review_box">
+                        <h3 class="title_h3">예매자 한줄평</h3>
+	                        <div class="short_review_area">
+	                            <div class="grade_area">
+	                                <!-- [D] 별점 graph_value는 퍼센트 환산하여 width 값을 넣어줌 -->
+	                                <span class="graph_mask"> <em class="graph_value _scorePercentage" style="width: 0%;"></em> </span>
+	                                <strong class="text_value"> <span class="_score">0.0</span> <em class="total">5.0</em> </strong>
+	                                <span class="join_count"><em class="green"><span class="_count">0</span>건</em> 등록</span>
+	                            </div>
+	                            <ul class="list_short_review _reviewList">
+	                            	   <!-- review template HandleBar  -->
+	                            </ul>
+	                        </div>
+                        <p class="guide"> <i class="spr_book2 ico_bell"></i> <span>네이버 예약을 통해 실제 방문한 이용자가 남긴 평가입니다.</span> </p>
+                    </div>
+
+                   <a class="btn_review_more" href="/reviews?productId=${product.id}"> <span>예매자 한줄평 더보기</span> <i class="fn fn-forward1"></i> </a>
+                </div>
+
                 <div class="section_info_tab _info_tab_area">
                     <!-- [D] tab 선택 시 anchor에 active 추가 -->
                     <ul class="info_tab_lst">
@@ -304,56 +279,31 @@
 <script>
     $(document).on("ready", function(){
         (function(){
-          "use strict";
+            "use strict";
 
-          var SALESEND = "sales_end";
-          var SOLDOUT = "sold_out";
-          var arrAlert = {};
-          arrAlert[SALESEND] = "판매기간이 종료되었습니다. 다음에 이용 부탁드립니다.";
-          arrAlert[SOLDOUT] = "매진됐습니다. 다음에 이용 부탁드립니다.";
-          var ONSALE = 1;
-          var saleStatus = ONSALE;
-          <jsp:useBean id="now" class="java.util.Date"/>
-          ${product.salesEnd <= now ? "saleStatus = SALESEND" : ""}
-          ${product.salesFlag != 1 ? "saleStatus = SOLDOUT" : ""}
-          if(saleStatus === SALESEND || saleStatus === SOLDOUT )
-              $("._btn_reservation").click(function(e) {
-                alert(arrAlert[saleStatus]);
-              })
-          // 네이버 지도 API
-          <c:if test="${product.placeLot ne null || product.placeStreet ne null }">
+            var SALESEND = "sales_end";
+            var SOLDOUT = "sold_out";
+            var arrAlert = {};
+            arrAlert[SALESEND] = "판매기간이 종료되었습니다. 다음에 이용 부탁드립니다.";
+            arrAlert[SOLDOUT] = "매진됐습니다. 다음에 이용 부탁드립니다.";
+            var ONSALE = 1;
+            var saleStatus = ONSALE;
+            <jsp:useBean id="now" class="java.util.Date"/>
+            ${product.salesEnd <= now ? "saleStatus = SALESEND" : ""}
+            ${product.salesFlag != 1 ? "saleStatus = SOLDOUT" : ""}
+            if(saleStatus === SALESEND || saleStatus === SOLDOUT )
+                $("._btn_reservation").click(function(e) {
+                    alert(arrAlert[saleStatus]);
+                })
+            // 네이버 지도 API
+            <c:if test="${product.placeLot ne null || product.placeStreet ne null }">
             /* var map = new naver.maps.Map('map'); */
             var myaddress = "${product.placeStreet != null ? product.placeStreet : product.placeLot }";// 도로명 주소나 지번 주소만 가능 (건물명 불가!!!!)
             naver.maps.Service.geocode({address: myaddress}, function(status, response) {
                 if (status !== naver.maps.Service.Status.OK) {
                     return alert(myaddress + '의 검색 결과가 없거나 기타 네트워크 에러');
                 }
-                /* var result = response.result;
-                var arr_location_link = document.getElementsByClassName("_store_location");
-                for(var i=0; arr_location_link.length; i++)
-                    arr_location_link[i].setAttribute("href", "http://map.naver.com/?menu=location&lng="+result.items[0].point.x+"&lat="+result.items[0].point.y);
-                // 검색 결과 갯수: result.total
-                // 첫번째 결과 결과 주소: result.items[0].address
-                // 첫번째 검색 결과 좌표: result.items[0].point.y, result.items[0].point.x
-                var myaddr = new naver.maps.Point(result.items[0].point.x, result.items[0].point.y);
-                map.setCenter(myaddr); // 검색된 좌표로 지도 이동
-                // 마커 표시
-                var marker = new naver.maps.Marker({
-                  position: myaddr,
-                  map: map
-                });
-                // 마커 클릭 이벤트 처리
-                naver.maps.Event.addListener(marker, "click", function(e) {
-                  if (infowindow.getMap()) {
-                      infowindow.close();
-                  } else {
-                      infowindow.open(map, marker);
-                  }
-                });
-                // 마크 클릭시 인포윈도우 오픈
-                var infowindow = new naver.maps.InfoWindow({
-                    content: '<h4> [네이버 개발자센터]</h4><a href="https://developers.naver.com" target="_blank"><img src="https://developers.naver.com/inc/devcenter/images/nd_img.png"></a>'
-                }); */
+               
                 var mapImgPath = "https://openapi.naver.com/v1/map/staticmap.bin?clientId=9xywjQhEim1nZVIa1xZc&w=640&h=300&baselayer=default&url=http://220.230.116.163/&level=11";
                 var center = "&center=" + (response.result.items[0].point.x) + "," + (response.result.items[0].point.y);
                 var markers = "&markers=" + (response.result.items[0].point.x) + "," + (response.result.items[0].point.y);
@@ -362,7 +312,7 @@
                 $(".store_location > img").attr("src", mapImgPath);
             });
             //네이버 지도 API
-          </c:if>
+           </c:if>
         })();
     });
 </script>
@@ -372,10 +322,6 @@
         detail.init();
         var review = new Review(${product.id}, {size : 3});
     });
-    // (function (detail, Review) {
-    //   detail.init();
-    //   var review = new Review(${product.id}, { size : 3 })
-    // })(window.reservation.detail, window.reservation.Review)
 </script>
 
 </html>

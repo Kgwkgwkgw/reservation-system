@@ -52,11 +52,11 @@ public class UserCommentDao {
 		this.insertAction = new SimpleJdbcInsert(dataSource).withTableName("RESERVATION_USER_COMMENT")
 				.usingGeneratedKeyColumns("id");
 	}
-	public Integer Insert(UserComment comment) {
-		SqlParameterSource params = new BeanPropertySqlParameterSource(comment);
-		return insertAction.executeAndReturnKey(params).intValue();
-	}
-	public Integer create(ReservationUserComment comment) {
+//	public Integer Insert(UserComment comment) {
+//		SqlParameterSource params = new BeanPropertySqlParameterSource(comment);
+//		return insertAction.executeAndReturnKey(params).intValue();
+//	}
+	public Integer insert(ReservationUserComment comment) {
 		SqlParameterSource params = new BeanPropertySqlParameterSource(comment);
 		return insertAction.executeAndReturnKey(params).intValue();
 	}

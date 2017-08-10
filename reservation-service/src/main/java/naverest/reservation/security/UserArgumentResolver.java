@@ -8,7 +8,6 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 public class UserArgumentResolver implements HandlerMethodArgumentResolver {
-
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
 		LogginedUser logginedUser = parameter.getParameterAnnotation( LogginedUser.class );
@@ -23,7 +22,7 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
 			NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
 		LogginedUser logginedUser = parameter.getParameterAnnotation( LogginedUser.class );
 		if(logginedUser == null) {
-			 SecurityContext.loginUser.set(null);
+			SecurityContext.loginUser.set(null);
 			return WebArgumentResolver.UNRESOLVED;
 		}
         return SecurityContext.loginUser.get();

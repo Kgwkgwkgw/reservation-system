@@ -7,7 +7,7 @@ define("reviewWrite", ["Handlebars", "rating"], function(Handlebars, Rating) {
 	}
 
 	ReviewWrite.prototype.initVariable = function() {
-		this.APIURL = "/reviews/api";
+		this.APIURL = "/api/reviews";
 		this.IMG_URL = "/images";
 		this.THUMB_MAX_COUNT = 5;
 		this.MAX_COMMENT_LENGTH = 400;

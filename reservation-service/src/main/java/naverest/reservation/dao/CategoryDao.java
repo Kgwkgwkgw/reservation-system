@@ -1,7 +1,7 @@
 package naverest.reservation.dao;
 
-import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
@@ -62,7 +62,7 @@ public class CategoryDao {
     		return jdbc.queryForObject(CategorySqls.SELECT_BY_NAME, params, Integer.class);
     }
     
-    public Collection<Category> selectAll () {
+    public List<Category> selectAll () {
     		try {
 			Map<String, Object> params = Collections.emptyMap();
 	    		return jdbc.query(CategorySqls.SELECT_ALL, params, rowMapper);

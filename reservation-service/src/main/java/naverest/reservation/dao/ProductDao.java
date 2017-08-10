@@ -35,7 +35,7 @@ public class ProductDao {
 		this.jdbc = new NamedParameterJdbcTemplate(dataSource);
 	}
     
-    public List<ProductMain> selectAllLimit (Integer offset, Integer size) {
+    public List<ProductMain> selectAllProductMainLimit (Integer offset, Integer size) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("offset", offset);
 		params.put("size", size);
@@ -52,7 +52,7 @@ public class ProductDao {
 		return jdbc.queryForObject(ProductSqls.COUNT_ALL, params, Integer.class);
     }
     
-    public List<ProductMain> selectByCategoryLimit (Integer categoryId, Integer offset, Integer size) {
+    public List<ProductMain> selectProductMainByCategoryLimit (Integer categoryId, Integer offset, Integer size) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("categoryId", categoryId);
 		params.put("offset", offset);

@@ -41,7 +41,7 @@ public class ProductSqls {
 			+ "									   FROM product p"
 			+ "									   WHERE p.sales_flag ="+onSale+" AND p.category_id = :categoryId";
 	
-	public final static String SELECT_PRODUCTDETAIL = "select"
+	public final static String SELECT_PRODUCTDETAIL = "SELECT"
 			+ "										  p.id, "
 			+ "										  p.name, "
 			+ "										  p.description, "
@@ -55,11 +55,11 @@ public class ProductSqls {
 			+ "										  d_i.place_lot, "
 			+ "										  d_i.place_street, "
 			+ "										  p_d.content"
-			+ "										  from product p"  
-			+ "										  left outer join product_detail p_d on p.id = p_d.product_id"  
-			+ "    									  left outer join display_info d_i on p.id = d_i.product_id"
-			+ "										  where p.id = :id"
-			+ "										  order by p.id";
+			+ "										  FROM product p"  
+			+ "										  LEFT OUTER JOIN product_detail p_d ON p.id = p_d.product_id"  
+			+ "    									  LEFT OUTER JOIN display_info d_i ON p.id = d_i.product_id"
+			+ "										  WHERE p.id = :id"
+			+ "										  ORDER BY p.id";
 	
 	public final static String SELECT_PRODUCT_RESERVATION = "select "
 			+ "												p.name,"

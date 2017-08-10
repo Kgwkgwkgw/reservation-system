@@ -15,40 +15,42 @@ define("detail", ["rolling"], function(Rolling) {
         var $lazyImg;
         var lazyImgClassName;
         var lazyImgScrollTop;
-
+        
+        function init() {
+            initVariable();
+            eventListen();
+        }
         function initVariable() {
-          // 헤더
-          $header = $("#header");
-          headerModifierClass="transparent";
-          // 제품 상세보기
-          $detailContentWrapper = $("._detail_content_wrapper");
-          $detailContent = $("._detail_content");
-          toggleModifierClass = "close3";
-          // 상세정보/오시는길 탭
-          $infoTabArea = $("._info_tab_area");
-          lazyImgClassName = ".lazyImg";
+            // 헤더
+            $header = $("#header");
+            headerModifierClass="transparent";
+            // 제품 상세보기
+            $detailContentWrapper = $("._detail_content_wrapper");
+            $detailContent = $("._detail_content");
+            toggleModifierClass = "close3";
+            // 상세정보/오시는길 탭
+            $infoTabArea = $("._info_tab_area");
+            lazyImgClassName = ".lazyImg";
 
-          calcLazyImgPosition(); // 레이지로딩 이미지 jquery select,  높이 값 찾음
-          //calcLazyImgePosition()부분이 위에 부분과 달리 함수를 호출하는 형식으로 작성하였는데
-          //통일성이 좀 없는것 같아서 값을 반환하려고했는데, 2개( jqueryselector, 엘레멘트높이값)을
-          //반환해야해서 그렇게 못했는데, 이렇게 해도 괜찮을까요?? 혹시 더 좋은 방법이 있을까요?
+            calcLazyImgPosition(); 
 
-          rolling = new Rolling(".visual_img", {
-              "prevBtn" : ".btn_prev",
-              "nextBtn" : ".btn_nxt",
-              "autoSlide" : false,
-              "isTouch" : true
-          });
-          rolling.on("sliding", function(res) {
-              $("._ProductImageCurrentCount").text(res.currentNum);
-          })
+
+            rolling = new Rolling(".visual_img", {
+                "prevBtn" : ".btn_prev",
+                "nextBtn" : ".btn_nxt",
+                "autoSlide" : false,
+                "isTouch" : true 
+            });
+            rolling.on("sliding", function(res) {
+                $("._ProductImageCurrentCount").text(res.currentNum);
+            })
         }
 
         function eventListen() {
-          $infoTabArea.on("click", "._tab", infoTabClickListener);
-          $detailContentWrapper.on("click", "._hinge", hingeClickListener);
-          $(window).on("scroll", lazyLoadingHandler);
-          $(window).on("scroll", headerHandler);
+            $infoTabArea.on("click", "._tab", infoTabClickListener);
+            $detailContentWrapper.on("click", "._hinge", hingeClickListener);
+            $(window).on("scroll", lazyLoadingHandler);
+            $(window).on("scroll", headerHandler);
 
         }
 
@@ -71,37 +73,34 @@ define("detail", ["rolling"], function(Rolling) {
         // 레이지이미지중 맨위에꺼 위치 계산
         // 이미지가 로딩되서 레이지로딩할 이미지 위치 다시 계산
         function calcLazyImgPosition() {
-          $lazyImg = $(lazyImgClassName).eq(0);
+            $lazyImg = $(lazyImgClassName).eq(0);
 
-          if($lazyImg.length) {
-            lazyImgScrollTop = $lazyImg.offset().top;
-          }
+            if($lazyImg.length) {
+                lazyImgScrollTop = $lazyImg.offset().top;
+            }
         }
 
         function hingeClickListener(e) {
-          e.preventDefault();
-          $detailContentWrapper.find("._hinge").toggleClass("hide");
-          $detailContent.toggleClass(toggleModifierClass);
-          }
+            e.preventDefault();
+            $detailContentWrapper.find("._hinge").toggleClass("hide");
+            $detailContent.toggleClass(toggleModifierClass);
+        }
 
         function infoTabClickListener(e) {
-          e.preventDefault();
-          $infoTabArea.find("._tab").removeClass("active");
-          $infoTabArea.find($(this)).addClass("active");
+            e.preventDefault();
+            $infoTabArea.find("._tab").removeClass("active");
+            $infoTabArea.find($(this)).addClass("active");
 
-          $infoTabArea.find("._content").addClass("hide");
-          $infoTabArea.find($(this).data("content")).removeClass("hide");
+            $infoTabArea.find("._content").addClass("hide");
+            $infoTabArea.find($(this).data("content")).removeClass("hide");
         }
 
-        function init() {
-          initVariable();
-          eventListen();
-        }
+        
 
 
         return {
-          init : init
+            init : init
         };
 
-        })();
+    })();
 });
