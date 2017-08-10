@@ -1,11 +1,10 @@
-package naverest.reservation.controller.user.review;
+package naverest.reservation.controller.user.comment;
 
-import static junit.framework.TestCase.assertTrue;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static junit.framework.TestCase.*;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +18,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import naverest.reservation.domain.ReservationUserComment;
+import naverest.reservation.controller.user.comment.UserCommentRestController;
 import naverest.reservation.dto.CommentStats;
 import naverest.reservation.dto.Criteria;
 import naverest.reservation.dto.FileCommentImage;
@@ -28,12 +27,12 @@ import naverest.reservation.dto.UserCommentWrapper;
 import naverest.reservation.service.UserCommentService;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ReviewRestControllerTest {
+public class UserCommentRestControllerTest {
 
 	@Mock
 	private UserCommentService userCommentService;
 	@InjectMocks
-	ReviewRestController controller;
+	UserCommentRestController userCommentRestController;
 
 	MockMvc mvc;
 	private static long id = 1L;
@@ -81,7 +80,7 @@ public class ReviewRestControllerTest {
 		
 
 
-		this.mvc = MockMvcBuilders.standaloneSetup(controller).build();
+		this.mvc = MockMvcBuilders.standaloneSetup(userCommentRestController).build();
 
 		when(userCommentService.getCommentListByProductId(27, 0, 10)).thenReturn(commentWrapperList);
 	}
@@ -96,7 +95,7 @@ public class ReviewRestControllerTest {
 		Criteria criteria = new Criteria();
 		criteria.setOffset(0);
 		criteria.setSize(10);
-		mvc.perform(get("/api/reviews").param("productId", "27")
+		mvc.perform(get("/api/comments").param("productId", "27")
 										.param("offset", "0")
 										.param("size", "10"))
 										.andExpect(status().isOk())

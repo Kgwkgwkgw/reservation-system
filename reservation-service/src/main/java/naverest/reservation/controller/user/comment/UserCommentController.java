@@ -1,4 +1,4 @@
-package naverest.reservation.controller.user.review;
+package naverest.reservation.controller.user.comment;
 
 import java.util.List;
 
@@ -23,15 +23,15 @@ import naverest.reservation.service.UserCommentService;
 
 @Controller
 @RequestMapping("/reviews")
-public class ReviewController {
+public class UserCommentController {
 	@Value("${naverest.userDir}")
 	private String DIRNAME;
 	private UserCommentService userCommentService;
 	private ReservationInfoService reservationInfoService;
-	private final Logger log = LoggerFactory.getLogger(ReviewController.class);
+	private final Logger log = LoggerFactory.getLogger(UserCommentController.class);
 
 	@Autowired
-	public ReviewController(UserCommentService userCommentService, 
+	public UserCommentController(UserCommentService userCommentService, 
 			ReservationInfoService reservationInfoService) {
 		this.userCommentService = userCommentService;
 		this.reservationInfoService = reservationInfoService;

@@ -9,8 +9,7 @@ import org.springframework.context.annotation.Import;
 @ComponentScan(basePackages = {
      "naverest.reservation.dao",
      "naverest.reservation.service",
-     "naverest.reservation.handler",
-     "naverest.reservation.oauth.naver"
+     "naverest.reservation.handler"
 })
 @Import({DbConfig.class}) // DBConfig 를 설정한다.
 public class RootApplicationContextConfig {

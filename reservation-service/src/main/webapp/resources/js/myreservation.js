@@ -164,7 +164,6 @@ define("myreservation", ["Handlebars"], function(Handlebars) {
 		$.ajax({
 		  url : APIURL+"/count"
 		}).done(function(res) {
-			console.log("res:"+res);
 		    $allCount.text(res.total);
 		    $schduleCount.text(res.schedule);
 		    $completionCount.text(res.completion);

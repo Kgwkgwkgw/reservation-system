@@ -1,4 +1,4 @@
-define("review", ["Handlebars"], function(Handlebars) {
+define("comment", ["Handlebars"], function(Handlebars) {
     "use strict";
 
     return eg.Class.extend(eg.Component, {
@@ -15,7 +15,7 @@ define("review", ["Handlebars"], function(Handlebars) {
         },
 
         initVariable : function(productId, objOption) {
-            this.APIURL = "/api/reviews";
+            this.APIURL = "/api/comments";
             this.NUM_OF_STAR = 5;
 
             this.productId = productId;

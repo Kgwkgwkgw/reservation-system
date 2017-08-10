@@ -1,4 +1,4 @@
-package kgw.reservation.dao;
+package naverest.reservation.dao;
 
 import java.sql.Connection;
 

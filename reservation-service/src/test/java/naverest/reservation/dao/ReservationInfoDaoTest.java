@@ -1,4 +1,4 @@
-package kgw.reservation.dao;
+package naverest.reservation.dao;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;

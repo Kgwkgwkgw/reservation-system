@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import naverest.reservation.controller.user.review.ReviewController;
+import naverest.reservation.controller.user.comment.UserCommentController;
 import naverest.reservation.dao.UserDao;
 import naverest.reservation.domain.User;
 import naverest.reservation.dto.NaverLoginProfile;

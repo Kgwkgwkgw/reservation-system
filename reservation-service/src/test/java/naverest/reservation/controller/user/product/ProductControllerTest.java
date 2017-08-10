@@ -1,14 +1,10 @@
 package naverest.reservation.controller.user.product;
 
-import static junit.framework.TestCase.assertTrue;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static junit.framework.TestCase.*;
+import static org.hamcrest.CoreMatchers.*;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +20,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import naverest.reservation.controller.user.product.ProductRestController;
 import naverest.reservation.dto.ProductMain;
 import naverest.reservation.service.ProductService;
 
@@ -35,7 +30,7 @@ public class ProductControllerTest {
 	@Mock
 	private ProductService productService;
 	@InjectMocks
-	ProductRestController controller;
+	ProductRestController productRestController;
 	
 	MockMvc mvc;
     private static long id = 1L;
@@ -48,7 +43,7 @@ public class ProductControllerTest {
     	 list.add(new ProductMain(100, "당신만영","노잼", 1, "/2017/07/17/abc.jpg", "샤롯데씨어터"));
     	 list.add(new ProductMain(101, "당신만일","핵잼", 1, "/2017/07/17/abc.jpg", "샤롯데씨어터"));
  
-         this.mvc = MockMvcBuilders.standaloneSetup(controller)
+         this.mvc = MockMvcBuilders.standaloneSetup(productRestController)
                  .build();
          when(productService.countAll()).thenReturn(26);
          when(productService.findAllProductMainLimit(0, 10)).thenReturn(list);

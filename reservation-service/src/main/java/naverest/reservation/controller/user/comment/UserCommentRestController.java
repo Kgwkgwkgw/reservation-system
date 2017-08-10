@@ -1,4 +1,4 @@
-package naverest.reservation.controller.user.review;
+package naverest.reservation.controller.user.comment;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,24 +14,20 @@ import naverest.reservation.dto.UserCommentWrapper;
 import naverest.reservation.service.UserCommentService;
 
 @RestController
-@RequestMapping("/api/reviews")
-public class ReviewRestController {
+@RequestMapping("/api/comments")
+public class UserCommentRestController {
 
 	private UserCommentService userCommentService;
-	private final Logger log = LoggerFactory.getLogger(ReviewRestController.class);
-	
+	private final Logger log = LoggerFactory.getLogger(UserCommentRestController.class);
+
 	@Autowired
-	public ReviewRestController(UserCommentService userCommentService) {
+	public UserCommentRestController(UserCommentService userCommentService) {
 		this.userCommentService = userCommentService;
 	}
-	
+
 	@GetMapping
- 	public UserCommentWrapper getList(@RequestParam Integer productId, @ModelAttribute Criteria criteria) {
+	public UserCommentWrapper getList(@RequestParam Integer productId, @ModelAttribute Criteria criteria) {
 		log.debug("{}", criteria);
 		return userCommentService.getCommentListByProductId(productId, criteria.getOffset(), criteria.getSize());
 	}
-	
-	
-
-	
 }

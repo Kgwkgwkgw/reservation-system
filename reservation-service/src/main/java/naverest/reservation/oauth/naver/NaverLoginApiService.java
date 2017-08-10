@@ -1,7 +1,11 @@
 package naverest.reservation.oauth.naver;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -19,7 +23,9 @@ import com.github.scribejava.core.oauth.OAuth20Service;
 import naverest.reservation.dto.NaverBlogResult;
 import naverest.reservation.dto.NaverLoginProfile;
 @Service
-public class NaverApiBO {
+public class NaverLoginApiService {
+	
+	private final Logger log = LoggerFactory.getLogger(NaverLoginApiService.class);
 	
 	//client_id: 애플리케이션 등록 후 발급받은 클라이언트 아이디
 	//response_type: 인증 과정에 대한 구분값. code로 값이 고정돼 있습니다.
@@ -40,14 +46,20 @@ public class NaverApiBO {
 	
 	private OAuth20Service oauthService; 
 	// 네이버 아이디로 인증  URL 생성  Method 
-	public String getAuthorizationUrl(String oauthState) {        
+	public String getAuthorizationUrl(String oauthState, String returnUrl) {        
 	    // Scribe에서 제공하는 인증 URL 생성 기능을 이용하여 네아로 인증 URL 생성 
+		try {
+			returnUrl = URLEncoder.encode(returnUrl, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			log.error(e.getMessage());
+		}
 	    OAuth20Service oauthService = new ServiceBuilder()                                                   
 	            .apiKey(CLIENT_ID)
 	            .apiSecret(CLIENT_SECRET)
-	            .callback(REDIRECT_URI)
+	            .callback(REDIRECT_URI + "?returnUrl="+returnUrl)
 	            .state(oauthState) // 생성한 난수값을 인증 URL생성시 사용함
 	            .build(NaverLoginApi.instance());
+	    log.info(oauthService.getAuthorizationUrl());
 	    return oauthService.getAuthorizationUrl();
 	}
 	

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 
 import naverest.reservation.dto.NaverBlogResult;
-import naverest.reservation.oauth.naver.NaverApiBO;
+import naverest.reservation.oauth.naver.NaverLoginApiService;
 
 @Controller
 @RequestMapping("/blog")
@@ -24,11 +24,11 @@ public class BlogController {
 	@Value("${USER_DIR}")
 	private String DIRNAME;
 	private String SUBJECT ="/blog";
-	private NaverApiBO naverApiBO;
+	private NaverLoginApiService naverLoginApiService;
 	
 	@Autowired
-	public BlogController(NaverApiBO naverApiBO) {
-		this.naverApiBO = naverApiBO;
+	public BlogController(NaverLoginApiService naverLoginApiService) {
+		this.naverLoginApiService = naverLoginApiService;
 	}
 	@GetMapping("/form")
 	public String form(HttpSession session, Model model) throws IOException {
@@ -37,7 +37,7 @@ public class BlogController {
 	}
 	@PostMapping
 	public String post(HttpSession session, Model model, @RequestParam String title,@RequestParam String contents) throws IOException {
-		NaverBlogResult naverBlogResult = naverApiBO.postBlogContent((OAuth2AccessToken)session.getAttribute("oauthToken"), title, contents);
+		NaverBlogResult naverBlogResult = naverLoginApiService.postBlogContent((OAuth2AccessToken)session.getAttribute("oauthToken"), title, contents);
 		if(naverBlogResult!=null) {
 			model.addAttribute("naverBlogResult", naverBlogResult);
 			return DIRNAME+SUBJECT+"/result";
