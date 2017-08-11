@@ -4,6 +4,7 @@ import javax.servlet.ServletContext;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,7 +24,11 @@ import naverest.reservation.service.CategoryService;
 @Controller
 @RequestMapping("/admin/categories")
 public class CategoryController {
-	private static final String DIRNAME ="/admin/categories";
+	@Value("${naverest.adminDir}")
+	private String DIRNAME;
+	
+	private	final String CATEGORYDIR = "/categories"; 
+	
 	CategoryService categoryService;
 	@Autowired
     ServletContext context;
@@ -34,37 +39,41 @@ public class CategoryController {
 	
 	@GetMapping
 	public String index(Model model) {
-		return DIRNAME+"/index";
+		model.addAttribute("list", categoryService.findAll());
+		
+		return DIRNAME + CATEGORYDIR+"/index";
 	}
 	
 	@GetMapping("/form")
 	public String form(Model model) {
-		model.addAttribute("url", DIRNAME);
+		model.addAttribute("url", DIRNAME+ CATEGORYDIR);
 		
-		return DIRNAME+"/form";
+		return DIRNAME + CATEGORYDIR+"/form";
 	}
 	
 	@PostMapping
 	public String create(@Valid @ModelAttribute Category category, BindingResult bindingResult, Model model) {
 		if(bindingResult.hasErrors()) {
-			model.addAttribute("url", DIRNAME);
+			model.addAttribute("url", DIRNAME+ CATEGORYDIR);
 			model.addAttribute("error","빈 값은 넣을수 없습니다.");
-			return DIRNAME+"/form";
+			return DIRNAME + CATEGORYDIR+"/form";
 		}
 		
 		categoryService.create(category);
-		return "redirect:"+DIRNAME;
+		return "redirect:"+DIRNAME+ CATEGORYDIR;
 	}
+	
 	@PutMapping("/{id}")
 	@ResponseBody
-	public void update(@PathVariable String id, @Valid @RequestBody Category category) {
-		category.setId(Integer.valueOf(id));
+	public void update(@PathVariable Integer id, @Valid @RequestBody Category category) {
+		category.setId(id);
 		categoryService.update(category);
 	}
+	
 	@DeleteMapping("/{id}")
 	@ResponseBody
-	public void delete(@PathVariable String id) {
-		categoryService.delete(Integer.valueOf(id));
+	public void delete(@PathVariable Integer id) {
+		categoryService.delete(id);
 	}
 
 }

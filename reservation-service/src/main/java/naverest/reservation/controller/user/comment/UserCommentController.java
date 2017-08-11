@@ -36,43 +36,10 @@ public class UserCommentController {
 		this.userCommentService = userCommentService;
 		this.reservationInfoService = reservationInfoService;
 	}
-
-	@GetMapping("/form")
-	public String form(@RequestParam Integer productId, HttpSession session) {
-		User user = (User) session.getAttribute("loginInfo");
-		Integer count = reservationInfoService.findCountByUserIdAndProductId(productId, user.getId());
-		if(count==0) {
-			return "error";
-		}
-		return DIRNAME + "/reviewWrite";
-	}
 	
 	@GetMapping
  	public String reviewView(@RequestParam Integer productId) {
  		return DIRNAME+ "/review";
  	}
 	
-	//@RequestParam UserComment userComment, @RequestParam List<Integer> fileIdList,
-	@PostMapping("/form")
-	public String makeReivew(@ModelAttribute @Valid ReservationUserComment reservationUserComment,
-				@RequestParam (required=false) List<Integer> fileIdList, HttpSession session) {
-		log.info("========userComment info ========");
-		log.info(reservationUserComment.getComment());
-		log.info(""+reservationUserComment.getProductId());
-		log.info(""+reservationUserComment.getId());
-	
-		User user = (User) session.getAttribute("loginInfo");
-		Integer userId = user.getId();
-
-		reservationUserComment.setUserId(userId);
-		
-		Integer commentId = userCommentService.createReservationUserComment(reservationUserComment, fileIdList);
-		if(commentId==null){
-			log.info("===== comment 등록 실패 =====");
-			return "/error";
-		}else{
-			log.info("===== comment 등록 성공 =====");
-		}
-		return "redirect:/myreservation";
-	}
 }

@@ -2,6 +2,7 @@ package naverest.reservation.config;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -15,8 +16,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import naverest.reservation.controller.user.login.LoginController;
 import naverest.reservation.interceptor.LoginCheckInterceptor;
-import naverest.reservation.oauth.naver.NaverLoginApiService;
 import naverest.reservation.security.UserArgumentResolver;
 
 @Configuration
@@ -27,7 +28,14 @@ public class ServletContextConfig extends WebMvcConfigurerAdapter {
 	private Long imageMaxSize;
 	@Value("${naverest.imagePath}")
 	private String imagePath;
-
+	
+	private LoginController loginController;
+	
+	@Autowired
+	public ServletContextConfig(LoginController loginController) {
+		this.loginController = loginController;
+	}
+	
 	@Bean
 	public ViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
@@ -39,21 +47,15 @@ public class ServletContextConfig extends WebMvcConfigurerAdapter {
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/"); // webapp/resources
-																							// 경로를
-																							// 의미
+		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/"); 
 		registry.addResourceHandler("/imgresources/**").addResourceLocations(imagePath);
 		registry.addResourceHandler("/favicon.ico").addResourceLocations("/favicon.ico");
 	}
 
-	@Bean
-	public NaverLoginApiService naverLoginApiService() {
-		return new NaverLoginApiService();
-	}
 
 	@Bean
 	LoginCheckInterceptor loginCheckInterceptor() {
-		return new LoginCheckInterceptor(naverLoginApiService());
+		return new LoginCheckInterceptor(loginController);
 	}
 
 	@Override

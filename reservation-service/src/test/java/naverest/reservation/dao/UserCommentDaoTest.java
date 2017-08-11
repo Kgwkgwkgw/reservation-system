@@ -61,7 +61,7 @@ public class UserCommentDaoTest {
 		reservationUserComment.setUserId(7);
 		Integer id = userCommentDao.insert(reservationUserComment);
 		reservationUserComment.setId(id);
-		//check
+		//check count = count+1
 		commentStats = userCommentDao.selectStatsByProductId(27);
 		assertThat(commentStats.getAverageScore(), is(3.5) );
 		assertThat(commentStats.getCount(), is(7));

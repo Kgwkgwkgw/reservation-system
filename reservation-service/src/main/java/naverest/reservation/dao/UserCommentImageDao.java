@@ -22,12 +22,13 @@ public class UserCommentImageDao {
 	public UserCommentImageDao(DataSource dataSource) {
 		this.jdbc = new NamedParameterJdbcTemplate(dataSource);
 	}
-	public void insertBatch(List<ReservationUserCommentImage> reservationUserCommentImageList) {
+	public int[] insertBatch(List<ReservationUserCommentImage> reservationUserCommentImageList) {
 		List<SqlParameterSource> parameters = new ArrayList<SqlParameterSource>();
 		for (ReservationUserCommentImage reservationUserCommentImage : reservationUserCommentImageList) {
 			parameters.add(new BeanPropertySqlParameterSource(reservationUserCommentImage));
 		}
-		this.jdbc.batchUpdate(UserCommentImageSqls.INSERT_BY_COMMENT_AND_FILE_ID_BATCH, parameters.toArray(new SqlParameterSource[0]));
+		
+		return this.jdbc.batchUpdate(UserCommentImageSqls.INSERT_BY_COMMENT_AND_FILE_ID_BATCH, parameters.toArray(new SqlParameterSource[0]));
 	}
 	
 	

@@ -16,7 +16,7 @@ import naverest.reservation.service.ProductService;
 @RequestMapping("/api/products")
 public class ProductRestController {
 	private ProductService productService;
-	
+
 	@Autowired
 	public ProductRestController(ProductService productService) {
 		this.productService = productService;
@@ -29,17 +29,20 @@ public class ProductRestController {
 			offset = 0;
 			size = 10;
 		}
-		if(categoryId != null)
-			return productService.findProductMainByCategoryLimit(categoryId, offset, size);
 		
+		if(categoryId != null) {
+			return productService.findProductMainByCategoryLimit(categoryId, offset, size);
+		}
 		return productService.findAllProductMainLimit(offset, size);
 	}
 
 	@GetMapping("/count")
 	@ResponseBody
 	public Integer countList(@RequestParam(required=false) Integer categoryId) {
-		if(categoryId != null)
+		if(categoryId != null) {
 			return productService.countByCategory(categoryId);
+		}
+		
 		return productService.countAll();
 	}
 }

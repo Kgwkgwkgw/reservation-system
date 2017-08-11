@@ -29,7 +29,7 @@ public class ProductController {
 	@GetMapping("/{id}")
 	public String detailPage(@PathVariable Integer id, Model model) {
 		model.addAttribute("product", productService.findProductDetail(id));
-		model.addAttribute("reservationUrl", url+"/reservation/"+id);
+//		model.addAttribute("reservationUrl", ""); todo 
 		
 		return DIRNAME+"/detail";
 	}
