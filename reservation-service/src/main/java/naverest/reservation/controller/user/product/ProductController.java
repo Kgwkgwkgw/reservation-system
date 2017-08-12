@@ -18,7 +18,6 @@ public class ProductController {
 	private ProductService productService;
 	@Value("${naverest.userDir}")
 	private String DIRNAME;
-	private static final String url = "/products";
 	private final Logger log = LoggerFactory.getLogger(ProductController.class);
 	
 	@Autowired
@@ -27,7 +26,7 @@ public class ProductController {
 	}
 	
 	@GetMapping("/{id}")
-	public String detailPage(@PathVariable Integer id, Model model) {
+	public String detail(@PathVariable Integer id, Model model) {
 		model.addAttribute("product", productService.findProductDetail(id));
 //		model.addAttribute("reservationUrl", ""); todo 
 		

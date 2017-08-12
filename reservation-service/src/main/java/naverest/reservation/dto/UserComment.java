@@ -1,5 +1,6 @@
 package naverest.reservation.dto;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -8,27 +9,17 @@ public class UserComment {
 	private Integer userId;
 	private String username;
 	private String productName;
-	private Double score;
+	private BigDecimal score;
 	private String comment;
 	private Date createDate;
 	private Date modifyDate;
 	
 	private String reservationDate;
 	private List<FileCommentImage> commentImageList;
-	public UserComment(){}
-	public UserComment(Integer id, Integer userId, String username, String productName,
-			Double score, String comment, String reservationDate ){
-		this.id = id;
-		this.userId = userId;
-		this.username = username;
-		this.productName = productName;
-		this.score = score;
-		this.comment = comment;
-		this.reservationDate = reservationDate;
-		this.createDate = new Date();
-		this.modifyDate = new Date();
+	public UserComment() {
+		
 	}
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -41,12 +32,14 @@ public class UserComment {
 	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
-	public Double getScore() {
+	
+	public BigDecimal getScore() {
 		return score;
 	}
-	public void setScore(Double score) {
+	public void setScore(BigDecimal score) {
 		this.score = score;
 	}
+
 	public String getComment() {
 		return comment;
 	}

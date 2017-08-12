@@ -55,7 +55,7 @@ public class ServletContextConfig extends WebMvcConfigurerAdapter {
 
 	@Bean
 	LoginCheckInterceptor loginCheckInterceptor() {
-		return new LoginCheckInterceptor(loginController);
+		return new LoginCheckInterceptor();
 	}
 
 	@Override

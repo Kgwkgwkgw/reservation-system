@@ -51,10 +51,6 @@ public class ReservationInfoDaoTest {
 		this.reservationInfo.setCreateDate(new Date());
 	}
 
-	@After
-	public void tearDown() throws Exception {
-	}
-
 	@Test
 	public void shouldInsertAndSelect() {
 		int id = reservationInfoDao.insert(this.reservationInfo);

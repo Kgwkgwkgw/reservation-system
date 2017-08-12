@@ -57,11 +57,6 @@ public class CategoryDao {
     		}
     }
     
-    public Integer selectByName (String name) {
-    		Map<String, ?> params = Collections.singletonMap("name", name);
-    		return jdbc.queryForObject(CategorySqls.SELECT_BY_NAME, params, Integer.class);
-    }
-    
     public List<Category> selectAll () {
     		try {
 			Map<String, Object> params = Collections.emptyMap();

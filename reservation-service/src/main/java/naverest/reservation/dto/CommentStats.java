@@ -1,22 +1,20 @@
 package naverest.reservation.dto;
 
+import java.math.BigDecimal;
+
 public class CommentStats {
-	// 코멘트 개수
 	private Integer count;
-	// 코멘트 평점의 평균
-	private Double averageScore;
+	private BigDecimal averageScore;
 	public Integer getCount() {
 		return count;
 	}
 	public void setCount(Integer count) {
 		this.count = count;
 	}
-	public Double getAverageScore() {
+	public BigDecimal getAverageScore() {
 		return averageScore;
 	}
-	public void setAverageScore(Double averageScore) {
+	public void setAverageScore(BigDecimal averageScore) {
 		this.averageScore = averageScore;
 	}
-	
-	
 }

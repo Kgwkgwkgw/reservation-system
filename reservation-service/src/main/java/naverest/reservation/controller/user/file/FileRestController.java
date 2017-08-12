@@ -31,12 +31,12 @@ public class FileRestController {
 		this.userCommentService = userCommentService;
 		this.fileService = fileService;
 	}
-	@DeleteMapping("/images/{fileId}")
-	public Integer removeUserCommentImage(@PathVariable Integer fileId ){
-		log.info("fileId ====:"+fileId);
-		return userCommentService.removeUserCommentImagefile(fileId);
-	}
-	
+//	@DeleteMapping("/images/{fileId}")
+//	public Integer removeUserCommentImage(@PathVariable Integer fileId ){
+//		log.info("fileId ====:"+fileId);
+//		return userCommentService.removeUserCommentImagefile(fileId);
+//	}
+//	
 	@PostMapping("/images")
 	public List<FileDomain> createUserCommentImages(MultipartFile[] images, @LogginedUser User user) {
 		log.debug("{}",images);

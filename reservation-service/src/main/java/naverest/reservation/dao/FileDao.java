@@ -55,7 +55,7 @@ public class FileDao {
 		}
     }
     
-    public List<FileCommentImage> selectJoinCommentImageByProductIdAndUserId (Integer productId, Set<Integer> userIds) {
+    public List<FileCommentImage> selectJoinCommentImageByProductIdAndUserId (Integer productId, List<Integer> userIds) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("productId", productId);
 		params.put("userIds", userIds);

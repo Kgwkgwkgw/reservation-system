@@ -28,16 +28,16 @@ import naverest.reservation.sql.UserCommentSqls;
 public class UserCommentDao {
 	private NamedParameterJdbcTemplate jdbc;
 	private SimpleJdbcInsert insertAction;
-
+	
 	private DateFormat df = new SimpleDateFormat("yyyy.M.d.");
-	private RowMapper<UserComment> rowMapper = (rs, i) -> {
+	private RowMapper<UserComment> userCommentrowMapper = (rs, i) -> {
 		UserComment userComment = new UserComment();
 		userComment.setId(rs.getInt("id"));
 		userComment.setComment(rs.getString("comment"));
 		userComment.setProductName(rs.getString("name"));
 		userComment.setCreateDate(rs.getDate("create_date"));
 		userComment.setModifyDate(rs.getDate("modify_date"));
-		userComment.setScore(rs.getDouble("score"));
+		userComment.setScore(rs.getBigDecimal("score"));
 		userComment.setUserId(rs.getInt("user_id"));
 		userComment.setUsername(rs.getString("username").substring(0, rs.getString("username").length() - 3) + "****");
 		userComment.setReservationDate(df.format(rs.getDate("reservation_date")));
@@ -49,16 +49,13 @@ public class UserCommentDao {
 	@Autowired
 	public UserCommentDao(DataSource dataSource) {
 		this.jdbc = new NamedParameterJdbcTemplate(dataSource);
-		this.insertAction = new SimpleJdbcInsert(dataSource).withTableName("RESERVATION_USER_COMMENT")
-				.usingGeneratedKeyColumns("id");
+		 this.insertAction = new SimpleJdbcInsert(dataSource).withTableName("RESERVATION_USER_COMMENT")
+                 .usingGeneratedKeyColumns("id");
 	}
-//	public Integer Insert(UserComment comment) {
-//		SqlParameterSource params = new BeanPropertySqlParameterSource(comment);
-//		return insertAction.executeAndReturnKey(params).intValue();
-//	}
+	
 	public Integer insert(ReservationUserComment comment) {
-		SqlParameterSource params = new BeanPropertySqlParameterSource(comment);
-		return insertAction.executeAndReturnKey(params).intValue();
+	    SqlParameterSource params = new BeanPropertySqlParameterSource(comment);
+	    return insertAction.executeAndReturnKey(params).intValue();
 	}
 	
 	public List<UserComment> selectUserCommentByProductId(Integer productId, Integer offset, Integer size) {
@@ -67,7 +64,7 @@ public class UserCommentDao {
 		params.put("offset", offset);
 		params.put("size", size);
 		try {
-			return jdbc.query(UserCommentSqls.SELECT_BY_PRODUCT_ID_LIMIT, params, rowMapper);
+			return jdbc.query(UserCommentSqls.SELECT_BY_PRODUCT_ID_LIMIT, params, userCommentrowMapper);
 		} catch (DataAccessException e) {
 			e.printStackTrace();
 			return null;

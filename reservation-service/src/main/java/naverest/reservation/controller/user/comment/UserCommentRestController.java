@@ -14,7 +14,7 @@ import naverest.reservation.dto.UserCommentWrapper;
 import naverest.reservation.service.UserCommentService;
 
 @RestController
-@RequestMapping("/api/comments")
+@RequestMapping("/api/reviews")
 public class UserCommentRestController {
 
 	private UserCommentService userCommentService;
@@ -27,7 +27,7 @@ public class UserCommentRestController {
 
 	@GetMapping
 	public UserCommentWrapper getList(@RequestParam Integer productId, @ModelAttribute Criteria criteria) {
-		log.debug("{}", criteria);
-		return userCommentService.getCommentListByProductId(productId, criteria.getOffset(), criteria.getSize());
+		log.info("{}", criteria);
+		return userCommentService.findCommentWrapperByProductId(productId, criteria.getOffset(), criteria.getSize());
 	}
 }

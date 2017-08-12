@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import naverest.reservation.domain.FileDomain;
 
 public interface FileService {
-	public FileDomain create(FileDomain file);
-	public List<FileDomain> createFileList(Integer userId, MultipartFile[] images);
-	public FileDomain find(Integer id);
+	FileDomain create(FileDomain file);
+	List<FileDomain> createFileList(Integer userId, MultipartFile[] images);
+	FileDomain find(Integer id);
 }

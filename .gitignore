@@ -18,6 +18,8 @@ application.properties
 temp/
 # Eclipse Core
 .project
+# Dist js
+dist/
 
 # External tool builders
 .externalToolBuilders/

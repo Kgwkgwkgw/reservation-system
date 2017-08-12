@@ -41,11 +41,5 @@ public class UserCommentImageDaoTest {
 		imageList.add(reservationUserCommentImage2);
 		
 	}
-	
-	@Test
-	public void shouldInsertBatch() {
-//		int howMany = userCommentImageDao.insertBatch(imageList);
-//		log.info(""+howMany);
-	}
 
 }

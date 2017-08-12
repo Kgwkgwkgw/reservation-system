@@ -86,8 +86,20 @@ public class LoginController {
 
 			session.setAttribute("loginInfo", user);
 			return "redirect:" + returnUrl;
-		} else
+		} else {
+			log.debug(error);
 			return "error";
+		}
+	}
+	
+	@GetMapping("/refresh")
+	public String reqRefreshAccessTocken(HttpSession session, @RequestParam String returnUrl) throws IOException {
+		OAuth2AccessToken oauthToken = (OAuth2AccessToken)session.getAttribute("oauthToken"); 
+		OAuth2AccessToken newAccessToken = oauthService.refreshAccessToken(oauthToken.getRefreshToken());
+		newAccessToken.getAccessToken();
+		
+		session.setAttribute("oauthToken", newAccessToken);
+		return "redirect:"+ returnUrl;
 	}
 
 	private String generateRandomString() {
@@ -98,7 +110,7 @@ public class LoginController {
 		try {
 			returnUrl = URLEncoder.encode(returnUrl, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
-			log.error(e.getMessage());
+			log.error("{}",e);
 		}
 	    OAuth20Service oauthService = new ServiceBuilder()                                                   
 	            .apiKey(CLIENT_ID)
@@ -137,12 +149,6 @@ public class LoginController {
 	    JsonNode responseNode = rootNode.path("response");
 	    NaverLoginProfile naverLoginProfile = objectMapper.treeToValue(responseNode, NaverLoginProfile.class);
 	    return naverLoginProfile;
-	}
-
-	public OAuth2AccessToken reqRefreshAccessTocken(OAuth2AccessToken oauthToken) throws IOException {
-		OAuth2AccessToken newAccessToken = oauthService.refreshAccessToken(oauthToken.getRefreshToken());
-		
-		return new OAuth2AccessToken(newAccessToken.getAccessToken(), oauthToken.getTokenType(), oauthToken.getExpiresIn(), oauthToken.getRefreshToken(), null, "NaverApi");
 	}
 
 }

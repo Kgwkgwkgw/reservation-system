@@ -1,8 +1,8 @@
 package naverest.reservation.dao;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
 import java.util.Collection;
 
@@ -15,7 +15,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import naverest.reservation.config.RootApplicationContextConfig;
-import naverest.reservation.dao.CategoryDao;
 import naverest.reservation.domain.Category;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -45,21 +44,23 @@ public class CategoryDaoTest {
 		int id = categoryDao.insert(category);
 		category.setId(id);
 		
-		Integer selectedId = categoryDao.selectByName(category.getName());
-		assertThat(selectedId, is(category.getId()));
+		Category selectedCategory = categoryDao.selectById(category.getId());
+		assertThat(selectedCategory.getId(), is(category.getId()));
 	}
 	
 	@Test
 	public void shouldDeleteById() {
 		int id = categoryDao.insert(category); 
 		int affected = categoryDao.delete(id);
+		
 		assertThat(affected, is(1));
 	}
 	
 	@Test
 	public void shouldSelectAll() {
+		categoryDao.insert(category);
 		Collection<Category> allCategorys = categoryDao.selectAll();
-		
+
 		assertThat(allCategorys, is(notNullValue()));
 	}
 	

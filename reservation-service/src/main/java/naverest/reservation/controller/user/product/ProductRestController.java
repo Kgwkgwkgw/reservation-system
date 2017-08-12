@@ -29,7 +29,6 @@ public class ProductRestController {
 			offset = 0;
 			size = 10;
 		}
-		
 		if(categoryId != null) {
 			return productService.findProductMainByCategoryLimit(categoryId, offset, size);
 		}

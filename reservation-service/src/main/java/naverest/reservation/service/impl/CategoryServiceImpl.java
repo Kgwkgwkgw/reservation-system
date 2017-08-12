@@ -20,20 +20,17 @@ public class CategoryServiceImpl implements CategoryService  {
 	}
 	
 	@Override
-	@Transactional(readOnly = false)
 	public Category create (Category category) {
     		category.setId(categoryDao.insert(category));
     		return category;
 	}
     
 	@Override
-	@Transactional(readOnly = false)
     public boolean delete(Integer id) {
         return categoryDao.delete(id) == 1 ? true : false;
     }
     
 	@Override
-	@Transactional(readOnly = false)
     public boolean update(Category category) {
         return categoryDao.update(category) == 1 ? true : false;
     }
@@ -41,11 +38,6 @@ public class CategoryServiceImpl implements CategoryService  {
     @Transactional(readOnly=true)
     public Category findById(Integer id) {
     		return categoryDao.selectById(id);
-    }
-	@Override
-    @Transactional(readOnly=true)
-    public Integer findByName(String name) {
-    		return categoryDao.selectByName(name);
     }
 	@Override
     @Transactional(readOnly=true)

@@ -93,11 +93,13 @@
         </li>
     </script>
     <script>
-        require(['review'], function(Review) {
+        require(['reviewPresenter', 'reviewModel'], function(ReviewPresenter, ReviewModel) {
             "use strict";
-            var productId = ${param.productId};
-    		var review = new Review(productId, {  size : 10,
-                                                  isGetMoreCommentListWithScroll : true});
+            var reviewModel = new ReviewModel({
+                productId : ${param.productId},
+                offset: 0,
+                size : 10 });
+    		var reviewPresenter = new ReviewPresenter(reviewModel, { isGetMoreCommentListWithScroll : true });
         });
     </script>
 

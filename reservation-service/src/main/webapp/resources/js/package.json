@@ -2,7 +2,7 @@
   "name": "reservation_boostcamp",
   "version": "1.0.0",
   "description": "부스트캠프 예약",
-  "main": "category.js",
+  "main": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,13 +17,9 @@
     "requirejs": "^2.3.3"
   },
   "devDependencies": {
-    "egjs": "^1.5.0",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
     "gulp-eslint": "^4.0.0",
-    "gulp-uglify": "^3.0.0",
-    "jquery": "^1.12.4",
-    "require": "^2.4.20",
-    "requirejs": "^2.3.4"
+    "gulp-uglify": "^3.0.0"
   }
 }

@@ -7,11 +7,11 @@ import naverest.reservation.dto.MyReservation;
 import naverest.reservation.dto.MyReservationCount;
 
 public interface ReservationInfoService {
-	public ReservationInfo create(ReservationInfo reservationInfo);
-	public List<MyReservation> findAllReservationByUserId(Integer userId);
-	public List<MyReservation> findReservationByUserIdAndType(Integer userId, Integer type);
-	public MyReservationCount countAllReservationByUserId(Integer userId);
-	public Integer removeReservationById(Integer type);
-	public Integer modifyTypeById(Integer id, Integer type);
-	public Integer findCountByUserIdAndProductId(Integer productId, Integer userId) ;
+	ReservationInfo create(ReservationInfo reservationInfo);
+	List<MyReservation> findAllReservationByUserId(Integer userId);
+	List<MyReservation> findReservationByUserIdAndType(Integer userId, Integer type);
+	MyReservationCount countAllReservationByUserId(Integer userId);
+	Integer removeReservationById(Integer type);
+	Integer modifyTypeById(Integer id, Integer type);
+	Integer findCountByUserIdAndProductId(Integer productId, Integer userId) ;
 }

@@ -5,11 +5,9 @@ import java.util.List;
 import naverest.reservation.domain.Category;
 
 public interface CategoryService {
-	public Category create (Category category);
-	public boolean delete(Integer id);
-	
-	public boolean update(Category category);
-	public Category findById(Integer id);
-	public Integer findByName(String name);
-	public List<Category> findAll();
+	Category create (Category category);
+	boolean delete(Integer id);
+	boolean update(Category category);
+	Category findById(Integer id);
+	List<Category> findAll();
 }

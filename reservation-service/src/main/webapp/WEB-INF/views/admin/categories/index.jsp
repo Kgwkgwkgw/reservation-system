@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <jsp:include page="../inc/head.jsp">
-	<jsp:param value="카테고리 목록보기/등록/수정/삭제" name="title"/>
+	<jsp:param value="카테고리 목록보기/수정/삭제" name="title"/>
 </jsp:include>
 <body>
 	<div class="wrap">
@@ -30,11 +30,12 @@
 	</div>
 
   <script>
-  require(['category'], function(category) {
+  require(["categoryPresenter", "categoryModel"], function(CategoryPresenter, CategoryModel) {
       // Configuration loaded now, safe to do other require calls
       // that depend on that config.
       "use strict";
-      category.init();
+      var categoryModel = new CategoryModel();
+      var categoryPresenter = new CategoryPresenter(categoryModel);
 
     });
   </script>

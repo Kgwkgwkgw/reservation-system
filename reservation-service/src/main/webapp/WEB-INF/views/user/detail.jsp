@@ -46,8 +46,8 @@
 								<c:when test="${ !empty product.fileList }">
 									<ul class="visual_img">
 	                            	    <c:forEach var="item" items= "${product.fileList}" varStatus="status">
-                            	    		<li class="item _item" style="width: 414px;"> 
-                                                <img alt="" class="img_thumb" src="/imgresources${item.saveFileName }"> 
+                            	    		<li class="item _item" style="width: 414px;">
+                                                <img alt="" class="img_thumb" src="/imgresources${item.saveFileName }">
                                                 <span class="img_bg"></span>
                         	    			    <c:if test="${status.first}">
 		                                        <div class="visual_txt">
@@ -98,9 +98,9 @@
                         <a href="#" class="fn fn-share1 naver-splugin btn_goto_share" title="공유하기"></a>
                     </div>
                 </div>
-                <div class="section_store_details _detail_content_wrapper">
+                <div class="section_store_details _detailContentWrapper">
                     <!-- [D] 펼쳐보기 클릭 시 store_details에 close3 제거 -->
-                    <div class="store_details close3 _detail_content">
+                    <div class="store_details close3 _content">
                         <p class="dsc">
                             웰메이드 창작 뮤지컬의 대표 브랜드 '김수로 프로젝트' 최신작! 연극, 뮤지컬, 무용 등 매년 작품성 있는 창작 공연을 선보이며, 대한민국 대표 웰메이드 창작 브랜드로 자리매김한 '김수로 프로젝트'의 최신작 입니다.
                         </p>
@@ -143,7 +143,7 @@
                    <a class="btn_review_more" href="/reviews?productId=${product.id}"> <span>예매자 한줄평 더보기</span> <i class="fn fn-forward1"></i> </a>
                 </div>
 
-                <div class="section_info_tab _info_tab_area">
+                <div class="section_info_tab _infoTabArea">
                     <!-- [D] tab 선택 시 anchor에 active 추가 -->
                     <ul class="info_tab_lst">
                     	    <c:if test="${product.content ne null }">
@@ -303,7 +303,7 @@
                 if (status !== naver.maps.Service.Status.OK) {
                     return alert(myaddress + '의 검색 결과가 없거나 기타 네트워크 에러');
                 }
-               
+
                 var mapImgPath = "https://openapi.naver.com/v1/map/staticmap.bin?clientId=9xywjQhEim1nZVIa1xZc&w=640&h=300&baselayer=default&url=http://220.230.116.163/&level=11";
                 var center = "&center=" + (response.result.items[0].point.x) + "," + (response.result.items[0].point.y);
                 var markers = "&markers=" + (response.result.items[0].point.x) + "," + (response.result.items[0].point.y);
@@ -317,10 +317,24 @@
     });
 </script>
 <script>
-    require(['detail', 'review'], function(detail, Review) {
+    require(['detailPresenter', 'rolling', 'reviewPresenter', 'reviewModel'], function(DetailPresenter, Rolling, ReviewPresenter, ReviewModel) {
         "use strict";
-        detail.init();
-        var review = new Review(${product.id}, {size : 3});
+        var reviewModel = new ReviewModel({
+            productId : ${product.id},
+            offset: 0,
+            size : 3 });
+        var detailPresenter = new DetailPresenter(reviewModel);
+        var reviewPresenter = new ReviewPresenter(reviewModel);
+
+        var rolling = new Rolling(".visual_img", {
+            "prevBtn" : ".btn_prev",
+            "nextBtn" : ".btn_nxt",
+            "autoSlide" : false,
+            "isTouch" : true
+        });
+        rolling.on("sliding", function(res) {
+            $("._ProductImageCurrentCount").text(res.currentNum);
+        });
     });
 </script>
 

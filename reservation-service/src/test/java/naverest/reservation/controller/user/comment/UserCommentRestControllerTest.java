@@ -1,9 +1,11 @@
 package naverest.reservation.controller.user.comment;
 
-import static junit.framework.TestCase.*;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static junit.framework.TestCase.assertTrue;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import naverest.reservation.controller.user.comment.UserCommentRestController;
 import naverest.reservation.dto.CommentStats;
 import naverest.reservation.dto.Criteria;
 import naverest.reservation.dto.FileCommentImage;
@@ -42,34 +43,52 @@ public class UserCommentRestControllerTest {
 		MockitoAnnotations.initMocks(this);
 		UserCommentWrapper commentWrapperList = new UserCommentWrapper();
 
-		// set CommentStats in commentWrapperList
 		CommentStats commentStats = new CommentStats();
 		commentStats.setAverageScore(3.8);
 		commentStats.setCount(2);
-
-		// init userCommentList in commentWrapperList
+		
 		 List<UserComment> userCommentList = new ArrayList<UserComment>();
-		// set commentA in a userCommentList
-		 UserComment commentA = new UserComment(1, 7, "정현우", "당신만이", 3.0, "나 이거 왜봤나 모르겠다", "2017-07-31");
-		// 1 imagefile with commentA
+		 UserComment commentA = new UserComment();
+		 commentA.setId(1);
+		 commentA.setUserId(7);
+		 commentA.setUsername("정현우");
+		 commentA.setProductName("당신만이");
+		 commentA.setReservationDate("2017-07-31");
+		 commentA.setComment("나 이거 왜 봤나 모르겠다.");
+		 
 		 List<FileCommentImage> commentImageListA = new ArrayList<FileCommentImage>();
 		 commentImageListA.add(new FileCommentImage(1, 1, "abc.jpg", 7));
 		 commentA.setCommentImageList(commentImageListA);
 		
-		// no image with commentB
-		 UserComment commentB = new UserComment(2, 8, "강준호", "당신만이", 4.0, "시간때우기용",
-		 "2017-08-02");
+		 UserComment commentB = new UserComment();
+		 commentB.setId(2);
+		 commentB.setUserId(8);
+		 commentB.setUsername("강준호");
+		 commentB.setProductName("당신만");
+		 commentB.setReservationDate("2017-08-02");
+		 commentB.setComment("시간떄우기용");
 		
-		// 2 imagefile with commentC
-		 UserComment commentC = new UserComment(3, 9, "김길우", "당신만이", 5.0, "근래 보기드문수작", "2017-08-07");
+		 UserComment commentC = new UserComment();
+		 commentC.setId(3);
+		 commentC.setUserId(9);
+		 commentC.setUsername("김길우");
+		 commentC.setProductName("당신만이");
+		 commentC.setReservationDate("2017-08-07");
+		 commentC.setComment("진짜 너무 힘들었어요..");
+		 
 		 List<FileCommentImage> commentImageListC = new ArrayList<FileCommentImage>();
 		 commentImageListC.add(new FileCommentImage(10, 3, "ccd.png", 9));
 		 commentImageListC.add(new FileCommentImage(11, 3, "55me.png", 9));
 		 commentC.setCommentImageList(commentImageListC);
-		// no image with commentD
-		 UserComment commentD = new UserComment(4, 9, "김길우", "당신만이", 5.0, "근래 보기드문수작2", "2017-08-08");
+
+		 UserComment commentD = new UserComment();
+		 commentD.setId(4);
+		 commentD.setUserId(9);
+		 commentD.setUsername("김길우");
+		 commentD.setProductName("당신만이");
+		 commentD.setReservationDate("2017-08-08");
+		 commentD.setComment("언제 끝날지..계속 기다렸어요.");
 		
-		// push to userCommentList
 		 userCommentList.add(commentA);
 		 userCommentList.add(commentB);
 		 userCommentList.add(commentC);
@@ -82,7 +101,7 @@ public class UserCommentRestControllerTest {
 
 		this.mvc = MockMvcBuilders.standaloneSetup(userCommentRestController).build();
 
-		when(userCommentService.getCommentListByProductId(27, 0, 10)).thenReturn(commentWrapperList);
+		when(userCommentService.findCommentWrapperByProductId(any(), 0, 10)).thenReturn(commentWrapperList);
 	}
 
 	@Test
@@ -105,30 +124,8 @@ public class UserCommentRestControllerTest {
 										.andExpect(jsonPath("$.userCommentList.[0].username").value("정현우"))
 
 										;
-		verify(userCommentService).getCommentListByProductId(27, 0, 10);
+		verify(userCommentService).findCommentWrapperByProductId(27, 0, 10);
 	}
 
 }
-//		//comment 1st
-//		ReservationUserComment reservationUserCommentA = new ReservationUserComment();
-//		reservationUserCommentA.setProductId(27);
-//		reservationUserCommentA.setUserId(7);
-//		reservationUserCommentA.setScore(4.0);
-//		reservationUserCommentA.setComment("노잼");
-//		List<Integer> fileIdListA = new ArrayList<Integer>();
-//		fileIdListA.add(1);
-//		fileIdListA.add(2);
-//		fileIdListA.add(3);
-//		userCommentService.createReservationUserComment(reservationUserCommentA, fileIdListA);
-//
-//		// comment 2nd
-//		ReservationUserComment reservationUserCommentB = new ReservationUserComment();
-//		reservationUserCommentB.setProductId(27);
-//		reservationUserCommentB.setUserId(8);
-//		reservationUserCommentB.setScore(4.0);
-//		reservationUserCommentB.setComment("hack노잼");
-//		List<Integer> fileIdListB = new ArrayList<Integer>();
-// 		userCommentService.createReservationUserComment(reservationUserCommentB, fileIdListB);
-//
-//		commentWrapperList.setCommentStats(commentStats);
 

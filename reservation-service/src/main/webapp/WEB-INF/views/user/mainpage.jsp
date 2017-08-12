@@ -55,9 +55,16 @@
 </li>
 </script>
 <script>
-    require(['product'], function(Product) {
+    require(["productPresenter", "productModel", "rolling"], function(ProductPresenter, ProductModel, Rolling) {
         "use strict";
-        var product = new Product();
+        var productModel = new ProductModel({
+			categoryId : "",
+			offset : 0,
+			size : 10
+		});
+        var productPresenter = new ProductPresenter(productModel);
+        var rolling = new Rolling("._rolling",  {
+            "prevBtn" :"._prev", "nextBtn" : "._next", "isTouch" : true});
     });
 </script>
 </html>
