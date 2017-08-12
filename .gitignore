@@ -14,9 +14,12 @@ local.properties
 .recommenders
 .DS_Store
 application.properties
-
+# ImageFile
+temp/
 # Eclipse Core
 .project
+# Dist js
+dist/
 
 # External tool builders
 .externalToolBuilders/

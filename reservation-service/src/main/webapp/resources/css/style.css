@@ -719,6 +719,7 @@ button {
     cursor: pointer;
     font-size: 17px;
     color: #fff;
+    line-height: 47px;
     box-sizing: border-box
 }
 
@@ -773,7 +774,7 @@ button {
     display: table
 }
 
-.header.fade {
+.header_tit.fade {
     display: none;
     opacity: 0;
     -moz-transition: opacity .2s ease-in;
@@ -786,7 +787,12 @@ button {
     width: 100%;
     max-width: 414px;
     height: 48px;
-    background-color: #0aba16
+    background-color: #0aba16;
+    transition: background-color 2s
+}
+
+.header_tit.transparent {
+	background-color: transparent;
 }
 
 .btn_my,.logo {
@@ -1027,6 +1033,7 @@ button {
 
 .img_thumb {
     width: 100%;
+    height: 100%;
     vertical-align: top
 }
 
@@ -1265,6 +1272,7 @@ button {
     overflow: hidden;
     position: relative;
     display: inline-block;
+    height: 414px;
     white-space: normal;
     vertical-align: top
 }
@@ -3297,7 +3305,16 @@ button {
 	border: 1px solid #ccc;
 	background-color: #f4f4f4;
 }
-
+.booking_cancel .link {
+  display: block;
+	width: 100%;
+	height: 36px;
+  margin: 20px 0 10px;
+	border: 1px solid #ccc;
+	background-color: #f4f4f4;
+  text-align: center;
+  line-height: 36px;
+}
 
 /* Page - Confirm */
 .section_confirm {
@@ -3799,4 +3816,29 @@ button {
   left: 0;
   top: 0;
   font-size: 10px;
+}
+#photoviwer {
+	position: fixed;
+	top : 0;
+	left : 0;
+	right : 0;
+	bottom: 0;
+	z-index: 9010;
+	background-color: rgba(0,0,0,0.6);
+
+}
+#photoviwerInner {
+	position: absolute;
+	left: 100px;
+	right: 100px;
+	height: 100%;
+}
+#photoviwer .close {
+	position: absolute;
+	left: 15px;
+	top: 15px;
+	background: none;
+	font-size: 24px;
+	line-height: 28px;
+	font-weight: bold;
 }
