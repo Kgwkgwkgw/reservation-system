@@ -34,12 +34,7 @@ public class UserCommentImageDao {
 		Map<String, Object> params = new HashMap<>();
 		params.put("productId", productId);
 		params.put("userIds", userIds);
-		try {
-			return jdbc.query(UserCommentImageSqls.SELECT_JOIN_COMMENT_IMAGE_BY_PRODUCT_ID, params, fileCommentImageRowMapper);
-		} catch(DataAccessException e) {
-			log.error("{}",e);
-			return null;
-		}
+		return jdbc.query(UserCommentImageSqls.SELECT_JOIN_COMMENT_IMAGE_BY_PRODUCT_ID, params, fileCommentImageRowMapper);
 	}
 	
 	

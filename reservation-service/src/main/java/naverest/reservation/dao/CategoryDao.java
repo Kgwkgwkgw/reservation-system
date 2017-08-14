@@ -49,21 +49,13 @@ public class CategoryDao {
     }
 
     public Category selectById (Integer id) {
-    		try {
-	    		Map<String, ?> params = Collections.singletonMap("id", id);
-			return jdbc.queryForObject(CategorySqls.SELECT_BY_ID, params, rowMapper);
-    		} catch (EmptyResultDataAccessException e) {
-    			return null;
-    		}
+    		Map<String, ?> params = Collections.singletonMap("id", id);
+    		return jdbc.queryForObject(CategorySqls.SELECT_BY_ID, params, rowMapper);
     }
     
     public List<Category> selectAll () {
-    		try {
-			Map<String, Object> params = Collections.emptyMap();
-	    		return jdbc.query(CategorySqls.SELECT_ALL, params, rowMapper);
-    		} catch (EmptyResultDataAccessException e) {
-    			return null;
-    		}
+    		Map<String, Object> params = Collections.emptyMap();
+    		return jdbc.query(CategorySqls.SELECT_ALL, params, rowMapper);
     }
     
 }

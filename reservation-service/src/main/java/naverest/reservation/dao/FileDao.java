@@ -42,23 +42,12 @@ public class FileDao {
     
     public List<FileProductImage> selectJoinProductImageByProductId(Integer productId){
 		Map<String, Object> params = Collections.singletonMap("productId", productId);
-		
-		try {
-    		return jdbc.query(FileSqls.SELECT_JOIN_PRODUCT_IMAGE_BY_PRODUCT_ID, params, fileProductImageRowMapper);
-		} catch(DataAccessException e) {
-			log.error("FileDao::selectJoinProductImageByProductId",e);
-			return null;
-		}
+		return jdbc.query(FileSqls.SELECT_JOIN_PRODUCT_IMAGE_BY_PRODUCT_ID, params, fileProductImageRowMapper);
     }
     
     public FileDomain selectById(Integer id) {
     		Map<String, Object> params = Collections.singletonMap("id", id);
-    		try {
-    			return jdbc.queryForObject(FileSqls.SELECT_BY_ID, params, fileRowMapper);
-		} catch(DataAccessException e) {
-			log.error("FileDao::selectById",e);
-			return null;
-		}
+    		return jdbc.queryForObject(FileSqls.SELECT_BY_ID, params, fileRowMapper);
     }
 
 	public FileDomain insert(FileDomain file) {

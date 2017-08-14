@@ -63,22 +63,12 @@ public class UserCommentDao {
 		params.put("productId", productId);
 		params.put("offset", offset);
 		params.put("size", size);
-		try {
-			return jdbc.query(UserCommentSqls.SELECT_BY_PRODUCT_ID_LIMIT, params, userCommentrowMapper);
-		} catch (DataAccessException e) {
-			e.printStackTrace();
-			return null;
-		}
+		return jdbc.query(UserCommentSqls.SELECT_BY_PRODUCT_ID_LIMIT, params, userCommentrowMapper);
 	}
 
 	public CommentStats selectStatsByProductId(Integer productId) {
 		Map<String, Object> params = Collections.singletonMap("productId", productId);
-		try {
-			return jdbc.queryForObject(UserCommentSqls.SELECT_STATS_BY_PRODUCT_ID, params, userCommentStatsRowMapper);
-		} catch (DataAccessException e) {
-			e.printStackTrace();
-			return null;
-		}
+		return jdbc.queryForObject(UserCommentSqls.SELECT_STATS_BY_PRODUCT_ID, params, userCommentStatsRowMapper);
 	}
 
 }
