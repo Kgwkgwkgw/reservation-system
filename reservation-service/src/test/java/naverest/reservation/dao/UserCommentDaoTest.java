@@ -59,7 +59,7 @@ public class UserCommentDaoTest {
 		Integer id = userCommentDao.insert(reservationUserComment);
 		reservationUserComment.setId(id);
 		
-		userCommentList = userCommentDao.selectUserCommentByProductId(reservationUserComment.getProductId(), 0, 10);
+		userCommentList = userCommentDao.selectByProductId(reservationUserComment.getProductId(), 0, 10);
 		System.out.println(userCommentList);
 		assertThat(userCommentList, is(notNullValue()));
 	}
