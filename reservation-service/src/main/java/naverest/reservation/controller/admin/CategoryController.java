@@ -18,9 +18,9 @@ import naverest.reservation.service.CategoryService;
 @RequestMapping("/admin/categories")
 public class CategoryController {
 	@Value("${naverest.adminDir}")
-	private String DIRNAME;
+	private String DIR_NAME;
 	
-	private	final String CATEGORYDIR = "/categories"; 
+	private	final String CATEGORY_DIR = "/categories"; 
 	private CategoryService categoryService;
 	
 	@Autowired
@@ -32,20 +32,20 @@ public class CategoryController {
 	public String index(Model model) {
 		model.addAttribute("list", categoryService.findAll());
 		
-		return DIRNAME + CATEGORYDIR+"/index";
+		return DIR_NAME + CATEGORY_DIR+"/index";
 	}
 	
 	@GetMapping("/form")
 	public String form(Model model) {
-		model.addAttribute("url", DIRNAME+ CATEGORYDIR);
+		model.addAttribute("url", DIR_NAME+ CATEGORY_DIR);
 		
-		return DIRNAME + CATEGORYDIR+"/form";
+		return DIR_NAME + CATEGORY_DIR+"/form";
 	}
 	
 	@PostMapping
 	public String create(@Valid @ModelAttribute Category category) {
 		categoryService.create(category);
-		return "redirect:"+DIRNAME+ CATEGORYDIR;
+		return "redirect:"+DIR_NAME+ CATEGORY_DIR;
 	}
 
 }

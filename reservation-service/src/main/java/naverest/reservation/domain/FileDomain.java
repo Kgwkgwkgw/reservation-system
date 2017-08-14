@@ -2,6 +2,9 @@ package naverest.reservation.domain;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 public class FileDomain {
 	private Integer id;
 	private Integer userId;
@@ -68,9 +71,7 @@ public class FileDomain {
 	}
 	@Override
 	public String toString() {
-		return "File [id=" + id + ", userId=" + userId + ", fileName=" + fileName + ", saveFileName=" + saveFileName
-				+ ", fileLength=" + fileLength + ", contentType=" + contentType + ", deleteFlag=" + deleteFlag
-				+ ", createDate=" + createDate + ", modifyDate=" + modifyDate + "]";
+	  return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
 	}
 	
 }

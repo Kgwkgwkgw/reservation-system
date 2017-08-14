@@ -16,17 +16,18 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import naverest.reservation.dto.FileCommentImage;
+import naverest.reservation.jdbc.CustomNamedParameterJdbcTempate;
 import naverest.reservation.sql.UserCommentImageSqls;
 
 @Repository
 public class UserCommentImageDao {
-	private NamedParameterJdbcTemplate jdbc;
+	private CustomNamedParameterJdbcTempate jdbc;
 	private final Logger log = LoggerFactory.getLogger(UserCommentImageDao.class);
 	private RowMapper<FileCommentImage> fileCommentImageRowMapper = BeanPropertyRowMapper.newInstance(FileCommentImage.class);
 	
 	@Autowired
 	public UserCommentImageDao(DataSource dataSource) {
-		this.jdbc = new NamedParameterJdbcTemplate(dataSource);
+		this.jdbc = new CustomNamedParameterJdbcTempate(dataSource, UserCommentImageDao.class);
 	}
 	
 	public List<FileCommentImage> selectJoinCommentImageByProductIdAndUserId (Integer productId, List<Integer> userIds) {

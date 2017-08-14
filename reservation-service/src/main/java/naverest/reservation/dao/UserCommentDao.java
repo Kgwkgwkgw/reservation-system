@@ -14,7 +14,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
@@ -22,11 +21,12 @@ import org.springframework.stereotype.Repository;
 import naverest.reservation.domain.ReservationUserComment;
 import naverest.reservation.dto.CommentStats;
 import naverest.reservation.dto.UserComment;
+import naverest.reservation.jdbc.CustomNamedParameterJdbcTempate;
 import naverest.reservation.sql.UserCommentSqls;
 
 @Repository
 public class UserCommentDao {
-	private NamedParameterJdbcTemplate jdbc;
+	private CustomNamedParameterJdbcTempate jdbc;
 	private SimpleJdbcInsert insertAction;
 	
 	private DateFormat df = new SimpleDateFormat("yyyy.M.d.");
@@ -48,7 +48,7 @@ public class UserCommentDao {
 
 	@Autowired
 	public UserCommentDao(DataSource dataSource) {
-		this.jdbc = new NamedParameterJdbcTemplate(dataSource);
+		this.jdbc = new CustomNamedParameterJdbcTempate(dataSource, UserCommentDao.class);
 		 this.insertAction = new SimpleJdbcInsert(dataSource).withTableName("RESERVATION_USER_COMMENT")
                  .usingGeneratedKeyColumns("id");
 	}
@@ -58,7 +58,7 @@ public class UserCommentDao {
 	    return insertAction.executeAndReturnKey(params).intValue();
 	}
 	
-	public List<UserComment> selectUserCommentByProductId(Integer productId, Integer offset, Integer size) {
+	public List<UserComment> selectByProductId(Integer productId, Integer offset, Integer size) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("productId", productId);
 		params.put("offset", offset);

@@ -24,9 +24,9 @@ import naverest.reservation.security.UserArgumentResolver;
 @ComponentScan(basePackages = { "naverest.reservation.controller" })
 public class ServletContextConfig extends WebMvcConfigurerAdapter {
 	@Value("${naverest.imageMaxSize}")
-	private Long imageMaxSize;
+	private Long IMAGE_MAX_SIZE;
 	@Value("${naverest.imagePath}")
-	private String imagePath;
+	private String IMAGE_PATH;
 	
 	@Autowired
 	public ServletContextConfig() {
@@ -44,7 +44,7 @@ public class ServletContextConfig extends WebMvcConfigurerAdapter {
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/"); 
-		registry.addResourceHandler("/imgresources/**").addResourceLocations(imagePath);
+		registry.addResourceHandler("/imgresources/**").addResourceLocations(IMAGE_PATH);
 		registry.addResourceHandler("/favicon.ico").addResourceLocations("/favicon.ico");
 	}
 

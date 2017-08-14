@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 public class UserComment {
 	private Integer id;
 	private Integer userId;
@@ -84,10 +87,6 @@ public class UserComment {
 	}
 	@Override
 	public String toString() {
-		return "UserComment [id=" + id + ", userId=" + userId + ", username=" + username + ", productName="
-				+ productName + ", score=" + score + ", comment=" + comment + ", createDate=" + createDate
-				+ ", modifyDate=" + modifyDate + ", reservationDate=" + reservationDate + ", commentImageList="
-				+ commentImageList + "]";
+	  return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
 	}
-	
 }

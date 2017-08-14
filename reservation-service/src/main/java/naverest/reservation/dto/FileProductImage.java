@@ -1,5 +1,8 @@
 package naverest.reservation.dto;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 // File과 productImage 조인, reservation_user_comment_image 조인
 public class FileProductImage {
 	private Integer id;
@@ -52,8 +55,7 @@ public class FileProductImage {
 
 	@Override
 	public String toString() {
-		return "FileImage [id=" + id + ", saveFileName=" + saveFileName + ", contentType=" + contentType
-				+ ", deleteFlag=" + deleteFlag + ", type=" + type + "]";
+	  return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
 	}
-	
+
 }

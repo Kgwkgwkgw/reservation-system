@@ -2,6 +2,9 @@ package naverest.reservation.dto;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class NaverLoginProfile implements Serializable{
@@ -43,9 +46,7 @@ public class NaverLoginProfile implements Serializable{
 	}
 	@Override
 	public String toString() {
-		return "NaverLoginProfile [id=" + id + ", nickname=" + nickname + ", name=" + name + ", email=" + email
-				+ ", profileImage=" + profileImage + "]";
+	  return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
 	}
-	
 	
 }

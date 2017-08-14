@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/reviews")
 public class UserCommentController {
 	@Value("${naverest.userDir}")
-	private String DIRNAME;
+	private String DIR_NAME;
 	private final Logger log = LoggerFactory.getLogger(UserCommentController.class);
 
 	@Autowired
@@ -22,7 +22,7 @@ public class UserCommentController {
 	
 	@GetMapping
  	public String reviewView(@RequestParam Integer productId) {
- 		return DIRNAME+ "/review";
+ 		return DIR_NAME+ "/review";
  	}
 	
 }

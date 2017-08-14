@@ -205,6 +205,12 @@
 		    <artifactId>logback-classic</artifactId>
 		    <version>1.1.8</version>
 		</dependency>	
+		<!-- ToStringBuilder -->
+		<dependency>
+ 			<groupId>org.apache.commons</groupId>
+  			<artifactId>commons-lang3</artifactId>
+  			<version>3.4</version>
+		</dependency>
 	</dependencies>
 
 	<build>

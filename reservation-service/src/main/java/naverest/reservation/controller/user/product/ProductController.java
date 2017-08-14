@@ -17,7 +17,7 @@ import naverest.reservation.service.ProductService;
 public class ProductController {
 	private ProductService productService;
 	@Value("${naverest.userDir}")
-	private String DIRNAME;
+	private String DIR_NAME;
 	private final Logger log = LoggerFactory.getLogger(ProductController.class);
 	
 	@Autowired
@@ -30,7 +30,7 @@ public class ProductController {
 		model.addAttribute("product", productService.findProductDetail(id));
 //		model.addAttribute("reservationUrl", ""); todo 
 		
-		return DIRNAME+"/detail";
+		return DIR_NAME+"/detail";
 	}
 	
 }

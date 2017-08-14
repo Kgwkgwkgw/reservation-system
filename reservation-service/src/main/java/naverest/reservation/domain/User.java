@@ -2,6 +2,9 @@ package naverest.reservation.domain;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import naverest.reservation.dto.NaverLoginProfile;
 
 public class User {
@@ -97,6 +100,9 @@ public class User {
 	public void setModifyDate(Date modifyDate) {
 		this.modifyDate = modifyDate;
 	}
-	
+	@Override
+	public String toString() {
+	  return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
+	}
 	
 }

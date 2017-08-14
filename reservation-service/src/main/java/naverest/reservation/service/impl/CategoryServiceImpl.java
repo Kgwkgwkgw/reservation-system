@@ -37,6 +37,9 @@ public class CategoryServiceImpl implements CategoryService  {
 	@Override
     @Transactional(readOnly=true)
     public Category findById(Integer id) {
+		if(id ==null || id == 0) {
+			return null;
+		}
     		return categoryDao.selectById(id);
     }
 	@Override

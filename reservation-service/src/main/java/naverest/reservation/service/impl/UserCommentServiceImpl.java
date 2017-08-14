@@ -47,7 +47,7 @@ public class UserCommentServiceImpl implements UserCommentService{
 	}
 
 	private List<UserComment> findCommentListWithImage(Integer productId, Integer offset, Integer size) {
-		List<UserComment> userCommentList = userCommentDao.selectUserCommentByProductId(productId, offset, size);
+		List<UserComment> userCommentList = userCommentDao.selectByProductId(productId, offset, size);
 		log.info("{}",userCommentList);
 		List<FileCommentImage> commentFileList = null;
 		List<Integer> userIds = null;
@@ -74,7 +74,7 @@ public class UserCommentServiceImpl implements UserCommentService{
 			}
 			
 			for (UserComment userComment : userCommentList) {
-				if (commentIdFileImageMap.get(userComment.getId()) != null) {
+				if (commentIdFileImageMap.containsKey(userComment.getId())) {
 					userComment.setCommentImageList(commentIdFileImageMap.get(userComment.getId()));
 				}
 			}

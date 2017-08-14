@@ -1,5 +1,8 @@
 package naverest.reservation.dto;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 public class Criteria {
 	private Integer offset;
 	private Integer size;
@@ -17,7 +20,7 @@ public class Criteria {
 	}
 	@Override
 	public String toString() {
-		return "Criteria [offset=" + offset + ", size=" + size + "]";
+	  return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
 	}
 	
 }

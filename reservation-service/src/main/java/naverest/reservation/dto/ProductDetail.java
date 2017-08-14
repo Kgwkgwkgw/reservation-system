@@ -2,6 +2,9 @@ package naverest.reservation.dto;
 
 import java.util.Date;
 import java.util.List;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 // 상세페이지에서 사용할 dto 
 public class ProductDetail {
 	//product
@@ -111,10 +114,6 @@ public class ProductDetail {
 	}
 	@Override
 	public String toString() {
-		return "ProductDetail [id=" + id + ", name=" + name + ", description=" + description + ", event=" + event
-				+ ", salesFlag=" + salesFlag + ", sales_end=" + salesEnd + ", homepage=" + homepage + ", tel=" + tel
-				+ ", email=" + email + ", placeName=" + placeName + ", placeLot=" + placeLot + ", placeStreet="
-				+ placeStreet + ", content=" + content + ", fileList=" + fileList 
-			    + "]";
+	  return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
 	}
 }

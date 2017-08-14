@@ -1,5 +1,8 @@
 package naverest.reservation.dto;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 public class FileCommentImage {
 	private Integer id;
 	private Integer reservationUserCommentId;
@@ -54,8 +57,7 @@ public class FileCommentImage {
 
 	@Override
 	public String toString() {
-		return "FileCommentImage [id=" + id + ", reservationUserCommentId=" + reservationUserCommentId
-				+ ", saveFileName=" + saveFileName + ", userId=" + userId + "]";
+	  return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
 	}
 
 }

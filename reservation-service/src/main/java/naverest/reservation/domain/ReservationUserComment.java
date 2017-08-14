@@ -3,6 +3,8 @@ package naverest.reservation.domain;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
@@ -61,6 +63,9 @@ public class ReservationUserComment {
 	public void setModifyDate(Date modifyDate) {
 		this.modifyDate = modifyDate;
 	}
-
+	@Override
+	public String toString() {
+	  return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
+	}
 	
 }

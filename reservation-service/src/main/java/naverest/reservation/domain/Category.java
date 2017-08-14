@@ -2,6 +2,8 @@ package naverest.reservation.domain;
 
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.validator.constraints.NotBlank;
 
 public class Category {
@@ -32,4 +34,9 @@ public class Category {
 	public void setName(String name) {
 		this.name = name;
 	}
+	@Override
+	public String toString() {
+	  return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
+	}
+
 }

@@ -1,25 +1,25 @@
 package naverest.reservation.sql;
 public class ProductSqls {
-	private final static String onSale = "1";
-	private final static String mainImage = "1";
+	private final static String ON_SALE= "1";
+	private final static String MAIN_IMAGE = "1";
 	public final static String SELECT_ALL_PRODUCTMAIN_LIMIT ="SELECT "
-			+ "									 p.id, "
-			+ "									 p.name,"
-			+ "									 p.description, "
-			+ "									 f.id as fileId, "
-			+ "									 f.save_file_name as saveFileName, "
-			+ "									 d_i.place_name"
-			+ "									 FROM product p"
-			+ "									 LEFT OUTER JOIN display_info d_i  ON p.id = d_i.product_id"
-			+ "									 LEFT OUTER JOIN product_image p_i ON p.id = p_i.product_id"
-			+ "								     AND p_i.type = "+mainImage
-			+ "									 LEFT OUTER JOIN file f on p_i.file_id = f.id"
-			+ " 									 WHERE p.sales_flag ="+onSale
-			+ "									 ORDER BY p.id DESC LIMIT :offset, :size";
+			+ "												 p.id, "
+			+ "												 p.name,"
+			+ "												 p.description, "
+			+ "												 f.id as fileId, "
+			+ "												 f.save_file_name as saveFileName, "
+			+ "												 d_i.place_name"
+			+ "												 FROM product p"
+			+ "												 LEFT OUTER JOIN display_info d_i  ON p.id = d_i.product_id"
+			+ "												 LEFT OUTER JOIN product_image p_i ON p.id = p_i.product_id"
+			+ "											     AND p_i.type = "+MAIN_IMAGE
+			+ "												 LEFT OUTER JOIN file f on p_i.file_id = f.id"
+			+ " 												 WHERE p.sales_flag ="+ON_SALE
+			+ "												 ORDER BY p.id DESC LIMIT :offset, :size";
 	
 	public final static String COUNT_ALL = "SELECT COUNT(*) "
 			+ "							   FROM product p"
-			+ "							   WHERE p.sales_flag ="+onSale;
+			+ "							   WHERE p.sales_flag ="+ON_SALE;
 	
 	public final static String SELECT_PRODUCTMAIN_BY_CATEGORY_LIMIT = "SELECT "
 			+ "											  p.id, "
@@ -31,15 +31,15 @@ public class ProductSqls {
 			+ "											  FROM product p"
 			+ "											  LEFT OUTER JOIN display_info d_i  ON p.id = d_i.product_id"
 			+ "											  LEFT OUTER JOIN product_image p_i ON p.id = p_i.product_id"
-			+ "										      AND p_i.type = "+mainImage
+			+ "										      AND p_i.type = "+MAIN_IMAGE
 			+ "											  LEFT OUTER JOIN file f ON p_i.file_id = f.id"
-			+ "											  WHERE p.sales_flag = "+onSale+" AND category_id = :categoryId"
+			+ "											  WHERE p.sales_flag = "+ON_SALE+" AND category_id = :categoryId"
 			+ "											  ORDER BY p.id DESC LIMIT :offset, :size";
 
 	
 	public final static String COUNT_BY_CATEGORY = "SELECT COUNT(*) "
 			+ "									   FROM product p"
-			+ "									   WHERE p.sales_flag ="+onSale+" AND p.category_id = :categoryId";
+			+ "									   WHERE p.sales_flag ="+ON_SALE+" AND p.category_id = :categoryId";
 	
 	public final static String SELECT_PRODUCTDETAIL = "SELECT"
 			+ "										  p.id, "
@@ -71,7 +71,7 @@ public class ProductSqls {
 			+ "												f.save_file_name as saveFileName"
 			+ "												from product p"
 			+ "												left outer join display_info d_i on p.id = d_i.product_id"
-			+ "												left outer join product_image p_i on p.id = p_i.product_id and type ="+mainImage
+			+ "												left outer join product_image p_i on p.id = p_i.product_id and type ="+ MAIN_IMAGE
 			+ "												left outer join file f on p_i.file_id = f.id"
 			+ "												where p.id = :id"
 			+ "												order by p.id";

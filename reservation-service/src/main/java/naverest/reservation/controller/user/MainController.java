@@ -12,7 +12,7 @@ import naverest.reservation.service.CategoryService;
 @RequestMapping("/")
 public class MainController {
 	@Value("${naverest.userDir}")
-	private String DIRNAME;
+	private String DIR_NAME;
 	private CategoryService categoryService;
 
 	@Autowired
@@ -23,6 +23,6 @@ public class MainController {
 	@RequestMapping
 	public String index(Model model) {
 		model.addAttribute("categoryList", categoryService.findAll());
-		return DIRNAME+"/mainpage";
+		return DIR_NAME+"/mainpage";
 	}
 }
