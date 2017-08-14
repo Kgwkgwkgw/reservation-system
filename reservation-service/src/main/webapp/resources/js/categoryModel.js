@@ -1,8 +1,8 @@
 define("categoryModel", function() {
     return eg.Class.extend(eg.Component, {
 
-        construct : function(objQuery) {
-            this.initVariable(objQuery);
+        construct : function() {
+            this.initVariable();
         },
 
         initVariable : function() {

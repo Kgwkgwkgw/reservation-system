@@ -27,8 +27,8 @@ define("productModel", function() {
     	},
 
         upOffset : function() {
-    			this.objQuery.offset += this.objQuery.size;
-    	},
+            this.objQuery.offset += this.objQuery.size;
+        },
 
         reqGetList : function() {
             $.ajax({

@@ -18,7 +18,7 @@ define("detailPresenter", function() {
         this.$infoTabArea = $("._infoTabArea");
         this.$infoTabs = this.$infoTabArea.find("._tab");
         this.$infoContents = this.$infoTabArea.find("._content");
-        this.setLazyImgPosition();
+        this.findFirstLazyImage();
 
         this.reviewModel = reviewModel;
     }
@@ -65,7 +65,7 @@ define("detailPresenter", function() {
         if (this.$lazyImg.offset().top < $(window).scrollTop() + $(window).height() + 100 ) {
             this.$lazyImg.attr("src" , this.$lazyImg.data("src"))
                          .removeClass("lazyImg")
-                         .on("load",this.setLazyImgPosition.bind(this));
+                         .on("load",this.findFirstLazyImage.bind(this));
         }
     }
 
@@ -78,7 +78,7 @@ define("detailPresenter", function() {
         }
     }
 
-    DetailPresenter.prototype.setLazyImgPosition = function() {
+    DetailPresenter.prototype.findFirstLazyImage = function() {
         this.$lazyImg = $(".lazyImg").eq(0);
     }
 

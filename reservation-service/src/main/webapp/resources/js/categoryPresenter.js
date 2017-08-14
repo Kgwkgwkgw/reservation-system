@@ -9,9 +9,10 @@ define("categoryPresenter", [], function() {
 
     CategoryPresenter.prototype.initVariable = function(categoryModel) {
         this.$categoryList = $("._categoryList");
-        this.categoryItem = "._item";
-        this.name = "._name";
-        this.editInput = "._editInput";
+        this.CATEGORY_ITEM_SELECTOR = "._item";
+        this.CATEGORY_NAME = "._name";
+        this.CATEGORY_EDIT_INPUT = "._editInput";
+        this.ENTER_KEY = 13;
 
         this.categoryModel = categoryModel;
     }
@@ -19,7 +20,7 @@ define("categoryPresenter", [], function() {
     CategoryPresenter.prototype.addEventHandler = function() {
         this.$categoryList.on("click", "._modify", this.modifyBtnClickHandler.bind(this))
                           .on("click", "._destroy", this.destroyBtnClickHandler.bind(this))
-                          .on("keyup", this.editInput, this.enterInputHandler.bind(this));
+                          .on("keyup", this.CATEGORY_EDIT_INPUT, this.enterInputHandler.bind(this));
 
         $(document).ajaxError(function (event, xhr, ajaxOptions, thrownError) {
               alert("일시적 오류가 발생하였습니다.");
@@ -27,31 +28,31 @@ define("categoryPresenter", [], function() {
     }
 
     CategoryPresenter.prototype.modifyBtnClickHandler = function(e) {
-        var $item = $(e.currentTarget).parents(this.categoryItem);
+        var $item = $(e.currentTarget).closest(this.CATEGORY_ITEM_SELECTOR);
         this.modify($item);
     }
 
     CategoryPresenter.prototype.modify = function($item) {
         if(this.getStatus($item)==="editing") {
-            if(this.isBlank($item.find(this.editInput))) {
+            if(this.validateBlank($item.find(this.CATEGORY_EDIT_INPUT))) {
               return false;
             }
-            this.categoryModel.reqModify(this.getId($item), $item.find(this.editInput).val());
+            this.categoryModel.reqModify(this.getId($item), $item.find(this.CATEGORY_EDIT_INPUT).val());
         }
         else {
             this.setStatus($item, "editing");
-            this.ToggleModifyInput($item);
+            this.toggleModifyInput($item);
         }
     }
 
     CategoryPresenter.prototype.destroyBtnClickHandler = function(e) {
-        var $item = $(e.currentTarget).parents(this.categoryItem);
+        var $item = $(e.currentTarget).closest(this.CATEGORY_ITEM_SELECTOR);
         this.categoryModel.reqDestroy(this.getId($item));
     }
 
     CategoryPresenter.prototype.enterInputHandler = function(e) {
-        if(e.which == 13) {
-          var $item = $(e.currentTarget).parents(this.categoryItem);
+        if(e.which === this.ENTER_KEY) {
+          var $item = $(e.currentTarget).closest(this.CATEGORY_ITEM_SELECTOR);
           this.modify($item);
         }
     }
@@ -68,12 +69,12 @@ define("categoryPresenter", [], function() {
     CategoryPresenter.prototype.modifyDone = function(id, strToBeName, res) {
          var $item = this.$categoryList.find("[data-id="+id+"]");
 
-         $item.find(this.name).html(strToBeName);
-         this.ToggleModifyInput($item);
+         $item.find(this.CATEGORY_NAME).html(strToBeName);
+         this.toggleModifyInput($item);
          this.setStatus($item, "");
     }
 
-    CategoryPresenter.prototype.isBlank = function($inputTarget) {
+    CategoryPresenter.prototype.validateBlank = function($inputTarget) {
         var trimmedStr = $.trim($inputTarget.val());
         if(trimmedStr === "") {
             alert("빈값은 입력이 불가합니다.");
@@ -83,9 +84,9 @@ define("categoryPresenter", [], function() {
         return false;
     }
 
-    CategoryPresenter.prototype.ToggleModifyInput = function($item) {
-        $item.find(this.name).toggleClass("hide");
-        $item.find(this.editInput).toggleClass("hide").val("");
+    CategoryPresenter.prototype.toggleModifyInput = function($item) {
+        $item.find(this.CATEGORY_NAME).toggleClass("hide");
+        $item.find(this.CATEGORY_EDIT_INPUT).toggleClass("hide").val("");
     }
 
     CategoryPresenter.prototype.getId = function($item) {

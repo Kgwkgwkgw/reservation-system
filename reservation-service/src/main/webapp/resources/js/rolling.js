@@ -151,7 +151,7 @@ define("rolling", [], function() {
 
 			moving : function(intX) {
 				this.isMoving = true;
-				this.$parentSelector.css({"transform" : "translate3d("+intX+"px, 0px, 10px)"});
+				this.$parentSelector.css({"transform" : "translate3d("+intX+", 0, 10)"});
 			},
 
 			slidingTrigger : function() {

@@ -23,14 +23,16 @@ define("reviewModel", function() {
                 $.ajax({
                     url: this.APIURL,
                     data: this.objQuery
-                }).done(this.reqCommentListCallback.bind(this));
+                }).done(this.reqCommentListCallback.bind(this))
+                  .always(function(jqXHR, textStatus, errorThrow){
+                      this.isRequesting = false;
+                  }.bind(this))
             }
         },
 
         reqCommentListCallback : function(res) {
             this.upOffset();
             this.trigger("listArrive", res);
-            this.isRequesting = false;
         }
 
     });
