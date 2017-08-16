@@ -1,4 +1,4 @@
-package naverest.reservation.controller.user.product;
+package naverest.reservation.controller.user;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,10 +25,9 @@ public class ProductController {
 		this.productService = productService;
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("/{id:[1-9]+[0-9]*}")
 	public String detail(@PathVariable Integer id, Model model) {
-		model.addAttribute("product", productService.findProductDetail(id));
-//		model.addAttribute("reservationUrl", ""); todo 
+		model.addAttribute("product", productService.findProductDetail(id)); 
 		
 		return DIR_NAME+"/detail";
 	}

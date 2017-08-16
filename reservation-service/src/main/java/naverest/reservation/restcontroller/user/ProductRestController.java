@@ -1,14 +1,18 @@
-package naverest.reservation.controller.user.product;
+package naverest.reservation.restcontroller.user;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import naverest.reservation.dto.Criteria;
 import naverest.reservation.dto.ProductMain;
 import naverest.reservation.service.ProductService;
 
@@ -24,15 +28,11 @@ public class ProductRestController {
 	
 	@GetMapping
 	@ResponseBody
-	public List<ProductMain> readList(@RequestParam(required=false) Integer categoryId, @RequestParam(required=false) Integer offset, @RequestParam(required=false) Integer size) {
-		if(offset == null || size == null ) {
-			offset = 0;
-			size = 10;
-		}
+	public List<ProductMain> readList(@RequestParam(required=false) Integer categoryId, @ModelAttribute @Valid Criteria criteria) {
 		if(categoryId != null) {
-			return productService.findProductMainByCategoryLimit(categoryId, offset, size);
+			return productService.findProductMainByCategoryLimit(categoryId, criteria.getOffset(), criteria.getSize());
 		}
-		return productService.findAllProductMainLimit(offset, size);
+		return productService.findAllProductMainLimit(criteria.getOffset(), criteria.getSize());
 	}
 
 	@GetMapping("/count")

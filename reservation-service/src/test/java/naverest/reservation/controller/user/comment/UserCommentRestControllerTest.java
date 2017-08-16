@@ -26,6 +26,7 @@ import naverest.reservation.dto.Criteria;
 import naverest.reservation.dto.FileCommentImage;
 import naverest.reservation.dto.UserComment;
 import naverest.reservation.dto.UserCommentWrapper;
+import naverest.reservation.restcontroller.user.UserCommentRestController;
 import naverest.reservation.service.UserCommentService;
 
 @RunWith(MockitoJUnitRunner.class)

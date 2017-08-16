@@ -1,5 +1,6 @@
 package naverest.reservation.jdbc;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
@@ -11,10 +12,10 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-public class CustomNamedParameterJdbcTempate extends NamedParameterJdbcTemplate{
+public class CustomNamedParameterJdbcTemplate extends NamedParameterJdbcTemplate{
 	private final Logger log;
 	
-	public CustomNamedParameterJdbcTempate(DataSource dataSource, Class<?> clazz) {
+	public CustomNamedParameterJdbcTemplate(DataSource dataSource, Class<?> clazz) {
 		super(dataSource);
 		log = LoggerFactory.getLogger(clazz);
 	}
@@ -30,4 +31,14 @@ public class CustomNamedParameterJdbcTempate extends NamedParameterJdbcTemplate{
 			}
 	}
 	
+	@Override
+	public <T> List<T> query(String sql, Map<String, ?> paramMap, RowMapper<T> rowMapper)
+			throws DataAccessException {
+		try {
+			return query(sql, new MapSqlParameterSource(paramMap), rowMapper);
+		} catch(DataAccessException e) {
+			log.error("{}",e);
+			return null;
+		}
+	}
 }

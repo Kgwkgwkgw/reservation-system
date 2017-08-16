@@ -7,23 +7,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import naverest.reservation.dao.FileDao;
 import naverest.reservation.dao.ProductDao;
+import naverest.reservation.dao.ProductImageDao;
+import naverest.reservation.dao.ProductPriceDao;
+import naverest.reservation.domain.ProductPrice;
 import naverest.reservation.dto.FileProductImage;
 import naverest.reservation.dto.ProductDetail;
 import naverest.reservation.dto.ProductMain;
+import naverest.reservation.dto.ProductReservation;
 import naverest.reservation.service.ProductService;
 
 @Service
 @Transactional(readOnly=true)
 public class ProductServiceImpl implements ProductService {
 	private ProductDao productDao;
-	private FileDao fileDao;
-
+	private ProductImageDao productImageDao;
+	private ProductPriceDao productPriceDao;
+	
 	@Autowired
-	public ProductServiceImpl(ProductDao productDao,  FileDao fileDao) {
+	public ProductServiceImpl(ProductDao productDao,  ProductImageDao productImageDao,
+			ProductPriceDao productPriceDao) {
 		this.productDao = productDao;
-		this.fileDao = fileDao;
+		this.productImageDao = productImageDao;
+		this.productPriceDao = productPriceDao;
 	}
 	
 	@Override
@@ -36,11 +42,10 @@ public class ProductServiceImpl implements ProductService {
 	}
 	@Override
 	public ProductDetail findProductDetail(Integer id) {
-		
 		ProductDetail productDetail = productDao.selectProductDetail(id);
 		if(productDetail==null)
 			return null;
-		List<FileProductImage> productFileList = fileDao.selectJoinProductImageByProductId(id);
+		List<FileProductImage> productFileList = productImageDao.selectJoinFileByProductId(id);
 		productDetail.setFileList(productFileList);
 		return productDetail;
 	}
@@ -51,6 +56,15 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public Integer countByCategory(Integer categoryId) {
 		return productDao.countByCategory(categoryId);
+	}
+
+	@Override
+	public ProductReservation findProductReservation(Integer id) {
+		ProductReservation productReservation = productDao.selectProductReservation(id);
+		List<ProductPrice> productPriceList = productPriceDao.selectByProductId(id);
+		
+		productReservation.setProductPriceList(productPriceList);
+		return productReservation;
 	}
 	
 	

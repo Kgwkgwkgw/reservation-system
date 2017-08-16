@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -16,18 +15,18 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import naverest.reservation.domain.Category;
-import naverest.reservation.jdbc.CustomNamedParameterJdbcTempate;
+import naverest.reservation.jdbc.CustomNamedParameterJdbcTemplate;
 import naverest.reservation.sql.CategorySqls;
 
 @Repository
 public class CategoryDao {
-	private CustomNamedParameterJdbcTempate jdbc;
+	private CustomNamedParameterJdbcTemplate jdbc;
     private SimpleJdbcInsert insertAction;
     private RowMapper<Category> rowMapper = BeanPropertyRowMapper.newInstance(Category.class);
     
     @Autowired
 	public CategoryDao (DataSource dataSource) {
-		this.jdbc = new CustomNamedParameterJdbcTempate(dataSource, CategoryDao.class);
+		this.jdbc = new CustomNamedParameterJdbcTemplate(dataSource, CategoryDao.class);
         this.insertAction = new SimpleJdbcInsert(dataSource)
                 .withTableName("category")
                 .usingGeneratedKeyColumns("id");

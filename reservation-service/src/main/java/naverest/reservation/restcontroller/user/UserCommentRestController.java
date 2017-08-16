@@ -1,4 +1,6 @@
-package naverest.reservation.controller.user.comment;
+package naverest.reservation.restcontroller.user;
+
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +28,7 @@ public class UserCommentRestController {
 	}
 
 	@GetMapping
-	public UserCommentWrapper getList(@RequestParam Integer productId, @ModelAttribute Criteria criteria) {
+	public UserCommentWrapper getList(@RequestParam Integer productId, @ModelAttribute @Valid Criteria criteria) {
 		log.info("{}", criteria);
 		return userCommentService.findCommentWrapperByProductId(productId, criteria.getOffset(), criteria.getSize());
 	}

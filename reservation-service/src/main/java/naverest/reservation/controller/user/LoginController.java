@@ -1,4 +1,4 @@
-package naverest.reservation.controller.user.login;
+package naverest.reservation.controller.user;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -71,14 +71,10 @@ public class LoginController {
 			@RequestParam(required = false) String error, HttpSession session) throws IOException {
 		if (error == null) {
 			OAuth2AccessToken oauthToken;
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(new Date());
-
+			
 			oauthToken = reqAccessToken((String) session.getAttribute(SESSION_STATE), code, state);
 			session.setAttribute("oauthToken", oauthToken);
-
-			cal.add(Calendar.HOUR_OF_DAY, 1);
-			session.setAttribute("oauthTokenExpires", cal.getTime());
+			session.setAttribute("oauthTokenExpires", getExpireDate());
 
 			NaverLoginProfile naverLoginProfile = getUserProfile(oauthToken);
 
@@ -96,9 +92,9 @@ public class LoginController {
 	public String reqRefreshAccessTocken(HttpSession session, @RequestParam String returnUrl) throws IOException {
 		OAuth2AccessToken oauthToken = (OAuth2AccessToken)session.getAttribute("oauthToken"); 
 		OAuth2AccessToken newAccessToken = oauthService.refreshAccessToken(oauthToken.getRefreshToken());
-		newAccessToken.getAccessToken();
-		
+
 		session.setAttribute("oauthToken", newAccessToken);
+		session.setAttribute("oauthTokenExpires", getExpireDate());
 		return "redirect:"+ returnUrl;
 	}
 
@@ -151,4 +147,10 @@ public class LoginController {
 	    return naverLoginProfile;
 	}
 
+	private Date getExpireDate() {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		cal.add(Calendar.HOUR_OF_DAY, 1);
+		return cal.getTime();
+	}
 }

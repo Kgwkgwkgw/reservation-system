@@ -20,8 +20,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import naverest.reservation.config.RootApplicationContextConfig;
-import naverest.reservation.dao.FileDao;
 import naverest.reservation.dao.ProductDao;
+import naverest.reservation.dao.ProductImageDao;
 import naverest.reservation.dto.FileProductImage;
 import naverest.reservation.dto.ProductDetail;
 import naverest.reservation.dto.ProductMain;
@@ -33,7 +33,7 @@ import naverest.reservation.service.impl.ProductServiceImpl;
 public class ProductServiceTest {
 
 	@Mock
-	private FileDao fileDao;
+	private ProductImageDao productImageDao;
 
 	@Mock
 	private ProductDao productDao;
@@ -80,11 +80,11 @@ public class ProductServiceTest {
 				return null;
 			}
 		});
-		when(fileDao.selectJoinProductImageByProductId(any())).thenAnswer(new Answer<List<FileProductImage> >() {
+		when(productImageDao.selectJoinFileByProductId(any())).thenAnswer(new Answer<List<FileProductImage> >() {
 			@Override
 			public List<FileProductImage> answer(InvocationOnMock invocation) throws Throwable {
 				Object[] args = invocation.getArguments();
-				FileDao mock = (FileDao) invocation.getMock();
+				ProductImageDao mock = (ProductImageDao) invocation.getMock();
 				return null;
 			}
 		});
@@ -99,7 +99,7 @@ public class ProductServiceTest {
 	public void shouldFindProductDetail() {
 		ProductDetail selectedProductDetail = productService.findProductDetail(EXISTENCE);
 		
-		verify(fileDao).selectJoinProductImageByProductId(selectedProductDetail.getId());
+		verify(productImageDao).selectJoinFileByProductId(selectedProductDetail.getId());
 		verify(productDao).selectProductDetail(EXISTENCE);
 		
 	}
@@ -108,7 +108,7 @@ public class ProductServiceTest {
 	public void shouldNotFindProductDetail() {
 		productService.findProductDetail(NOT_EXISTENCE);
 		
-		verify(fileDao, never()).selectJoinProductImageByProductId(any());
+		verify(productImageDao, never()).selectJoinFileByProductId(any());
 		verify(productDao).selectProductDetail(NOT_EXISTENCE);
 
 	}

@@ -7,8 +7,7 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @ComponentScan(basePackages = {
      "naverest.reservation.dao",
-     "naverest.reservation.service",
-     "naverest.reservation.handler"
+     "naverest.reservation.service"
 })
 @Import({DbConfig.class})
 public class RootApplicationContextConfig {

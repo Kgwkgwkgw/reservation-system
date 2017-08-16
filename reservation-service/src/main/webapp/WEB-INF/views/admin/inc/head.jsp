@@ -8,4 +8,9 @@
 	<script src="/resources/js/require.js"></script>
     <script src="/resources/js/dist/reservation.min.js"></script>
 	<title>${param.title }</title>
+	<style>
+	.hide {
+		display : none;
+	}
+	</style>
 </head>

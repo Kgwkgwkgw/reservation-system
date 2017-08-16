@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import naverest.reservation.dto.ProductMain;
+import naverest.reservation.restcontroller.user.ProductRestController;
 import naverest.reservation.service.ProductService;
 
 

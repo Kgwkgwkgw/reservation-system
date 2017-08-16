@@ -4,6 +4,7 @@ import java.util.List;
 
 import naverest.reservation.dto.ProductDetail;
 import naverest.reservation.dto.ProductMain;
+import naverest.reservation.dto.ProductReservation;
 
 public interface ProductService {
 	List<ProductMain> findAllProductMainLimit(Integer offset, Integer size);
@@ -11,5 +12,5 @@ public interface ProductService {
 	ProductDetail findProductDetail(Integer id);
 	Integer countAll();
 	Integer countByCategory(Integer categoryId);
-	
+	ProductReservation findProductReservation(Integer id);
 }

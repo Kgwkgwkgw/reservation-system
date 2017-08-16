@@ -1,10 +1,13 @@
-package naverest.reservation.security;
+package naverest.reservation.resolver;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+
+import naverest.reservation.annotation.LogginedUser;
+import naverest.reservation.security.SecurityContext;
 
 public class UserArgumentResolver implements HandlerMethodArgumentResolver {
 	@Override

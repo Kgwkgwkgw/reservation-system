@@ -1,48 +1,38 @@
 package naverest.reservation.dao;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import naverest.reservation.domain.FileDomain;
-import naverest.reservation.dto.FileProductImage;
+import naverest.reservation.jdbc.CustomNamedParameterJdbcTemplate;
 import naverest.reservation.sql.FileSqls;
 
 @Repository
 public class FileDao {
-	private NamedParameterJdbcTemplate jdbc;
+	private CustomNamedParameterJdbcTemplate jdbc;
 	private SimpleJdbcInsert insertAction;
-    private RowMapper<FileProductImage> fileProductImageRowMapper = BeanPropertyRowMapper.newInstance(FileProductImage.class);
 
     private RowMapper<FileDomain> fileRowMapper = BeanPropertyRowMapper.newInstance(FileDomain.class);
-	private final Logger log = LoggerFactory.getLogger(FileDao.class);
 
     @Autowired
     public FileDao(DataSource dataSource) {
-    		this.jdbc = new NamedParameterJdbcTemplate(dataSource);
+    		this.jdbc = new CustomNamedParameterJdbcTemplate(dataSource, FileDao.class);
     		this.insertAction = new SimpleJdbcInsert(dataSource)
     				.withTableName("file")
     				.usingGeneratedKeyColumns("id");
 
-    }
-    
-    public List<FileProductImage> selectJoinProductImageByProductId(Integer productId){
-		Map<String, Object> params = Collections.singletonMap("productId", productId);
-		return jdbc.query(FileSqls.SELECT_JOIN_PRODUCT_IMAGE_BY_PRODUCT_ID, params, fileProductImageRowMapper);
     }
     
     public FileDomain selectById(Integer id) {
@@ -56,5 +46,22 @@ public class FileDao {
 		file.setId(fileId);
 		return file;
 	}
+	public Integer deleteById(Integer id) {
+		Map<String, Object> params = Collections.singletonMap("id", id);
+		return jdbc.update(FileSqls.DELETE_BY_ID, params);
+	}
 	
+	public Integer updateByIds(List<Integer> ids) {
+		Map<String, Object> params =  Collections.singletonMap("ids", ids);
+		return jdbc.update(FileSqls.UPDATE_BY_IDS, params);
+		
+	}
+	
+	public void insertBatch(List<FileDomain> fileDomainList) {
+		List<SqlParameterSource> parameters = new ArrayList<SqlParameterSource>();
+		for (FileDomain fileDomain : fileDomainList) {
+			parameters.add(new BeanPropertySqlParameterSource(fileDomain));
+		}
+		insertAction.executeBatch(parameters.toArray(new SqlParameterSource[0]));
+	}	
 }
