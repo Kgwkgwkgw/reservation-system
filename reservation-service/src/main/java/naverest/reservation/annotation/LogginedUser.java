@@ -1,4 +1,4 @@
-package naverest.reservation.security;
+package naverest.reservation.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

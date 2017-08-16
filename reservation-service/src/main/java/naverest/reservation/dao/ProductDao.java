@@ -17,20 +17,22 @@ import org.springframework.stereotype.Repository;
 
 import naverest.reservation.dto.ProductDetail;
 import naverest.reservation.dto.ProductMain;
-import naverest.reservation.jdbc.CustomNamedParameterJdbcTempate;
+import naverest.reservation.dto.ProductReservation;
+import naverest.reservation.jdbc.CustomNamedParameterJdbcTemplate;
 import naverest.reservation.sql.ProductSqls;
 
 @Repository
 public class ProductDao {
-	private CustomNamedParameterJdbcTempate jdbc;
+	private CustomNamedParameterJdbcTemplate jdbc;
     private RowMapper<ProductMain> rowMapper = BeanPropertyRowMapper.newInstance(ProductMain.class);
     private RowMapper<ProductDetail> productDetailRowMapper = BeanPropertyRowMapper.newInstance(ProductDetail.class);
+	private RowMapper<ProductReservation> productReservationRowMapper = BeanPropertyRowMapper.newInstance(ProductReservation.class);
 	private final Logger log = LoggerFactory.getLogger(ProductDao.class);
 
     
     @Autowired
 	public ProductDao (DataSource dataSource) {
-		this.jdbc = new CustomNamedParameterJdbcTempate(dataSource, ProductDao.class);
+		this.jdbc = new CustomNamedParameterJdbcTemplate(dataSource, ProductDao.class);
 	}
     
     public List<ProductMain> selectAllProductMainLimit (Integer offset, Integer size) {
@@ -60,7 +62,12 @@ public class ProductDao {
     
     public ProductDetail selectProductDetail (Integer id) {
     		Map<String, Object> params = Collections.singletonMap("id", id);
-    		return jdbc.queryForObject(ProductSqls.SELECT_PRODUCTDETAIL, params, productDetailRowMapper);	
+    		return jdbc.queryForObject(ProductSqls.SELECT_PRODUCT_DETAIL_BY_ID, params, productDetailRowMapper);	
     }
+    
+    public ProductReservation selectProductReservation (Integer id) {
+		Map<String, Object> params = Collections.singletonMap("id", id);
+		return jdbc.queryForObject(ProductSqls.SELECT_PRODUCT_RESERVATION_BY_ID, params, productReservationRowMapper);	
+	}
     
 }

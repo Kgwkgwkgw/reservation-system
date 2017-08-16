@@ -21,12 +21,12 @@ import org.springframework.stereotype.Repository;
 import naverest.reservation.domain.ReservationUserComment;
 import naverest.reservation.dto.CommentStats;
 import naverest.reservation.dto.UserComment;
-import naverest.reservation.jdbc.CustomNamedParameterJdbcTempate;
+import naverest.reservation.jdbc.CustomNamedParameterJdbcTemplate;
 import naverest.reservation.sql.UserCommentSqls;
 
 @Repository
 public class UserCommentDao {
-	private CustomNamedParameterJdbcTempate jdbc;
+	private CustomNamedParameterJdbcTemplate jdbc;
 	private SimpleJdbcInsert insertAction;
 	
 	private DateFormat df = new SimpleDateFormat("yyyy.M.d.");
@@ -48,7 +48,7 @@ public class UserCommentDao {
 
 	@Autowired
 	public UserCommentDao(DataSource dataSource) {
-		this.jdbc = new CustomNamedParameterJdbcTempate(dataSource, UserCommentDao.class);
+		this.jdbc = new CustomNamedParameterJdbcTemplate(dataSource, UserCommentDao.class);
 		 this.insertAction = new SimpleJdbcInsert(dataSource).withTableName("RESERVATION_USER_COMMENT")
                  .usingGeneratedKeyColumns("id");
 	}

@@ -9,9 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import naverest.reservation.dao.FileDao;
 import naverest.reservation.dao.ProductDao;
+import naverest.reservation.dao.ProductPriceDao;
+import naverest.reservation.domain.ProductPrice;
 import naverest.reservation.dto.FileProductImage;
 import naverest.reservation.dto.ProductDetail;
 import naverest.reservation.dto.ProductMain;
+import naverest.reservation.dto.ProductReservation;
 import naverest.reservation.service.ProductService;
 
 @Service
@@ -19,11 +22,14 @@ import naverest.reservation.service.ProductService;
 public class ProductServiceImpl implements ProductService {
 	private ProductDao productDao;
 	private FileDao fileDao;
-
+	private ProductPriceDao productPriceDao;
+	
 	@Autowired
-	public ProductServiceImpl(ProductDao productDao,  FileDao fileDao) {
+	public ProductServiceImpl(ProductDao productDao,  FileDao fileDao,
+			ProductPriceDao productPriceDao) {
 		this.productDao = productDao;
 		this.fileDao = fileDao;
+		this.productPriceDao = productPriceDao;
 	}
 	
 	@Override
@@ -51,6 +57,15 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public Integer countByCategory(Integer categoryId) {
 		return productDao.countByCategory(categoryId);
+	}
+
+	@Override
+	public ProductReservation findProductReservation(Integer id) {
+		ProductReservation productReservation = productDao.selectProductReservation(id);
+		List<ProductPrice> productPriceList = productPriceDao.selectByProductId(id);
+		
+		productReservation.setProductPriceList(productPriceList);
+		return productReservation;
 	}
 	
 	

@@ -17,11 +17,15 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 import naverest.reservation.interceptor.LoginCheckInterceptor;
-import naverest.reservation.security.UserArgumentResolver;
+import naverest.reservation.resolver.ReservationFormArgumentResolver;
+import naverest.reservation.resolver.UserArgumentResolver;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = { "naverest.reservation.controller" })
+@ComponentScan(basePackages = { 
+		"naverest.reservation.controller",
+		"naverest.reservation.handler"})
+
 public class ServletContextConfig extends WebMvcConfigurerAdapter {
 	@Value("${naverest.imageMaxSize}")
 	private Long IMAGE_MAX_SIZE;
@@ -58,12 +62,13 @@ public class ServletContextConfig extends WebMvcConfigurerAdapter {
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(loginCheckInterceptor()).addPathPatterns(
 				"/myreservation/**",
-				"/api/myreservation/**");
+				"/api/myreservation/**",
+				"/booking/**");
 	}
 	
 	@Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(new UserArgumentResolver());
-
+        argumentResolvers.add(new ReservationFormArgumentResolver());
     }
 }

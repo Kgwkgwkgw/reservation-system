@@ -121,7 +121,7 @@
 	                    </div>
 	                </div>
                 </c:if>
-                <div class="section_btn"> <a href="${reservationUrl }" class="bk_btn _btn_reservation"> <i class="fn fn-nbooking-calender2"></i> <span>예매하기</span> </a> </div>
+                <div class="section_btn"> <a href="/booking?productId=${product.id }" class="bk_btn _btn_reservation"> <i class="fn fn-nbooking-calender2"></i> <span>예매하기</span> </a> </div>
 
                 <div class="section_review_list">
                     <div class="review_box">

@@ -27,8 +27,7 @@ public class ProductController {
 	
 	@GetMapping("/{id}")
 	public String detail(@PathVariable Integer id, Model model) {
-		model.addAttribute("product", productService.findProductDetail(id));
-//		model.addAttribute("reservationUrl", ""); todo 
+		model.addAttribute("product", productService.findProductDetail(id)); 
 		
 		return DIR_NAME+"/detail";
 	}

@@ -14,18 +14,18 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import naverest.reservation.domain.User;
-import naverest.reservation.jdbc.CustomNamedParameterJdbcTempate;
+import naverest.reservation.jdbc.CustomNamedParameterJdbcTemplate;
 import naverest.reservation.sql.UserSqls;
 
 @Repository
 public class UserDao {
-	private CustomNamedParameterJdbcTempate jdbc;
+	private CustomNamedParameterJdbcTemplate jdbc;
     private SimpleJdbcInsert insertAction;
     private RowMapper<User> rowMapper = BeanPropertyRowMapper.newInstance(User.class);
     
     @Autowired
     public UserDao(DataSource dataSource) {
-    		this.jdbc = new CustomNamedParameterJdbcTempate(dataSource, UserDao.class);
+    		this.jdbc = new CustomNamedParameterJdbcTemplate(dataSource, UserDao.class);
 		this.insertAction = new SimpleJdbcInsert(dataSource)
 				.withTableName("Users")
 				.usingGeneratedKeyColumns("id");

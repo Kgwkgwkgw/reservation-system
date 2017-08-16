@@ -1,6 +1,7 @@
 package naverest.reservation.domain;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -10,6 +11,7 @@ public class Category {
 	private Integer id;
 	@NotNull
 	@NotBlank(message="내용을 입력 해주세요.")
+	@Pattern(regexp = "{A-Za-z}*", message="문자만 가능")
 	private String name;
 	
 	public Category () {
