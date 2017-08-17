@@ -15,7 +15,6 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
@@ -30,7 +29,6 @@ import naverest.reservation.exception.MismatchJpegPngFormatException;
 @RestControllerAdvice("naverest.reservation.restcontroller")
 public class RestControllerAdvisor  extends ResponseEntityExceptionHandler {
 	@ExceptionHandler(MaxUploadSizeExceededException.class)
-	@ResponseBody
     ResponseEntity<?> maxUploadSizeExceededControllerException(HttpServletRequest request, Throwable ex) {
         RestError restError = 
   			  new RestError(HttpStatus.BAD_REQUEST, "파일 용량이 초과하였습니다.",null);
@@ -38,7 +36,6 @@ public class RestControllerAdvisor  extends ResponseEntityExceptionHandler {
     }
 	
     @ExceptionHandler(MismatchJpegPngFormatException.class)
-    @ResponseBody
     ResponseEntity<?> mismatchJpegPngControllerException(HttpServletRequest request, Throwable ex) {
         RestError restError = 
   			  new RestError(HttpStatus.BAD_REQUEST, ex.getMessage(),null);
