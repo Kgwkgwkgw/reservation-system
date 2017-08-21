@@ -33,35 +33,28 @@ import naverest.reservation.domain.User;
 import naverest.reservation.dto.NaverLoginProfile;
 import naverest.reservation.oauth.naver.NaverLoginApi;
 import naverest.reservation.service.UserService;
+import naverest.reservation.service.impl.NaverLoginServiceImpl;
 
 @Controller
 @RequestMapping("/login")
 public class LoginController {
 	private UserService userService;
+	private NaverLoginServiceImpl naverLoginService;
 	private final Logger log = LoggerFactory.getLogger(LoginController.class);
 	
 	private final static String SESSION_STATE = "oauthState";
-	@Value ("${naverest.naverlogin.client.id}")
-	private String CLIENT_ID;
-	@Value("${naverest.naverlogin.client.secret}")
-	private String CLIENT_SECRET;
-	@Value("${naverest.naverlogin.redirectUri}")
-	private String REDIRECT_URI;
-	@Value("${naverest.naverlogin.profileApiUrl}")
-	private String PROFILE_API_URL;
-	
-	private OAuth20Service oauthService;
 
 	@Autowired
-	public LoginController(UserService userService) {
+	public LoginController(UserService userService, NaverLoginServiceImpl naverLoginService) {
 		this.userService = userService;
+		this.naverLoginService = naverLoginService;
 	}
-
+	
 	@GetMapping
 	public String login(HttpSession session, @RequestParam String returnUrl) {
 		String oauthState = generateRandomString();
 		session.setAttribute(SESSION_STATE, oauthState);
-		String naverAuthUrl = getAuthorizationUrl(oauthState, returnUrl);
+		String naverAuthUrl = naverLoginService.getAuthorizationUrl(oauthState, returnUrl);
 
 		return "redirect:" + naverAuthUrl;
 	}
@@ -72,11 +65,11 @@ public class LoginController {
 		if (error == null) {
 			OAuth2AccessToken oauthToken;
 			
-			oauthToken = reqAccessToken((String) session.getAttribute(SESSION_STATE), code, state);
+			oauthToken = naverLoginService.reqAccessToken((String) session.getAttribute(SESSION_STATE), code, state);
 			session.setAttribute("oauthToken", oauthToken);
 			session.setAttribute("oauthTokenExpires", getExpireDate());
 
-			NaverLoginProfile naverLoginProfile = getUserProfile(oauthToken);
+			NaverLoginProfile naverLoginProfile = naverLoginService.getUserProfile(oauthToken);
 
 			User user = userService.login(naverLoginProfile);
 
@@ -91,7 +84,7 @@ public class LoginController {
 	@GetMapping("/refresh")
 	public String reqRefreshAccessTocken(HttpSession session, @RequestParam String returnUrl) throws IOException {
 		OAuth2AccessToken oauthToken = (OAuth2AccessToken)session.getAttribute("oauthToken"); 
-		OAuth2AccessToken newAccessToken = oauthService.refreshAccessToken(oauthToken.getRefreshToken());
+		OAuth2AccessToken newAccessToken = naverLoginService.reqRefreshAccessToken(oauthToken);
 
 		session.setAttribute("oauthToken", newAccessToken);
 		session.setAttribute("oauthTokenExpires", getExpireDate());
@@ -101,52 +94,7 @@ public class LoginController {
 	private String generateRandomString() {
 		return UUID.randomUUID().toString();
 	}
-	  
-	private String getAuthorizationUrl(String oauthState, String returnUrl) {         
-		try {
-			returnUrl = URLEncoder.encode(returnUrl, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			log.error("{}",e);
-		}
-	    OAuth20Service oauthService = new ServiceBuilder()                                                   
-	            .apiKey(CLIENT_ID)
-	            .apiSecret(CLIENT_SECRET)
-	            .callback(REDIRECT_URI + "?returnUrl="+returnUrl)
-	            .state(oauthState) 
-	            .build(NaverLoginApi.instance());
-	    log.info(oauthService.getAuthorizationUrl());
-	    return oauthService.getAuthorizationUrl();
-	}
 	 
-	private OAuth2AccessToken reqAccessToken(String oauthState, String code, String state) throws IOException{
-	    if(StringUtils.pathEquals(oauthState, state)){
-	        oauthService = new ServiceBuilder()
-	                .apiKey(CLIENT_ID)
-	                .apiSecret(CLIENT_SECRET)
-	                .callback(REDIRECT_URI)
-	                .state(state)
-	                .build(NaverLoginApi.instance());
-	
-	        OAuth2AccessToken accessToken = oauthService.getAccessToken(code);
-	        return accessToken;
-	    }
-	    return null;
-	}
-	
-	private NaverLoginProfile getUserProfile(OAuth2AccessToken oauthToken) throws IOException{
-	    OAuthRequest request = new OAuthRequest(Verb.GET, PROFILE_API_URL, oauthService);
-	    oauthService.signRequest(oauthToken, request);
-	    Response response = request.send();
-	     
-  		ObjectMapper objectMapper = new ObjectMapper();
-  		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-	    JsonNode rootNode = objectMapper.readTree(response.getBody());
-	    
-	    JsonNode responseNode = rootNode.path("response");
-	    NaverLoginProfile naverLoginProfile = objectMapper.treeToValue(responseNode, NaverLoginProfile.class);
-	    return naverLoginProfile;
-	}
-
 	private Date getExpireDate() {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(new Date());
