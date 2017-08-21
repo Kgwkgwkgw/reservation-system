@@ -1,8 +1,6 @@
 package naverest.reservation.controller.user;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
@@ -12,26 +10,15 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
-import com.github.scribejava.core.model.OAuthRequest;
-import com.github.scribejava.core.model.Response;
-import com.github.scribejava.core.model.Verb;
-import com.github.scribejava.core.oauth.OAuth20Service;
 
 import naverest.reservation.domain.User;
 import naverest.reservation.dto.NaverLoginProfile;
-import naverest.reservation.oauth.naver.NaverLoginApi;
 import naverest.reservation.service.UserService;
 import naverest.reservation.service.impl.NaverLoginServiceImpl;
 

@@ -13,7 +13,6 @@ import org.springframework.util.StringUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.model.OAuthRequest;
 import com.github.scribejava.core.model.Response;
@@ -21,19 +20,20 @@ import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
 
 import naverest.reservation.dto.NaverLoginProfile;
-import naverest.reservation.oauth.naver.NaverLoginApi;
+import naverest.reservation.factory.OAuth20ServiceFactory;
+import naverest.reservation.factory.impl.NaverOAuth20ServiceFactory;
 
 @Service
 public class NaverLoginServiceImpl {
-	@Value ("${naverest.naverlogin.client.id}")
-	private String CLIENT_ID;
-	@Value("${naverest.naverlogin.client.secret}")
-	private String CLIENT_SECRET;
-	@Value("${naverest.naverlogin.redirectUri}")
-	private String REDIRECT_URI;
+	private final Logger log = LoggerFactory.getLogger(NaverLoginServiceImpl.class);
 	@Value("${naverest.naverlogin.profileApiUrl}")
 	private String PROFILE_API_URL;
-	private final Logger log = LoggerFactory.getLogger(NaverLoginServiceImpl.class);
+	
+	private OAuth20ServiceFactory naverOAuth20ServiceFactory;
+	
+	public NaverLoginServiceImpl() {
+		naverOAuth20ServiceFactory = NaverOAuth20ServiceFactory.getInstance();
+	}
 	
 	public String getAuthorizationUrl(String oauthState, String returnUrl) {        
 		try {
@@ -41,23 +41,14 @@ public class NaverLoginServiceImpl {
 		} catch (UnsupportedEncodingException e) {
 			log.error("{}",e);
 		}
-	    OAuth20Service oauthService = new ServiceBuilder()                                                   
-	            .apiKey(CLIENT_ID)
-	            .apiSecret(CLIENT_SECRET)
-	            .callback(REDIRECT_URI + "?returnUrl="+returnUrl)
-	            .state(oauthState) 
-	            .build(NaverLoginApi.instance());
+	    OAuth20Service oauthService = naverOAuth20ServiceFactory.getOauthService(oauthState, returnUrl);                                                   
 	    
 	    log.info(oauthService.getAuthorizationUrl());
 	    return oauthService.getAuthorizationUrl();
 	}
 	
 	public NaverLoginProfile getUserProfile(OAuth2AccessToken oauthToken) throws IOException{
-		OAuth20Service oauthService = new ServiceBuilder()                                                   
-	            .apiKey(CLIENT_ID)
-	            .apiSecret(CLIENT_SECRET)
-	            .callback(REDIRECT_URI)
-	            .build(NaverLoginApi.instance());
+		OAuth20Service oauthService = naverOAuth20ServiceFactory.getOauthService();
 		
 	    OAuthRequest request = new OAuthRequest(Verb.GET, PROFILE_API_URL, oauthService);
 	    oauthService.signRequest(oauthToken, request);
@@ -74,12 +65,7 @@ public class NaverLoginServiceImpl {
 	
 	public OAuth2AccessToken reqAccessToken(String oauthState, String code, String state) throws IOException{
 	    if(StringUtils.pathEquals(oauthState, state)){
-		    	OAuth20Service oauthService = new ServiceBuilder()
-		                .apiKey(CLIENT_ID)
-		                .apiSecret(CLIENT_SECRET)
-		                .callback(REDIRECT_URI)
-		                .state(state)
-		                .build(NaverLoginApi.instance());
+		    	OAuth20Service oauthService = naverOAuth20ServiceFactory.getOauthService();
 	
 	        OAuth2AccessToken accessToken = oauthService.getAccessToken(code);
 	        return accessToken;
@@ -87,11 +73,7 @@ public class NaverLoginServiceImpl {
 	    return null;
 	}
 	public OAuth2AccessToken reqRefreshAccessToken(OAuth2AccessToken accessToken) {
-		OAuth20Service oauthService = new ServiceBuilder()                                                   
-	            .apiKey(CLIENT_ID)
-	            .apiSecret(CLIENT_SECRET)
-	            .callback(REDIRECT_URI)
-	            .build(NaverLoginApi.instance());
+		OAuth20Service oauthService = naverOAuth20ServiceFactory.getOauthService();
 		try {
 			return oauthService.refreshAccessToken(accessToken.getRefreshToken());
 		} catch (IOException e) {
