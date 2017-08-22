@@ -21,18 +21,20 @@ import com.github.scribejava.core.oauth.OAuth20Service;
 
 import naverest.reservation.dto.NaverLoginProfile;
 import naverest.reservation.factory.OAuth20ServiceFactory;
+import naverest.reservation.factory.impl.GoogleOAuth20ServiceFactory;
 import naverest.reservation.factory.impl.NaverOAuth20ServiceFactory;
 
 @Service
-public class NaverLoginServiceImpl {
-	private final Logger log = LoggerFactory.getLogger(NaverLoginServiceImpl.class);
+public class LoginServiceImpl {
+	private final Logger log = LoggerFactory.getLogger(LoginServiceImpl.class);
 	@Value("${naverest.naverlogin.profileApiUrl}")
 	private String PROFILE_API_URL;
 	
 	private OAuth20ServiceFactory naverOAuth20ServiceFactory;
-	
-	public NaverLoginServiceImpl() {
-		naverOAuth20ServiceFactory = NaverOAuth20ServiceFactory.getInstance();
+	private GoogleOAuth20ServiceFactory googleOAuth20ServiceFactory;
+	public LoginServiceImpl() {
+//		naverOAuth20ServiceFactory = NaverOAuth20ServiceFactory.getInstance();
+		googleOAuth20ServiceFactory = GoogleOAuth20ServiceFactory.getInstance();
 	}
 	
 	public String getAuthorizationUrl(String oauthState, String returnUrl) {        
@@ -41,14 +43,15 @@ public class NaverLoginServiceImpl {
 		} catch (UnsupportedEncodingException e) {
 			log.error("{}",e);
 		}
-	    OAuth20Service oauthService = naverOAuth20ServiceFactory.getOauthService(oauthState, returnUrl);                                                   
+	    OAuth20Service oauthService = googleOAuth20ServiceFactory.getOauthService(oauthState, returnUrl);                                                   
 	    
 	    log.info(oauthService.getAuthorizationUrl());
+	    
 	    return oauthService.getAuthorizationUrl();
 	}
 	
 	public NaverLoginProfile getUserProfile(OAuth2AccessToken oauthToken) throws IOException{
-		OAuth20Service oauthService = naverOAuth20ServiceFactory.getOauthService();
+		OAuth20Service oauthService = googleOAuth20ServiceFactory.getOauthService();
 		
 	    OAuthRequest request = new OAuthRequest(Verb.GET, PROFILE_API_URL, oauthService);
 	    oauthService.signRequest(oauthToken, request);
@@ -65,7 +68,7 @@ public class NaverLoginServiceImpl {
 	
 	public OAuth2AccessToken reqAccessToken(String oauthState, String code, String state) throws IOException{
 	    if(StringUtils.pathEquals(oauthState, state)){
-		    	OAuth20Service oauthService = naverOAuth20ServiceFactory.getOauthService();
+		    	OAuth20Service oauthService = googleOAuth20ServiceFactory.getOauthService();
 	
 	        OAuth2AccessToken accessToken = oauthService.getAccessToken(code);
 	        return accessToken;
@@ -73,13 +76,22 @@ public class NaverLoginServiceImpl {
 	    return null;
 	}
 	public OAuth2AccessToken reqRefreshAccessToken(OAuth2AccessToken accessToken) {
-		OAuth20Service oauthService = naverOAuth20ServiceFactory.getOauthService();
+		OAuth20Service oauthService = googleOAuth20ServiceFactory.getOauthService();
 		try {
 			return oauthService.refreshAccessToken(accessToken.getRefreshToken());
 		} catch (IOException e) {
 			log.info("{}",e);
 			 throw new RuntimeException("로그인 리프레시 실패", e);
 		}
+	}
+	public void getA(OAuth2AccessToken oauthToken ) {
+		OAuth20Service oauthService = googleOAuth20ServiceFactory.getOauthService();
+		OAuthRequest request = new OAuthRequest(Verb.GET,"https://www.googleapis.com/plus/v1/people/me", oauthService);
+		System.out.println(request.getUrl());
+		oauthService.signRequest(oauthToken, request);
+		request.addParameter("key", "AIzaSyDHNDOznM7eKKs4nnAfTu1OwisyeBmne84");
+		System.out.println(request.getCompleteUrl());
+		System.out.println(request.send());
 	}
 
 }
