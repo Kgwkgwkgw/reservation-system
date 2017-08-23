@@ -63,6 +63,7 @@ public class ServletContextConfig extends WebMvcConfigurerAdapter {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(loginCheckInterceptor()).addPathPatterns(
+				"/login/refresh",
 				"/myreservation/**",
 				"/api/myreservation/**",
 				"/booking/**",

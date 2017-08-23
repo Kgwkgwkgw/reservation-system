@@ -24,52 +24,34 @@ import naverest.reservation.dto.GoogleLoginProfile;
 import naverest.reservation.oauth.GoogleLoginApi;
 import naverest.reservation.service.LoginService;
 
-@Service
+@Service("google")
 public class GoogleLoginServiceImpl extends LoginService {
 	private final Logger log = LoggerFactory.getLogger(GoogleLoginServiceImpl.class);
 	@Value("${naverest.naverlogin.profileApiUrl}")
 	private String PROFILE_API_URL;
 	@Value("${naverest.googlelogin.apiKey}")
-	private String CLIENT_ID;
+	private String API_KEY;
 	@Value("${naverest.googlelogin.apiSecret}")
-	private String CLIENT_SECRET;
-	@Value("${naverest.login.redirectUri}")
+	private String API_SECRET;
+	@Value("${naverest.googlelogin.redirectUri}")
 	private String REDIRECT_URI;
 	
 	public GoogleLoginServiceImpl() {
 	}
 	
-//	public NaverLoginProfile getUserProfileB(OAuth2AccessToken oauthToken) throws IOException{
-//		OAuth20Service oauthService = googleOAuth20ServiceFactory.getOauthService();
-//		
-//	    OAuthRequest request = new OAuthRequest(Verb.GET, PROFILE_API_URL, oauthService);
-//	    oauthService.signRequest(oauthToken, request);
-//	    Response response = request.send();
-//	     
-//  		ObjectMapper objectMapper = new ObjectMapper();
-//  		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-//	    JsonNode rootNode = objectMapper.readTree(response.getBody());
-//	    
-//	    JsonNode responseNode = rootNode.path("response");
-//	    NaverLoginProfile naverLoginProfile = objectMapper.treeToValue(responseNode, NaverLoginProfile.class);
-//	    return naverLoginProfile;
-//	}
 	public User getUserProfile(OAuth2AccessToken oauthToken ) throws IOException {
 		OAuth20Service oauthService = getOauthService();
 		OAuthRequest request = new OAuthRequest(Verb.GET,"https://www.googleapis.com/plus/v1/people/me", oauthService);
 		
 		oauthService.signRequest(oauthToken, request);
 		Response response = request.send();
-//		System.out.println(response.getBody());
-//		System.out.println(response.toString());
-//		System.out.println(request.getCompleteUrl());
-		
+
 		return setUser(response);
 	}
 	public OAuth20Service getOauthService(String oauthState, String returnUrl) {
 		return new ServiceBuilder()                                                   
-	            .apiKey(CLIENT_ID)
-	            .apiSecret(CLIENT_SECRET)
+	            .apiKey(API_KEY)
+	            .apiSecret(API_SECRET)
 	            .callback(REDIRECT_URI)
 	            .scope("openid email profile")
 	            .state(oauthState)
@@ -77,8 +59,8 @@ public class GoogleLoginServiceImpl extends LoginService {
 	}
 	public OAuth20Service getOauthService() {
 		return new ServiceBuilder()                                                   
-		            .apiKey(CLIENT_ID)
-		            .apiSecret(CLIENT_SECRET)
+		            .apiKey(API_KEY)
+		            .apiSecret(API_SECRET)
 		            .callback(REDIRECT_URI)
 		            .scope("openid email profile")
 		            .build(GoogleLoginApi.instance());
@@ -111,7 +93,7 @@ public class GoogleLoginServiceImpl extends LoginService {
 			}
 		}
 		user.setAdminFlag(0);
-		
+		user.setSnsType("google");
 		return user;
 	}
 
