@@ -23,16 +23,15 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	@Override
-	public User login(NaverLoginProfile naverLoginProfile) {
-		User selected = userDao.selectBySnsId(naverLoginProfile.getId());
+	public User login(User user) {
+		User selected = userDao.selectBySnsId(user.getSnsId());
 		if(selected != null )
 			return selected;
 		// 새로 생성 
-		return create(naverLoginProfile);
+		return create(user);
 	}
 	
-	private User create(NaverLoginProfile naverLoginProfile) {
-		User user = new User(naverLoginProfile);
+	private User create(User user) {
 		user.setId(userDao.insert(user));
 		log.error("{}", user);
 		return user;

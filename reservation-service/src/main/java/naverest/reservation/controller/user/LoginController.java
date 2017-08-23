@@ -16,23 +16,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.github.scribejava.core.model.OAuth2AccessToken;
-import com.github.scribejava.core.model.OAuthRequest;
-import com.github.scribejava.core.model.Verb;
 
+import naverest.reservation.domain.User;
 import naverest.reservation.service.UserService;
-import naverest.reservation.service.impl.LoginServiceImpl;
+import naverest.reservation.service.impl.GoogleLoginServiceImpl;
+
+
 
 @Controller
 @RequestMapping("/login")
 public class LoginController {
 	private UserService userService;
-	private LoginServiceImpl loginService;
+	private GoogleLoginServiceImpl loginService;
 	private final Logger log = LoggerFactory.getLogger(LoginController.class);
 	
 	private final static String SESSION_STATE = "oauthState";
 
 	@Autowired
-	public LoginController(UserService userService, LoginServiceImpl loginService) {
+	public LoginController(UserService userService, GoogleLoginServiceImpl loginService) {
 		this.userService = userService;
 		this.loginService = loginService;
 	}
@@ -51,10 +52,17 @@ public class LoginController {
 			@RequestParam(required = false) String error, HttpSession session) throws IOException {
 		System.out.println("calback 호출!!");
 		OAuth2AccessToken oauthToken =loginService.reqAccessToken((String) session.getAttribute(SESSION_STATE), code, state);
+		session.setAttribute("oauthToken", oauthToken);
 		System.out.println(oauthToken.toString());
-		loginService.getA(oauthToken);
+		session.setAttribute("oauthTokenExpires", getExpireDate());
+		
+		System.out.println(oauthToken.toString());
+		User user = loginService.getUserProfile(oauthToken);
+		session.setAttribute("loginInfo", userService.login(user));
+		
 	    
 		if (error == null) {
+			System.out.println("error는 null");
 //			OAuth2AccessToken oauthToken;
 			
 //			oauthToken = loginService.reqAccessToken((String) session.getAttribute(SESSION_STATE), code, state);
