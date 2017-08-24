@@ -1,4 +1,4 @@
-package naverest.reservation.oauth.naver;
+package naverest.reservation.oauth.impl;
 
 import com.github.scribejava.core.builder.api.DefaultApi20;
 

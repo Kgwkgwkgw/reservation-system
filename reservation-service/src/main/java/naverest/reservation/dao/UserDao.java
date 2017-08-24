@@ -36,7 +36,6 @@ public class UserDao {
 	}
     
     public User selectBySnsId(String snsId) {
-    	
 		Map<String, Object> params = Collections.singletonMap("snsId", snsId);
 		return jdbc.queryForObject(UserSqls.SELECT_BY_SNS_ID, params, rowMapper);
     }

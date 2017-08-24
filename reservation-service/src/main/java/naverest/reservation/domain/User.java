@@ -5,6 +5,7 @@ import java.util.Date;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import naverest.reservation.dto.GoogleLoginProfile;
 import naverest.reservation.dto.NaverLoginProfile;
 
 public class User {
@@ -23,17 +24,7 @@ public class User {
 	public User() {
 		
 	}
-	public User (NaverLoginProfile naverLoginProfile) {
-		this.userName = naverLoginProfile.getName();
-		this.email = naverLoginProfile.getEmail();
-		this.nickname = naverLoginProfile.getNickname();
-		this.snsId = naverLoginProfile.getId().toString();
-		this.snsType = "Naver";
-		this.snsProfile = naverLoginProfile.getProfileImage();
-		
-		this.adminFlag = 0;
-		this.createDate = new Date();
-	}
+	
 	public Integer getId() {
 		return id;
 	}

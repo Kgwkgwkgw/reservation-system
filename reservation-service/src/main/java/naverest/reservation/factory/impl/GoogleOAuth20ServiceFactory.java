@@ -7,22 +7,22 @@ import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.oauth.OAuth20Service;
 
 import naverest.reservation.factory.OAuth20ServiceFactory;
-import naverest.reservation.oauth.impl.NaverLoginApi;
+import naverest.reservation.oauth.impl.GoogleLoginApi;
 
-public class NaverOAuth20ServiceFactory implements OAuth20ServiceFactory {
+public class GoogleOAuth20ServiceFactory implements OAuth20ServiceFactory {
 	private String CLIENT_ID;
 	private String CLIENT_SECRET;
 	private String REDIRECT_URI;	
 	
-	private volatile static NaverOAuth20ServiceFactory naverOAuth20ServiceFactory;
+	private volatile static GoogleOAuth20ServiceFactory googleOAuth20ServiceFactory;
 	
-	private NaverOAuth20ServiceFactory() {
+	private GoogleOAuth20ServiceFactory() {
 		PropertiesConfiguration config = new PropertiesConfiguration();
 		try {
 			
 			config.load("application.properties");
-			CLIENT_ID = config.getString("naverest.naverlogin.client.id");
-			CLIENT_SECRET = config.getString("naverest.naverlogin.client.secret");
+			CLIENT_ID = config.getString("naverest.googlelogin.apiKey");
+			CLIENT_SECRET = config.getString("naverest.googlelogin.apiSecret");
 			REDIRECT_URI = config.getString("naverest.login.redirectUri");
 			
 		} catch (ConfigurationException e) {
@@ -30,15 +30,15 @@ public class NaverOAuth20ServiceFactory implements OAuth20ServiceFactory {
 		}
 	}
 	
-	public static NaverOAuth20ServiceFactory getInstance() {
-		if(naverOAuth20ServiceFactory == null) {
-			synchronized (NaverOAuth20ServiceFactory.class) {
-				if(naverOAuth20ServiceFactory == null) {
-					naverOAuth20ServiceFactory = new NaverOAuth20ServiceFactory();
+	public static GoogleOAuth20ServiceFactory getInstance() {
+		if(googleOAuth20ServiceFactory == null) {
+			synchronized (GoogleOAuth20ServiceFactory.class) {
+				if(googleOAuth20ServiceFactory == null) {
+					googleOAuth20ServiceFactory = new GoogleOAuth20ServiceFactory();
 				}
 			}
 		}
-		return naverOAuth20ServiceFactory;
+		return googleOAuth20ServiceFactory;
 	}
 	
 	@Override
@@ -47,7 +47,8 @@ public class NaverOAuth20ServiceFactory implements OAuth20ServiceFactory {
 		            .apiKey(CLIENT_ID)
 		            .apiSecret(CLIENT_SECRET)
 		            .callback(REDIRECT_URI)
-		            .build(NaverLoginApi.instance());
+		            .scope("profile")
+		            .build(GoogleLoginApi.instance());
 	}
 
 	@Override
@@ -55,9 +56,10 @@ public class NaverOAuth20ServiceFactory implements OAuth20ServiceFactory {
 		return new ServiceBuilder()                                                   
 			        .apiKey(CLIENT_ID)
 			        .apiSecret(CLIENT_SECRET)
-			        .callback(REDIRECT_URI + "?returnUrl="+returnUrl)
+			        .callback(REDIRECT_URI)
+			        .scope("openid email profile")
 			        .state(state) 
-			        .build(NaverLoginApi.instance());
+			        .build(GoogleLoginApi.instance());
 	}
 
 }
