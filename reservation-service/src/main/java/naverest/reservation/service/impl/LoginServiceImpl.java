@@ -30,14 +30,9 @@ public class LoginServiceImpl {
 		return oAuthConnector.reqProfile(oauthToken);
 	}
 	
-	public String getAuthorizationUrl(String sns, String oauthState, String returnUrl) throws IOException {
+	public String getAuthorizationUrl(String sns, String oauthState) throws IOException {
 		OAuthConnector oAuthConnector = oAuthConnectorFactory.getOAuthConnector(sns);
-		try {
-			returnUrl = URLEncoder.encode(returnUrl, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			log.error("{}",e);
-		}                                                   
-		return oAuthConnector.buildAuthorizationUrl(oauthState, returnUrl);
+		return oAuthConnector.buildAuthorizationUrl(oauthState);
 	}
 	
 	public OAuth2AccessToken getAccessToken(String sns, String oauthState, String code, String state) throws IOException {

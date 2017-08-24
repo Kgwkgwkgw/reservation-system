@@ -1,6 +1,5 @@
 package naverest.reservation.interceptor;
 
-import java.net.URLEncoder;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,27 +20,16 @@ public class LoginCheckInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		HttpSession session = request.getSession();
-		
-		StringBuilder requestURI = new StringBuilder(request.getRequestURI());
-		String queryString = request.getQueryString();
-		
-		if (queryString != null) {
-			requestURI.append("?").append(queryString);
-		}
-		
-		StringBuilder returnUrl = new StringBuilder("?returnUrl=")
-									 .append(URLEncoder.encode(requestURI.toString(),"UTF-8"));
-		
+		HttpSession session = request.getSession();		
 		User user = (User) session.getAttribute("loginInfo");
 		if (user == null) {
-			response.sendRedirect("/login" + returnUrl.toString());
+			response.sendRedirect("/login");
 			return false;
 		} 
 		
 		Date current = new Date();
 		if (current.compareTo((Date) session.getAttribute("oauthTokenExpires")) > 0) {
-			response.sendRedirect("/login/refresh" + returnUrl.toString());
+			response.sendRedirect("/login/refresh");
 		}
 		
 		SecurityContext.loginUser.set(user);

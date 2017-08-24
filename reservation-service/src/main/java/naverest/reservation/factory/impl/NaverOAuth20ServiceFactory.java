@@ -10,9 +10,9 @@ import naverest.reservation.factory.OAuth20ServiceFactory;
 import naverest.reservation.oauth.impl.NaverLoginApi;
 
 public class NaverOAuth20ServiceFactory implements OAuth20ServiceFactory {
-	private String CLIENT_ID;
-	private String CLIENT_SECRET;
-	private String REDIRECT_URI;	
+	private String API_KEY;
+	private String API_SECRET;
+	private String REDIRECT_URI;
 	
 	private volatile static NaverOAuth20ServiceFactory naverOAuth20ServiceFactory;
 	
@@ -21,10 +21,9 @@ public class NaverOAuth20ServiceFactory implements OAuth20ServiceFactory {
 		try {
 			
 			config.load("application.properties");
-			CLIENT_ID = config.getString("naverest.naverlogin.client.id");
-			CLIENT_SECRET = config.getString("naverest.naverlogin.client.secret");
-			REDIRECT_URI = config.getString("naverest.login.redirectUri");
-			
+			API_KEY = config.getString("naverest.naverlogin.apiKey");
+			API_SECRET = config.getString("naverest.naverlogin.apiSecret");
+			REDIRECT_URI = config.getString("naverest.naverlogin.redirectUri");
 		} catch (ConfigurationException e) {
 			throw new RuntimeException(e);
 		}
@@ -42,20 +41,20 @@ public class NaverOAuth20ServiceFactory implements OAuth20ServiceFactory {
 	}
 	
 	@Override
-	public OAuth20Service getOauthService() {
+	public OAuth20Service makeOauthService() {
 		return new ServiceBuilder()                                                   
-		            .apiKey(CLIENT_ID)
-		            .apiSecret(CLIENT_SECRET)
+		            .apiKey(API_KEY)
+		            .apiSecret(API_SECRET)
 		            .callback(REDIRECT_URI)
 		            .build(NaverLoginApi.instance());
 	}
 
 	@Override
-	public OAuth20Service getOauthService(String state, String returnUrl) {
+	public OAuth20Service makeOauthService(String state) {
 		return new ServiceBuilder()                                                   
-			        .apiKey(CLIENT_ID)
-			        .apiSecret(CLIENT_SECRET)
-			        .callback(REDIRECT_URI + "?returnUrl="+returnUrl)
+			        .apiKey(API_KEY)
+			        .apiSecret(API_SECRET)
+			        .callback(REDIRECT_URI)
 			        .state(state) 
 			        .build(NaverLoginApi.instance());
 	}

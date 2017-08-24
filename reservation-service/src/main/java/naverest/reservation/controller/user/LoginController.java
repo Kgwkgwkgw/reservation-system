@@ -47,32 +47,31 @@ public class LoginController {
 	}
 
 	@GetMapping("/{sns:[google|naver|facebook]+}")
-	public String login(HttpSession session, @RequestParam(required = false, defaultValue = "/") String returnUrl,
-			@PathVariable String sns) throws IOException {
+	public String login(HttpSession session, @PathVariable String sns) throws IOException {
 		String oauthState = generateRandomString();
 		session.setAttribute(SESSION_STATE, oauthState);
-		
-		String authUrl = loginServiceImpl.getAuthorizationUrl(sns, oauthState, returnUrl);
+
+		String authUrl = loginServiceImpl.getAuthorizationUrl(sns, oauthState);
 		System.out.println(authUrl);
 		return "redirect:" + authUrl;
 	}
 
 	@GetMapping("/{sns:[google|naver|facebook]+}/callback")
 	public String callback(@RequestParam String code, @RequestParam String state,
-			@RequestParam(required = false, defaultValue = "/") String returnUrl,
 			@RequestParam(required = false) String error, HttpSession session, @PathVariable String sns)
 			throws IOException {
-		
+
 		if (error == null) {
-			OAuth2AccessToken oauthToken = loginServiceImpl.getAccessToken(sns, (String) session.getAttribute(SESSION_STATE), code, state);
+			OAuth2AccessToken oauthToken = loginServiceImpl.getAccessToken(sns,
+					(String) session.getAttribute(SESSION_STATE), code, state);
 			session.setAttribute("oauthToken", oauthToken);
 			session.setAttribute("oauthTokenExpires", getExpireDate());
-			
+
 			User user = loginServiceImpl.getUser(sns, oauthToken);
-			
+
 			session.setAttribute("loginInfo", userService.login(user));
 
-			return "redirect:" + returnUrl;
+			return "redirect:/";
 
 		} else {
 			log.debug(error);
@@ -81,9 +80,7 @@ public class LoginController {
 	}
 
 	@GetMapping("/refresh")
-	public String reqRefreshAccessTocken(HttpSession session,
-			@RequestParam(required = false, defaultValue = "/") String returnUrl,
-			@LogginedUser User user) throws IOException {
+	public String reqRefreshAccessTocken(HttpSession session, @LogginedUser User user) throws IOException {
 		System.out.println(user);
 		String sns = user.getSnsType();
 		OAuth2AccessToken oauthToken = (OAuth2AccessToken) session.getAttribute("oauthToken");
@@ -95,7 +92,7 @@ public class LoginController {
 
 		session.setAttribute("oauthToken", newAccessToken);
 		session.setAttribute("oauthTokenExpires", getExpireDate());
-		return "redirect:" + returnUrl;
+		return "redirect:/";
 	}
 
 	private String generateRandomString() {

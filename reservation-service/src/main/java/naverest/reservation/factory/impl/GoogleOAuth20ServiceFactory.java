@@ -10,20 +10,19 @@ import naverest.reservation.factory.OAuth20ServiceFactory;
 import naverest.reservation.oauth.impl.GoogleLoginApi;
 
 public class GoogleOAuth20ServiceFactory implements OAuth20ServiceFactory {
-	private String CLIENT_ID;
-	private String CLIENT_SECRET;
-	private String REDIRECT_URI;	
+	private String API_KEY;
+	private String API_SECRET;
+	private String REDIRECT_URI;
 	
 	private volatile static GoogleOAuth20ServiceFactory googleOAuth20ServiceFactory;
 	
 	private GoogleOAuth20ServiceFactory() {
 		PropertiesConfiguration config = new PropertiesConfiguration();
 		try {
-			
 			config.load("application.properties");
-			CLIENT_ID = config.getString("naverest.googlelogin.apiKey");
-			CLIENT_SECRET = config.getString("naverest.googlelogin.apiSecret");
-			REDIRECT_URI = config.getString("naverest.login.redirectUri");
+			API_KEY = config.getString("naverest.googlelogin.apiKey");
+			API_SECRET = config.getString("naverest.googlelogin.apiSecret");
+			REDIRECT_URI = config.getString("naverest.googlelogin.redirectUri");
 			
 		} catch (ConfigurationException e) {
 			throw new RuntimeException(e);
@@ -42,20 +41,20 @@ public class GoogleOAuth20ServiceFactory implements OAuth20ServiceFactory {
 	}
 	
 	@Override
-	public OAuth20Service getOauthService() {
-		return new ServiceBuilder()                                                   
-		            .apiKey(CLIENT_ID)
-		            .apiSecret(CLIENT_SECRET)
-		            .callback(REDIRECT_URI)
-		            .scope("profile")
-		            .build(GoogleLoginApi.instance());
+	public OAuth20Service makeOauthService() {
+		return new ServiceBuilder()
+				.apiKey(API_KEY)
+				.apiSecret(API_SECRET)
+				.callback(REDIRECT_URI)
+				.scope("openid email profile")
+				.build(GoogleLoginApi.instance());
 	}
 
 	@Override
-	public OAuth20Service getOauthService(String state, String returnUrl) {
+	public OAuth20Service makeOauthService(String state) {
 		return new ServiceBuilder()                                                   
-			        .apiKey(CLIENT_ID)
-			        .apiSecret(CLIENT_SECRET)
+			        .apiKey(API_KEY)
+			        .apiSecret(API_SECRET)
 			        .callback(REDIRECT_URI)
 			        .scope("openid email profile")
 			        .state(state) 

@@ -10,52 +10,26 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.Response;
-import com.github.scribejava.core.oauth.OAuth20Service;
 
 import naverest.reservation.domain.User;
 import naverest.reservation.dto.GoogleLoginProfile;
+import naverest.reservation.factory.OAuth20ServiceFactory;
+import naverest.reservation.factory.impl.GoogleOAuth20ServiceFactory;
 import naverest.reservation.oauth.OAuthConnector;
 
 public class GoogleOAuthConnector extends OAuthConnector {
-	private String API_KEY;
-	private String API_SECRET;
-	private String REDIRECT_URI;
 	private String PROFILE_API_URL;
 	
 	public GoogleOAuthConnector() {
 		PropertiesConfiguration config = new PropertiesConfiguration();
+		
 		try {
-			
 			config.load("application.properties");
-			API_KEY = config.getString("naverest.googlelogin.apiKey");
-			API_SECRET = config.getString("naverest.googlelogin.apiSecret");
-			REDIRECT_URI = config.getString("naverest.googlelogin.redirectUri");
 			PROFILE_API_URL = config.getString("naverest.googlelogin.profileApiUrl");
 		} catch (ConfigurationException e) {
 			throw new RuntimeException(e);
 		}
-	}
-	@Override
-	protected OAuth20Service getOauthService(String oauthState, String returnUrl) {
-		return new ServiceBuilder()
-					.apiKey(API_KEY)
-					.apiSecret(API_SECRET)
-					.callback(REDIRECT_URI)
-					.scope("openid email profile")
-					.state(oauthState)
-					.build(GoogleLoginApi.instance());
-	}
-
-	@Override
-	protected OAuth20Service getOauthService() {
-		return new ServiceBuilder()
-					.apiKey(API_KEY)
-					.apiSecret(API_SECRET)
-					.callback(REDIRECT_URI)
-					.scope("openid email profile")
-					.build(GoogleLoginApi.instance());
 	}
 
 	@Override
@@ -112,6 +86,11 @@ public class GoogleOAuthConnector extends OAuthConnector {
 		user.setEmail(email);
 
 		return user;
+	}
+
+	@Override
+	protected OAuth20ServiceFactory setOAuth20ServiceFactory() {
+		return GoogleOAuth20ServiceFactory.getInstance();
 	}
 
 }

@@ -9,50 +9,25 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.Response;
-import com.github.scribejava.core.oauth.OAuth20Service;
 
 import naverest.reservation.domain.User;
 import naverest.reservation.dto.NaverLoginProfile;
+import naverest.reservation.factory.OAuth20ServiceFactory;
+import naverest.reservation.factory.impl.NaverOAuth20ServiceFactory;
 import naverest.reservation.oauth.OAuthConnector;
 
 public class NaverOAuthConnector extends OAuthConnector {
-	private String API_KEY;
-	private String API_SECRET;
-	private String REDIRECT_URI;
 	private String PROFILE_API_URL;
 	
 	public NaverOAuthConnector() {
 		PropertiesConfiguration config = new PropertiesConfiguration();
 		try {
 			config.load("application.properties");
-			API_KEY = config.getString("naverest.naverlogin.apiKey");
-			API_SECRET = config.getString("naverest.naverlogin.apiSecret");
-			REDIRECT_URI = config.getString("naverest.naverlogin.redirectUri");
 			PROFILE_API_URL = config.getString("naverest.naverlogin.profileApiUrl");
 		} catch (ConfigurationException e) {
 			throw new RuntimeException(e);
 		}
-	}
-	
-	@Override
-	protected OAuth20Service getOauthService(String oauthState, String returnUrl) {
-		return new ServiceBuilder()                                                   
-			        .apiKey(API_KEY)
-			        .apiSecret(API_SECRET)
-			        .callback(REDIRECT_URI + "?returnUrl="+returnUrl)
-			        .state(oauthState) 
-			        .build(NaverLoginApi.instance());
-	}
-
-	@Override
-	protected OAuth20Service getOauthService() {
-		return new ServiceBuilder()                                                   
-		            .apiKey(API_KEY)
-		            .apiSecret(API_SECRET)
-		            .callback(REDIRECT_URI)
-		            .build(NaverLoginApi.instance());
 	}
 
 	@Override
@@ -78,6 +53,11 @@ public class NaverOAuthConnector extends OAuthConnector {
 		user.setAdminFlag(0);
 		user.setCreateDate(new Date());
 		return user;
+	}
+
+	@Override
+	protected OAuth20ServiceFactory setOAuth20ServiceFactory() {
+		return NaverOAuth20ServiceFactory.getInstance();
 	}
 	
 }
