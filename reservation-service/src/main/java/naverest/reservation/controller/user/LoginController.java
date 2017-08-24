@@ -21,12 +21,12 @@ import com.github.scribejava.core.model.OAuth2AccessToken;
 
 import naverest.reservation.annotation.LogginedUser;
 import naverest.reservation.domain.User;
-import naverest.reservation.service.impl.LoginServiceImpl;
+import naverest.reservation.service.LoginService;
 
 @Controller
 @RequestMapping("/login")
 public class LoginController {
-	private LoginServiceImpl loginServiceImpl;
+	private LoginService loginService;
 	@Value("${naverest.userDir}")
 	private String DIR_NAME;
 
@@ -34,8 +34,8 @@ public class LoginController {
 	private final static String SESSION_STATE = "oauthState";
 
 	@Autowired
-	public LoginController(LoginServiceImpl loginServiceImpl) {
-		this.loginServiceImpl = loginServiceImpl;
+	public LoginController(LoginService loginService) {
+		this.loginService = loginService;
 	}
 
 	@GetMapping
@@ -48,7 +48,7 @@ public class LoginController {
 		String oauthState = generateRandomString();
 		session.setAttribute(SESSION_STATE, oauthState);
 
-		String authUrl = loginServiceImpl.getAuthorizationUrl(sns, oauthState);
+		String authUrl = loginService.getAuthorizationUrl(sns, oauthState);
 		return "redirect:" + authUrl;
 	}
 
@@ -58,12 +58,12 @@ public class LoginController {
 			throws IOException {
 
 		if (error == null) {
-			OAuth2AccessToken oauthToken = loginServiceImpl.getAccessToken(sns,
+			OAuth2AccessToken oauthToken = loginService.getAccessToken(sns,
 					(String) session.getAttribute(SESSION_STATE), code, state);
 			session.setAttribute("oauthToken", oauthToken);
 			session.setAttribute("oauthTokenExpires", getExpireDate());
 
-			User user = loginServiceImpl.login(sns, oauthToken);
+			User user = loginService.login(sns, oauthToken);
 			session.setAttribute("loginInfo", user);
 
 			return "redirect:/";
@@ -76,14 +76,13 @@ public class LoginController {
 
 	@GetMapping("/refresh")
 	public String reqRefreshAccessTocken(HttpSession session, @LogginedUser User user) throws IOException {
-		System.out.println(user);
 		String sns = user.getSnsType();
 		OAuth2AccessToken oauthToken = (OAuth2AccessToken) session.getAttribute("oauthToken");
 
 		if (oauthToken.getRefreshToken() == null) {
 			return "redirect:/login/" + sns;
 		}
-		OAuth2AccessToken newAccessToken = loginServiceImpl.getRefreshedAccessToken(sns, oauthToken);
+		OAuth2AccessToken newAccessToken = loginService.getRefreshedAccessToken(sns, oauthToken);
 
 		session.setAttribute("oauthToken", newAccessToken);
 		session.setAttribute("oauthTokenExpires", getExpireDate());

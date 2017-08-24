@@ -18,12 +18,11 @@ import naverest.reservation.service.UserService;
 @Service
 public class LoginServiceImpl implements LoginService{
 	private final Logger log = LoggerFactory.getLogger(LoginServiceImpl.class);
-	private OAuthConnectorFactory oAuthConnectorFactory;
+	private OAuthConnectorFactory oAuthConnectorFactory = OAuthConnectorFactory.getInstance();
 	private UserService userService;
 
 	@Autowired
 	public LoginServiceImpl(UserService userService) {
-		oAuthConnectorFactory = OAuthConnectorFactory.getInstance();
 		this.userService = userService;
 	}
 

@@ -89,7 +89,7 @@ public class GoogleOAuthConnector extends OAuthConnector {
 	}
 
 	@Override
-	protected OAuth20ServiceFactory setOAuth20ServiceFactory() {
+	protected OAuth20ServiceFactory getOAuth20ServiceFactory() {
 		return GoogleOAuth20ServiceFactory.getInstance();
 	}
 

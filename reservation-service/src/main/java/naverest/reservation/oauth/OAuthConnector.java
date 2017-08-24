@@ -17,7 +17,7 @@ public abstract class OAuthConnector {
 	protected OAuth20ServiceFactory oAuth20ServiceFactory;
 	
 	protected OAuthConnector () {
-		this.oAuth20ServiceFactory = setOAuth20ServiceFactory();
+		this.oAuth20ServiceFactory = getOAuth20ServiceFactory();
 	}
 	
 	public final User reqProfile(OAuth2AccessToken oauthToken) throws IOException {
@@ -52,5 +52,5 @@ public abstract class OAuthConnector {
 	
 	protected abstract String getProfileApiUrl();
 	protected abstract User buildUser(Response response) throws IOException;
-	protected abstract OAuth20ServiceFactory setOAuth20ServiceFactory();
+	protected abstract OAuth20ServiceFactory getOAuth20ServiceFactory();
 }

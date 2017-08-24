@@ -56,7 +56,7 @@ public class NaverOAuthConnector extends OAuthConnector {
 	}
 
 	@Override
-	protected OAuth20ServiceFactory setOAuth20ServiceFactory() {
+	protected OAuth20ServiceFactory getOAuth20ServiceFactory() {
 		return NaverOAuth20ServiceFactory.getInstance();
 	}
 	
