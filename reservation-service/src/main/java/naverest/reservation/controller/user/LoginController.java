@@ -21,13 +21,11 @@ import com.github.scribejava.core.model.OAuth2AccessToken;
 
 import naverest.reservation.annotation.LogginedUser;
 import naverest.reservation.domain.User;
-import naverest.reservation.service.UserService;
 import naverest.reservation.service.impl.LoginServiceImpl;
 
 @Controller
 @RequestMapping("/login")
 public class LoginController {
-	private UserService userService;
 	private LoginServiceImpl loginServiceImpl;
 	@Value("${naverest.userDir}")
 	private String DIR_NAME;
@@ -36,8 +34,7 @@ public class LoginController {
 	private final static String SESSION_STATE = "oauthState";
 
 	@Autowired
-	public LoginController(UserService userService, LoginServiceImpl loginServiceImpl) {
-		this.userService = userService;
+	public LoginController(LoginServiceImpl loginServiceImpl) {
 		this.loginServiceImpl = loginServiceImpl;
 	}
 
@@ -68,8 +65,7 @@ public class LoginController {
 			session.setAttribute("oauthTokenExpires", getExpireDate());
 
 			User user = loginServiceImpl.getUser(sns, oauthToken);
-
-			session.setAttribute("loginInfo", userService.login(user));
+			session.setAttribute("loginInfo", user);
 
 			return "redirect:/";
 
