@@ -6,10 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import naverest.reservation.controller.user.UserCommentController;
 import naverest.reservation.dao.UserDao;
 import naverest.reservation.domain.User;
-import naverest.reservation.dto.NaverLoginProfile;
 import naverest.reservation.service.UserService;
 
 @Service
@@ -23,7 +21,7 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	@Override
-	public User login(User user) {
+	public User findOrCreate(User user) {
 		User selected = userDao.selectBySnsId(user.getSnsId());
 		if(selected != null )
 			return selected;

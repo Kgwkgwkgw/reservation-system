@@ -63,7 +63,7 @@ public class LoginController {
 			session.setAttribute("oauthToken", oauthToken);
 			session.setAttribute("oauthTokenExpires", getExpireDate());
 
-			User user = loginServiceImpl.getUser(sns, oauthToken);
+			User user = loginServiceImpl.login(sns, oauthToken);
 			session.setAttribute("loginInfo", user);
 
 			return "redirect:/";

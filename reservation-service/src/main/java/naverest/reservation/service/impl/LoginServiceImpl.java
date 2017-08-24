@@ -12,10 +12,11 @@ import com.github.scribejava.core.model.OAuth2AccessToken;
 import naverest.reservation.domain.User;
 import naverest.reservation.factory.impl.OAuthConnectorFactory;
 import naverest.reservation.oauth.OAuthConnector;
+import naverest.reservation.service.LoginService;
 import naverest.reservation.service.UserService;
 
 @Service
-public class LoginServiceImpl {
+public class LoginServiceImpl implements LoginService{
 	private final Logger log = LoggerFactory.getLogger(LoginServiceImpl.class);
 	private OAuthConnectorFactory oAuthConnectorFactory;
 	private UserService userService;
@@ -23,11 +24,13 @@ public class LoginServiceImpl {
 	@Autowired
 	public LoginServiceImpl(UserService userService) {
 		oAuthConnectorFactory = OAuthConnectorFactory.getInstance();
+		this.userService = userService;
 	}
 
-	public User getUser(String sns, OAuth2AccessToken oauthToken) throws IOException {
+	public User login(String sns, OAuth2AccessToken oauthToken) throws IOException {
 		OAuthConnector oAuthConnector = oAuthConnectorFactory.getOAuthConnector(sns);
-		return userService.login(oAuthConnector.reqProfile(oauthToken));
+		User user = oAuthConnector.reqProfile(oauthToken);
+		return userService.findOrCreate(user);
 	}
 
 	public String getAuthorizationUrl(String sns, String oauthState) throws IOException {
