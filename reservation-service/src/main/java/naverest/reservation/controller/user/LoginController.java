@@ -49,7 +49,6 @@ public class LoginController {
 		session.setAttribute(SESSION_STATE, oauthState);
 
 		String authUrl = loginServiceImpl.getAuthorizationUrl(sns, oauthState);
-		System.out.println(authUrl);
 		return "redirect:" + authUrl;
 	}
 
