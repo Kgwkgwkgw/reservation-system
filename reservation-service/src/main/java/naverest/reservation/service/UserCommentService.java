@@ -7,7 +7,7 @@ import naverest.reservation.dto.UserCommentWrapper;
 
 public interface UserCommentService {
 	UserCommentWrapper findCommentWrapperByProductId(Integer productId, Integer offset, Integer size);
-	Integer removeUserCommentImage(Integer fileId);
+	Integer removeImage(Integer fileId);
 	Integer createUserComment(ReservationUserComment userComment);
 	Integer createUserCommentAndUserCommentImage(ReservationUserComment userComment, List<Integer> fileIdList);
 }

@@ -75,7 +75,7 @@ public class UserCommentServiceImpl implements UserCommentService{
 
 	@Override
 	@Transactional(readOnly = false)
-	public Integer removeUserCommentImage(Integer fileId) {
+	public Integer removeImage(Integer fileId) {
 		log.info("user comment service fileId ="+fileId);
 		return fileDao.deleteById(fileId);
 	}
